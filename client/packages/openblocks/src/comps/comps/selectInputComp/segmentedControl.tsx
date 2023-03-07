@@ -5,11 +5,21 @@ import { ChangeEventHandlerControl } from "comps/controls/eventHandlerControl";
 import { LabelControl } from "comps/controls/labelControl";
 import { SelectOptionControl } from "comps/controls/optionsControl";
 import { styleControl } from "comps/controls/styleControl";
-import { SegmentStyle, SegmentStyleType } from "comps/controls/styleControlConstants";
+import {
+  SegmentStyle,
+  SegmentStyleType,
+} from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { UICompBuilder } from "../../generators";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { formDataChildren, FormDataPropertyView } from "../formComp/formDataConstants";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
+import {
+  formDataChildren,
+  FormDataPropertyView,
+} from "../formComp/formDataConstants";
 import {
   SelectInputInvalidConfig,
   SelectInputValidationChildren,
@@ -17,9 +27,14 @@ import {
   useSelectInputValidate,
 } from "./selectInputConstants";
 import { Section, sectionNames } from "openblocks-design";
-import { hiddenPropertyView, disabledPropertyView } from "comps/utils/propertyUtils";
+import {
+  hiddenPropertyView,
+  disabledPropertyView,
+} from "comps/utils/propertyUtils";
 import { trans } from "i18n";
 import { hasIcon } from "comps/utils";
+import { MarginControl } from "../../controls/marginControl";
+import { PaddingControl } from "../../controls/paddingControl";
 
 const getStyle = (style: SegmentStyleType) => {
   return css`
@@ -62,6 +77,8 @@ export const SegmentChildrenMap = {
   options: SelectOptionControl,
   style: styleControl(SegmentStyle),
 
+  margin: MarginControl,
+  padding: PaddingControl,
   ...SelectInputValidationChildren,
   ...formDataChildren,
 };
@@ -82,6 +99,16 @@ export const SegmentedControlBasicComp = (function () {
             handleValidate(value.toString());
             props.value.onChange(value.toString());
             props.onEvent("change");
+          }}
+          style={{
+            marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
           }}
           options={props.options
             .filter((option) => option.value !== undefined && !option.hidden)
@@ -112,15 +139,28 @@ export const SegmentedControlBasicComp = (function () {
 
         <SelectInputValidationSection {...children} />
 
-        <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
-        <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+        <Section name={sectionNames.layout}>
+          {hiddenPropertyView(children)}
+        </Section>
+        <Section name={sectionNames.style}>
+          {children.style.getPropertyView()}
+        </Section>
+        <Section name={trans("style.margin")}>
+          {children.margin.getPropertyView()}
+        </Section>
+        <Section name={trans("style.padding")}>
+          {children.padding.getPropertyView()}
+        </Section>
       </>
     ))
     .build();
 })();
 
-export const SegmentedControlComp = withExposingConfigs(SegmentedControlBasicComp, [
-  new NameConfig("value", trans("selectInput.valueDesc")),
-  SelectInputInvalidConfig,
-  ...CommonNameConfig,
-]);
+export const SegmentedControlComp = withExposingConfigs(
+  SegmentedControlBasicComp,
+  [
+    new NameConfig("value", trans("selectInput.valueDesc")),
+    SelectInputInvalidConfig,
+    ...CommonNameConfig,
+  ]
+);

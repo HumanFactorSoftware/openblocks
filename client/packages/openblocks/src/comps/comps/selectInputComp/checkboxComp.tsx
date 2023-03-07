@@ -5,7 +5,11 @@ import { arrayStringExposingStateControl } from "../../controls/codeStateControl
 import { LabelControl } from "../../controls/labelControl";
 import { ChangeEventHandlerControl } from "../../controls/eventHandlerControl";
 import { UICompBuilder } from "../../generators";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
 import styled, { css } from "styled-components";
 import {
   SelectInputInvalidConfig,
@@ -14,12 +18,17 @@ import {
 } from "./selectInputConstants";
 import { formDataChildren } from "../formComp/formDataConstants";
 import { styleControl } from "comps/controls/styleControl";
-import { CheckboxStyle, CheckboxStyleType } from "comps/controls/styleControlConstants";
+import {
+  CheckboxStyle,
+  CheckboxStyleType,
+} from "comps/controls/styleControlConstants";
 import { RadioLayoutOptions, RadioPropertyView } from "./radioCompConstants";
 import { dropdownControl } from "../../controls/dropdownControl";
 import { ValueFromOption } from "openblocks-design";
 import { EllipsisTextCss } from "openblocks-design";
 import { trans } from "i18n";
+import { MarginControl } from "../../controls/marginControl";
+import { PaddingControl } from "../../controls/paddingControl";
 
 const getStyle = (style: CheckboxStyleType) => {
   return css`
@@ -107,6 +116,8 @@ const CheckboxBasicComp = (function () {
     style: styleControl(CheckboxStyle),
     layout: dropdownControl(RadioLayoutOptions, "horizontal"),
 
+  margin: MarginControl,
+  padding: PaddingControl,
     ...SelectInputValidationChildren,
     ...formDataChildren,
   };
@@ -128,6 +139,16 @@ const CheckboxBasicComp = (function () {
               value: option.value,
               disabled: option.disabled,
             }))}
+          style={{
+            marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
+          }}
           onChange={(values) => {
             handleValidate(values as string[]);
             props.value.onChange(values as string[]);

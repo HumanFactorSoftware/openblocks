@@ -13,6 +13,8 @@ import { LabelControl } from "comps/controls/labelControl";
 import { numberExposingStateControl } from "comps/controls/codeStateControl";
 import NP from "number-precision";
 
+import { MarginControl } from "../../controls/marginControl";
+import { PaddingControl } from "../../controls/paddingControl";
 import {
   CommonNameConfig,
   depsConfig,
@@ -89,7 +91,7 @@ const getStyle = (style: InputLikeStyleType) => {
   `;
 };
 
-const InputNumber = styled(AntdInputNumber)<{
+const InputNumber = styled(AntdInputNumber) <{
   $style: InputLikeStyleType;
 }>`
   width: 100%;
@@ -229,6 +231,8 @@ const childrenMap = {
   style: styleControl(InputLikeStyle),
   prefixIcon: IconControl,
 
+  margin: MarginControl,
+  padding: PaddingControl,
   // validation
   required: BoolControl,
   min: UndefinedNumberControl,
@@ -324,11 +328,22 @@ const CustomInputNumber = (props: RecordConstructorToView<typeof childrenMap>) =
         }
         event.preventDefault();
       }}
+      style={{
+        marginTop: props.margin.top ? props.margin.top : 0,
+        marginRight: props.margin.right ? props.margin.right : 0,
+        marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+        marginLeft: props.margin.left ? props.margin.left : 0,
+        paddingTop: props.padding.top ? props.padding.top : 0,
+        paddingRight: props.padding.right ? props.padding.right : 0,
+        paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+        paddingLeft: props.padding.left ? props.padding.left : 0,
+      }}
+
     />
   );
 };
 
-const NumberInputTmpComp = (function () {
+const NumberInputTmpComp = (function() {
   return new UICompBuilder(childrenMap, (props) => {
     return props.label({
       required: props.required,
@@ -376,6 +391,12 @@ const NumberInputTmpComp = (function () {
         <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
 
         <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+        <Section name={trans("style.margin")}>
+          {children.margin.getPropertyView()}
+        </Section>
+        <Section name={trans("style.padding")}>
+          {children.padding.getPropertyView()}
+        </Section>
       </>
     ))
     .build();

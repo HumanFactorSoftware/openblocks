@@ -12,12 +12,20 @@ import {
   SelectInputValidationChildren,
   SelectInputValidationSection,
 } from "./selectInputConstants";
-import { formDataChildren, FormDataPropertyView } from "../formComp/formDataConstants";
+import {
+  formDataChildren,
+  FormDataPropertyView,
+} from "../formComp/formDataConstants";
 import { styleControl } from "comps/controls/styleControl";
 import { RadioStyle } from "comps/controls/styleControlConstants";
 import { dropdownControl } from "../../controls/dropdownControl";
-import { hiddenPropertyView, disabledPropertyView } from "comps/utils/propertyUtils";
+import {
+  hiddenPropertyView,
+  disabledPropertyView,
+} from "comps/utils/propertyUtils";
 import { trans } from "i18n";
+import { MarginControl } from "../../controls/marginControl";
+import { PaddingControl } from "../../controls/paddingControl";
 
 export const RadioLayoutOptions = [
   { label: trans("radio.horizontal"), value: "horizontal" },
@@ -34,6 +42,8 @@ export const RadioChildrenMap = {
   style: styleControl(RadioStyle),
   layout: dropdownControl(RadioLayoutOptions, "horizontal"),
 
+  margin: MarginControl,
+  padding: PaddingControl,
   ...SelectInputValidationChildren,
   ...formDataChildren,
 };
@@ -75,6 +85,14 @@ export const RadioPropertyView = (
       })}
       {hiddenPropertyView(children)}
     </Section>
-    <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+    <Section name={sectionNames.style}>
+      {children.style.getPropertyView()}
+    </Section>
+    <Section name={trans("style.margin")}>
+      {children.margin.getPropertyView()}
+    </Section>
+    <Section name={trans("style.padding")}>
+      {children.padding.getPropertyView()}
+    </Section>
   </>
 );

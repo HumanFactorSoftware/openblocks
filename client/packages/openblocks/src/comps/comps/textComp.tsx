@@ -8,7 +8,7 @@ import { AlignLeft } from "openblocks-design";
 import { AlignRight } from "openblocks-design";
 import { HorizontalAlignmentControl } from "../controls/dropdownControl";
 import { MarginControl } from "../controls/marginControl";
-import { UICompBuilder, withDefault } from "../generators";
+import { UICompBuilder} from "../generators";
 import {
   NameConfig,
   NameConfigHidden,
@@ -17,13 +17,11 @@ import {
 import { markdownCompCss, TacoMarkDown } from "openblocks-design";
 import { styleControl } from "comps/controls/styleControl";
 import {
-  MarginStyle,
   TextStyle,
   TextStyleType,
 } from "comps/controls/styleControlConstants";
 import { hiddenPropertyView } from "comps/utils/propertyUtils";
 import { trans } from "i18n";
-import { StringControl } from "../controls/codeControl";
 import { PaddingControl } from "../controls/paddingControl";
 
 const getStyle = (style: TextStyleType) => {
@@ -84,29 +82,6 @@ const TextContainer = styled.div<{ type: string; styleConfig: TextStyleType }>`
   }
 `;
 
-const MarginContainer = styled.div<{}>`
-  display: flex;
-  justify-content: space-between;
-  .hUXIwu {
-    flex: 0 0 36px;
-  }
-  .fgbLEe {
-    margin-right: 5px;
-    margin-bottom: 10px;
-  }
-`;
-
-const PaddingContainer = styled.div<{}>`
-  display: flex;
-  justify-content: space-between;
-  .hUXIwu {
-    flex: 0 0 36px;
-  }
-  .fgbLEe {
-    margin-right: 5px;
-    margin-bottom: 10px;
-  }
-`;
 
 const AlignTop = styled(AlignLeft)`
   transform: rotate(90deg);

@@ -28,7 +28,10 @@ import { defaultLayout, GridItemComp } from "../gridItemComp";
 import { ReactNode, useContext } from "react";
 import { pushAction } from "comps/generators/list";
 import { FullColumnInfo } from "./generate/dataSourceCommon";
-import { eventHandlerControl, submitEvent } from "comps/controls/eventHandlerControl";
+import {
+  eventHandlerControl,
+  submitEvent,
+} from "comps/controls/eventHandlerControl";
 import {
   simpleContainerAddAction,
   toSimpleContainerData,
@@ -71,8 +74,12 @@ const childrenMap = {
 type FormProps = TriContainerViewProps &
   RecordConstructorToView<typeof childrenMap> & { dispatch: DispatchType };
 
-function dispatchAsyncAddCompsAction(props: FormProps, columnInfos: FullColumnInfo[]) {
-  const { dispatch, layout, positionParams } = props.container.body[0].children.view.getView();
+function dispatchAsyncAddCompsAction(
+  props: FormProps,
+  columnInfos: FullColumnInfo[]
+) {
+  const { dispatch, layout, positionParams } =
+    props.container.body[0].children.view.getView();
   let y = 0;
   const infos = columnInfos.map(({ column, compName }) => {
     const layoutItem: LayoutItem = {
@@ -119,18 +126,27 @@ function onCreate(
   const { dispatch } = props;
   const nameGenerator = editorState.getNameGenerator();
   const infos = data.columns.map((column) => {
-    const compName = nameGenerator.genItemName("form" + _.upperFirst(column.comp.type));
+    const compName = nameGenerator.genItemName(
+      "form" + _.upperFirst(column.comp.type)
+    );
     return { column, compName };
   });
   dispatchAsyncAddCompsAction(props, infos);
 
   const tableName = data.tableName;
   const lastName = tableName.substring(tableName.lastIndexOf(".") + 1);
-  const queryNamePrefix = formName + "SubmitTo" + lastName.split("_").map(_.upperFirst).join("");
+  const queryNamePrefix =
+    formName + "SubmitTo" + lastName.split("_").map(_.upperFirst).join("");
   const queryName = nameGenerator.genItemName(queryNamePrefix);
-  dispatch(deferAction(wrapChildAction("onEvent", pushAction(onEventData(queryName)))));
+  dispatch(
+    deferAction(wrapChildAction("onEvent", pushAction(onEventData(queryName))))
+  );
 
-  const queryData = data.dataSourceTypeConfig.getQueryInitData(formName, tableName, infos);
+  const queryData = data.dataSourceTypeConfig.getQueryInitData(
+    formName,
+    tableName,
+    infos
+  );
   const queriesComp = editorState.getQueriesComp();
   queriesComp.dispatch(
     deferAction(
@@ -184,20 +200,29 @@ const FormBaseComp = (function () {
       return (
         <>
           <Section name={sectionNames.basic}>
-            {false && children.initialData.propertyView({ label: trans("formComp.initialData") })}
-            {children.resetAfterSubmit.propertyView({ label: trans("formComp.resetAfterSubmit") })}
+            {false &&
+              children.initialData.propertyView({
+                label: trans("formComp.initialData"),
+              })}
+            {children.resetAfterSubmit.propertyView({
+              label: trans("formComp.resetAfterSubmit"),
+            })}
           </Section>
           <Section name={sectionNames.interaction}>
             {children.onEvent.getPropertyView()}
             {disabledPropertyView(children)}
-            {children.disableSubmit.propertyView({ label: trans("formComp.disableSubmit") })}
+            {children.disableSubmit.propertyView({
+              label: trans("formComp.disableSubmit"),
+            })}
             {loadingPropertyView(children)}
           </Section>
           <Section name={sectionNames.layout}>
             {children.container.getPropertyView()}
             {hiddenPropertyView(children)}
           </Section>
-          <Section name={sectionNames.style}>{children.container.stylePropertyView()}</Section>
+          <Section name={sectionNames.style}>
+            {children.container.stylePropertyView()}
+          </Section>
         </>
       );
     })
@@ -259,13 +284,18 @@ let FormTmpComp = class extends FormBaseComp implements IForm {
   }
   setData(data: JSONObject, initialData?: JSONObject) {
     // For the properties, first find in data, then initialData, subcomponent default value (resetValue), empty value (clearValue)
-    const newData = { ...(initialData ?? this.children.initialData.getView()), ...data };
+    const newData = {
+      ...(initialData ?? this.children.initialData.getView()),
+      ...data,
+    };
     return this.runMethodOfItems(
       {
         name: "setValue",
         getParams: (t) => {
           // use component name when formDataKey is empty
-          const key = t.children.comp.children.formDataKey?.getView() || t.children.name.getView();
+          const key =
+            t.children.comp.children.formDataKey?.getView() ||
+            t.children.name.getView();
           const value = newData[key];
           return value !== undefined ? [value as EvalParamType] : undefined;
         },
@@ -295,7 +325,9 @@ let FormTmpComp = class extends FormBaseComp implements IForm {
     }
   }
   disableSubmit() {
-    return this.children.disabled.getView() || this.children.disableSubmit.getView();
+    return (
+      this.children.disabled.getView() || this.children.disableSubmit.getView()
+    );
   }
   override reduce(action: CompAction): this {
     switch (action.type) {
@@ -308,7 +340,9 @@ let FormTmpComp = class extends FormBaseComp implements IForm {
             this.dispatch(
               customAction<SetDataAction>({
                 type: "setData",
-                initialData: (action.value["initialData"] as ValueAndMsg<JSONObject>).value || {},
+                initialData:
+                  (action.value["initialData"] as ValueAndMsg<JSONObject>)
+                    .value || {},
               })
             );
           });
@@ -395,7 +429,10 @@ export const FormComp = withExposingConfigs(FormTmpComp, [
     func: (input) => {
       for (const [, value] of Object.entries(input.container)) {
         const exposingValues = value as any;
-        if (exposingValues?.hasOwnProperty("formDataKey") && exposingValues["invalid"]) {
+        if (
+          exposingValues?.hasOwnProperty("formDataKey") &&
+          exposingValues["invalid"]
+        ) {
           return true;
         }
       }
@@ -404,7 +441,10 @@ export const FormComp = withExposingConfigs(FormTmpComp, [
   }),
 ]);
 
-export function defaultFormData(compName: string, nameGenerator: NameGenerator): FormDataType {
+export function defaultFormData(
+  compName: string,
+  nameGenerator: NameGenerator
+): FormDataType {
   return {
     container: {
       header: toSimpleContainerData([

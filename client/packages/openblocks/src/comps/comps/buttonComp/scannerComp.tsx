@@ -1,5 +1,8 @@
 import { Button, Dropdown, Menu, Skeleton } from "antd";
-import { Button100, ButtonCompWrapper } from "comps/comps/buttonComp/buttonCompConstants";
+import {
+  Button100,
+  ButtonCompWrapper,
+} from "comps/comps/buttonComp/buttonCompConstants";
 import { BoolCodeControl, StringControl } from "comps/controls/codeControl";
 import { ScannerEventHandlerControl } from "comps/controls/eventHandlerControl";
 import { styleControl } from "comps/controls/styleControl";
@@ -8,13 +11,22 @@ import { withDefault } from "comps/generators";
 import { UICompBuilder } from "comps/generators/uiCompBuilder";
 import { CustomModal, Section, sectionNames } from "openblocks-design";
 import styled from "styled-components";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { hiddenPropertyView, disabledPropertyView } from "comps/utils/propertyUtils";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
+import {
+  hiddenPropertyView,
+  disabledPropertyView,
+} from "comps/utils/propertyUtils";
 import { trans } from "i18n";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { arrayStringExposingStateControl } from "comps/controls/codeStateControl";
 import { BoolControl } from "comps/controls/boolControl";
 import { ItemType } from "antd/lib/menu/hooks/useItems";
+import { PaddingControl } from "../../controls/paddingControl";
+import { MarginControl } from "../../controls/marginControl";
 
 const Error = styled.div`
   color: #f5222d;
@@ -38,9 +50,11 @@ const CustomModalStyled = styled(CustomModal)`
   .react-draggable {
     max-width: 100%;
   }
-`
+`;
 
-const BarcodeScannerComponent = React.lazy(() => import("react-qr-barcode-scanner"));
+const BarcodeScannerComponent = React.lazy(
+  () => import("react-qr-barcode-scanner")
+);
 
 const ScannerTmpComp = (function () {
   const childrenMap = {
@@ -52,22 +66,25 @@ const ScannerTmpComp = (function () {
     onEvent: ScannerEventHandlerControl,
     disabled: BoolCodeControl,
     style: styleControl(ButtonStyle),
+    margin: MarginControl,
+    padding: PaddingControl,
   };
   return new UICompBuilder(childrenMap, (props) => {
     const [showModal, setShowModal] = useState(false);
     const [errMessage, setErrMessage] = useState("");
-    const [videoConstraints, setVideoConstraints] = useState<MediaTrackConstraints>({
-      facingMode: "environment",
-    });
+    const [videoConstraints, setVideoConstraints] =
+      useState<MediaTrackConstraints>({
+        facingMode: "environment",
+      });
     const [modeList, setModeList] = useState<ItemType[]>([]);
     const [dropdownShow, setDropdownShow] = useState(false);
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState(false);
 
-    useEffect(() =>{
+    useEffect(() => {
       if (!showModal && success) {
         props.onEvent("success");
       }
-    }, [success, showModal])
+    }, [success, showModal]);
 
     const continuousValue = useRef<string[]>([]);
 
@@ -75,7 +92,9 @@ const ScannerTmpComp = (function () {
       if (!!result) {
         if (props.continuous) {
           continuousValue.current = [...continuousValue.current, result.text];
-          const val = props.uniqueData ? [...new Set(continuousValue.current)] : continuousValue.current;
+          const val = props.uniqueData
+            ? [...new Set(continuousValue.current)]
+            : continuousValue.current;
           props.data.onChange(val);
           props.onEvent("success");
         } else {
@@ -117,6 +136,16 @@ const ScannerTmpComp = (function () {
             setShowModal(true);
             continuousValue.current = [];
           }}
+          style={{
+            marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
+          }}
         >
           <span>{props.text}</span>
         </Button100>
@@ -134,51 +163,56 @@ const ScannerTmpComp = (function () {
         >
           {!!errMessage ? (
             <Error>{errMessage}</Error>
-          ) : (showModal && (
-            <Wrapper>
-              <Suspense fallback={<Skeleton />}>
-                <BarcodeScannerComponent
-                  key={JSON.stringify(videoConstraints)}
-                  height={250}
-                  delay={1000}
-                  onUpdate={handleUpdate}
-                  onError={handleErr}
-                  videoConstraints={videoConstraints}
-                />
-              </Suspense>
-              <div
-                style={{ height: "42px" }}
-                onClick={() => {
-                  setDropdownShow(false);
-                }}
-              >
-                <Dropdown
-                  placement="bottomRight"
-                  trigger={["click"]}
-                  visible={dropdownShow}
-                  onVisibleChange={(value) => setDropdownShow(value)}
-                  overlay={
-                    <Menu
-                      items={modeList}
-                      onClick={(value) =>
-                        setVideoConstraints({ ...videoConstraints, deviceId: value.key })
-                      }
-                    />
-                  }
+          ) : (
+            showModal && (
+              <Wrapper>
+                <Suspense fallback={<Skeleton />}>
+                  <BarcodeScannerComponent
+                    key={JSON.stringify(videoConstraints)}
+                    height={250}
+                    delay={1000}
+                    onUpdate={handleUpdate}
+                    onError={handleErr}
+                    videoConstraints={videoConstraints}
+                  />
+                </Suspense>
+                <div
+                  style={{ height: "42px" }}
+                  onClick={() => {
+                    setDropdownShow(false);
+                  }}
                 >
-                  <Button
-                    style={{ float: "right", marginTop: "10px" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      getModeList();
-                    }}
+                  <Dropdown
+                    placement="bottomRight"
+                    trigger={["click"]}
+                    visible={dropdownShow}
+                    onVisibleChange={(value) => setDropdownShow(value)}
+                    overlay={
+                      <Menu
+                        items={modeList}
+                        onClick={(value) =>
+                          setVideoConstraints({
+                            ...videoConstraints,
+                            deviceId: value.key,
+                          })
+                        }
+                      />
+                    }
                   >
-                    {trans("scanner.changeCamera")}
-                  </Button>
-                </Dropdown>
-              </div>
-            </Wrapper>
-          ))}
+                    <Button
+                      style={{ float: "right", marginTop: "10px" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        getModeList();
+                      }}
+                    >
+                      {trans("scanner.changeCamera")}
+                    </Button>
+                  </Dropdown>
+                </div>
+              </Wrapper>
+            )
+          )}
         </CustomModalStyled>
       </ButtonCompWrapper>
     );
@@ -188,10 +222,16 @@ const ScannerTmpComp = (function () {
         <>
           <Section name={sectionNames.basic}>
             {children.text.propertyView({ label: trans("text") })}
-            {children.continuous.propertyView({ label: trans("scanner.continuous") })}
+            {children.continuous.propertyView({
+              label: trans("scanner.continuous"),
+            })}
             {children.continuous.getView() &&
-              children.uniqueData.propertyView({ label: trans("scanner.uniqueData") })}
-            {children.maskClosable.propertyView({ label: trans("scanner.maskClosable") })}
+              children.uniqueData.propertyView({
+                label: trans("scanner.uniqueData"),
+              })}
+            {children.maskClosable.propertyView({
+              label: trans("scanner.maskClosable"),
+            })}
           </Section>
 
           <Section name={sectionNames.interaction}>
@@ -199,9 +239,19 @@ const ScannerTmpComp = (function () {
             {disabledPropertyView(children)}
           </Section>
 
-          <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
+          <Section name={sectionNames.layout}>
+            {hiddenPropertyView(children)}
+          </Section>
 
-          <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+          <Section name={sectionNames.style}>
+            {children.style.getPropertyView()}
+          </Section>
+          <Section name={trans("style.margin")}>
+            {children.margin.getPropertyView()}
+          </Section>
+          <Section name={trans("style.padding")}>
+            {children.padding.getPropertyView()}
+          </Section>
         </>
       );
     })

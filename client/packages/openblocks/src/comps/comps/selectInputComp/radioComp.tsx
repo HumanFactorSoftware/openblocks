@@ -49,7 +49,7 @@ const getStyle = (style: RadioStyleType) => {
   `;
 };
 
-const Radio = styled(AntdRadio.Group)<{
+const Radio = styled(AntdRadio.Group) <{
   $style: RadioStyleType;
   $layout: ValueFromOption<typeof RadioLayoutOptions>;
 }>`
@@ -78,7 +78,7 @@ const Radio = styled(AntdRadio.Group)<{
   }}
 `;
 
-export const RadioBasicComp = (function () {
+export const RadioBasicComp = (function() {
   return new UICompBuilder(RadioChildrenMap, (props) => {
     const [validateState, handleValidate] = useSelectInputValidate(props);
     return props.label({
@@ -95,6 +95,17 @@ export const RadioBasicComp = (function () {
             props.value.onChange(e.target.value);
             props.onEvent("change");
           }}
+          style={{
+            marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
+          }}
+
           options={props.options
             .filter((option) => option.value !== undefined && !option.hidden)
             .map((option) => ({
@@ -107,7 +118,9 @@ export const RadioBasicComp = (function () {
       ...validateState,
     });
   })
-    .setPropertyViewFn((children) => <RadioPropertyView {...children} />)
+    .setPropertyViewFn((children) => <><RadioPropertyView {...children} />
+    </>
+    )
     .build();
 })();
 
