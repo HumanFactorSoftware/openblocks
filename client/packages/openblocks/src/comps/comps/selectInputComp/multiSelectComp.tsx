@@ -4,10 +4,15 @@ import { trans } from "i18n";
 import { arrayStringExposingStateControl } from "../../controls/codeStateControl";
 import { UICompBuilder } from "../../generators";
 import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { SelectChildrenMap, SelectPropertyView, SelectUIView } from "./selectCompConstants";
+import {
+  baseSelectRefMethods,
+  SelectChildrenMap,
+  SelectPropertyView,
+  SelectUIView,
+} from "./selectCompConstants";
 import { SelectInputInvalidConfig, useSelectInputValidate } from "./selectInputConstants";
 
-export const MultiSelectBasicComp = (function () {
+const MultiSelectBasicComp = (function () {
   const childrenMap = {
     ...SelectChildrenMap,
     value: arrayStringExposingStateControl("value", ["1", "2"]),
@@ -36,6 +41,7 @@ export const MultiSelectBasicComp = (function () {
     });
   })
     .setPropertyViewFn((children) => <SelectPropertyView {...children} />)
+    .setExposeMethodConfigs(baseSelectRefMethods)
     .build();
 })();
 

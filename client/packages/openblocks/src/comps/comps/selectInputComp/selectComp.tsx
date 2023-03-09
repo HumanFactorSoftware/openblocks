@@ -4,7 +4,12 @@ import { trans } from "i18n";
 import { stringExposingStateControl } from "../../controls/codeStateControl";
 import { UICompBuilder } from "../../generators";
 import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { SelectChildrenMap, SelectPropertyView, SelectUIView } from "./selectCompConstants";
+import {
+  baseSelectRefMethods,
+  SelectChildrenMap,
+  SelectPropertyView,
+  SelectUIView,
+} from "./selectCompConstants";
 import {
   SelectInputCommonConfig,
   SelectInputInvalidConfig,
@@ -13,7 +18,7 @@ import {
 import { useRef } from "react";
 import { RecordConstructorToView } from "openblocks-core";
 
-export const SelectBasicComp = (function () {
+const SelectBasicComp = (function () {
   const childrenMap = {
     ...SelectChildrenMap,
     value: stringExposingStateControl("value"),
@@ -46,6 +51,7 @@ export const SelectBasicComp = (function () {
     });
   })
     .setPropertyViewFn((children) => <SelectPropertyView {...children} />)
+    .setExposeMethodConfigs(baseSelectRefMethods)
     .build();
 })();
 

@@ -11,13 +11,14 @@ import { trans } from "i18n";
 import styled from "styled-components";
 import { ChangeEventHandlerControl } from "../../controls/eventHandlerControl";
 import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { Button100, ButtonCompWrapper } from "./buttonCompConstants";
+import { Button100, ButtonCompWrapper, buttonRefMethods } from "./buttonCompConstants";
 import { IconControl } from "comps/controls/iconControl";
 import { AlignWithStretchControl, LeftRightControl } from "comps/controls/dropdownControl";
 import { booleanExposingStateControl } from "comps/controls/codeStateControl";
 import { ToggleButtonStyle } from "comps/controls/styleControlConstants";
 import { styleControl } from "comps/controls/styleControl";
 import { BoolControl } from "comps/controls/boolControl";
+import { RefControl } from "comps/controls/refControl";
 
 const IconWrapper = styled.div`
   display: flex;
@@ -53,6 +54,7 @@ const ToggleTmpComp = (function () {
     alignment: AlignWithStretchControl,
     style: styleControl(ToggleButtonStyle),
     showBorder: withDefault(BoolControl, true),
+    viewRef: RefControl<HTMLElement>,
   };
   return new UICompBuilder(childrenMap, (props) => {
     const text = props.showText
@@ -65,6 +67,7 @@ const ToggleTmpComp = (function () {
         showBorder={props.showBorder}
       >
         <Button100
+          ref={props.viewRef}
           $buttonStyle={props.style}
           loading={props.loading}
           disabled={props.disabled}
@@ -121,6 +124,7 @@ const ToggleTmpComp = (function () {
         </Section>
       </>
     ))
+    .setExposeMethodConfigs(buttonRefMethods)
     .build();
 })();
 

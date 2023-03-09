@@ -1,4 +1,5 @@
 import "comps/comps/layout/navLayout";
+import "comps/comps/layout/mobileTabLayout";
 import { ModalComp } from "comps/hooks/modalComp";
 import { ButtonComp } from "./comps/buttonComp/buttonComp";
 import { DropdownComp } from "./comps/buttonComp/dropdownComp";
@@ -8,9 +9,9 @@ import {
   defaultContainerData,
 } from "./comps/containerComp/containerComp";
 import { CustomComp } from "./comps/customComp/customComp";
-import { DatePickerComp, DateRangeComp } from "./comps/dateComp";
+import { DatePickerComp, DateRangeComp } from "./comps/dateComp/dateComp";
 import { DividerComp } from "./comps/dividerComp";
-import { FileComp } from "./comps/fileComp";
+import { FileComp } from "./comps/fileComp/fileComp";
 import { FileViewerComp } from "./comps/fileViewerComp";
 import { ImageComp } from "./comps/imageComp";
 import { JsonSchemaFormComp } from "./comps/jsonSchemaFormComp/jsonSchemaFormComp";
@@ -82,6 +83,7 @@ import {
   ScannerIcon,
   SegmentedCompIcon,
   SelectCompIcon,
+  SignatureIcon,
   SliderCompIcon,
   SwitchCompIcon,
   TabbedContainerCompIcon,
@@ -129,6 +131,8 @@ import { defaultCollapsibleContainerData } from "./comps/containerComp/collapsib
 import { RemoteCompInfo } from "types/remoteComp";
 import { ScannerComp } from "./comps/buttonComp/scannerComp";
 import { LottieIcon } from "../assets/icons";
+import { SignatureComp } from "./comps/signatureComp";
+
 type Registry = {
   [key in UICompType]?: UICompManifest;
 };
@@ -607,8 +611,8 @@ const uiCompMap: Registry = {
     keywords: trans("uiComp.listViewCompKeywords"),
     comp: ListViewComp,
     layoutInfo: {
-      h: 92,
-      w: 6,
+      h: 47,
+      w: 10,
       delayCollision: true,
     },
     defaultDataFn: defaultListViewData,
@@ -861,6 +865,19 @@ const uiCompMap: Registry = {
     icon: ScannerIcon,
     keywords: trans("uiComp.scannerCompKeywords"),
     comp: ScannerComp,
+  },
+  signature: {
+    name: trans("uiComp.signatureCompName"),
+    enName: "Signature",
+    description: trans("uiComp.signatureCompDesc"),
+    categories: ["dataInputSelect"],
+    icon: SignatureIcon,
+    keywords: trans("uiComp.signatureCompKeywords"),
+    comp: SignatureComp,
+    layoutInfo: {
+      w: 9,
+      h: 35,
+    },
   },
 };
 
