@@ -29,6 +29,8 @@ import {
   readOnlyPropertyView,
 } from "comps/utils/propertyUtils";
 import { trans } from "i18n";
+import { PaddingControl } from "../../controls/paddingControl";
+import { MarginControl } from "../../controls/marginControl";
 
 const TextAreaStyled = styled(TextArea)<{
   $style: InputLikeStyleType;
@@ -59,6 +61,8 @@ let TextAreaTmpComp = (function () {
     allowClear: BoolControl,
     autoHeight: AutoHeightControl,
     style: styleControl(InputLikeStyle),
+    margin: MarginControl,
+    padding: PaddingControl,
   };
   return new UICompBuilder(childrenMap, (props) => {
     const [inputProps, validateState] = useTextInputProps(props);
@@ -70,7 +74,16 @@ let TextAreaTmpComp = (function () {
             {...inputProps}
             allowClear={props.allowClear}
             autoSize={props.autoHeight}
-            style={{ height: "100%", maxHeight: "100%", resize: "none" }}
+            style={{ height: "100%", maxHeight: "100%", resize: "none",             marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
+ }}
+
             $style={props.style}
           />
         </Wrapper>
@@ -100,6 +113,12 @@ let TextAreaTmpComp = (function () {
         </Section>
 
         <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+          <Section name={trans("style.margin")}>
+            {children.margin.getPropertyView()}
+          </Section>
+          <Section name={trans("style.padding")}>
+            {children.padding.getPropertyView()}
+          </Section>
       </>
     ))
     .build();

@@ -20,10 +20,16 @@ import {
   TextInputValidationOptions,
   useTextInputProps,
 } from "./textInputConstants";
-import { MethodConfigFocus, withMethodExposing } from "../../generators/withMethodExposing";
+import {
+  MethodConfigFocus,
+  withMethodExposing,
+} from "../../generators/withMethodExposing";
 import { styleControl } from "comps/controls/styleControl";
 import styled from "styled-components";
-import { InputLikeStyle, InputLikeStyleType } from "comps/controls/styleControlConstants";
+import {
+  InputLikeStyle,
+  InputLikeStyleType,
+} from "comps/controls/styleControlConstants";
 import {
   hiddenPropertyView,
   minLengthPropertyView,
@@ -35,6 +41,8 @@ import {
 import { trans } from "i18n";
 import { IconControl } from "comps/controls/iconControl";
 import { hasIcon } from "comps/utils";
+import { PaddingControl } from "../../controls/paddingControl";
+import { MarginControl } from "../../controls/marginControl";
 
 const PasswordStyle = styled(Input.Password)<{
   $style: InputLikeStyleType;
@@ -50,6 +58,8 @@ const PasswordTmpComp = (function () {
     visibilityToggle: BoolControl.DEFAULT_TRUE,
     prefixIcon: IconControl,
     style: styleControl(InputLikeStyle),
+    margin: MarginControl,
+    padding: PaddingControl,
   };
   return new UICompBuilder(childrenMap, (props) => {
     const [inputProps, validateState] = useTextInputProps(props);
@@ -61,6 +71,16 @@ const PasswordTmpComp = (function () {
           {...inputProps}
           visibilityToggle={props.visibilityToggle}
           $style={props.style}
+          style={{
+            marginTop: props.margin.top ? props.margin.top : 0,
+            marginRight: props.margin.right ? props.margin.right : 0,
+            marginBottom: props.margin.bottom ? props.margin.bottom : 0,
+            marginLeft: props.margin.left ? props.margin.left : 0,
+            paddingTop: props.padding.top ? props.padding.top : 0,
+            paddingRight: props.padding.right ? props.padding.right : 0,
+            paddingBottom: props.padding.bottom ? props.padding.bottom : 0,
+            paddingLeft: props.padding.left ? props.padding.left : 0,
+          }}
         />
       ),
       style: props.style,
@@ -81,7 +101,9 @@ const PasswordTmpComp = (function () {
               label: trans("password.visibilityToggle"),
             })}
             {readOnlyPropertyView(children)}
-            {children.prefixIcon.propertyView({ label: trans("button.prefixIcon") })}
+            {children.prefixIcon.propertyView({
+              label: trans("button.prefixIcon"),
+            })}
           </Section>
 
           <Section name={sectionNames.validation}>
@@ -96,7 +118,15 @@ const PasswordTmpComp = (function () {
             {hiddenPropertyView(children)}
           </Section>
 
-          <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+          <Section name={sectionNames.style}>
+            {children.style.getPropertyView()}
+          </Section>
+          <Section name={trans("style.margin")}>
+            {children.margin.getPropertyView()}
+          </Section>
+          <Section name={trans("style.padding")}>
+            {children.padding.getPropertyView()}
+          </Section>
         </>
       );
     })
