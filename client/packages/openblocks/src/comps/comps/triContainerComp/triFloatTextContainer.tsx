@@ -15,7 +15,10 @@ const getStyle = (style: ContainerStyleType) => {
   return css`
     border-color: ${style.border};
     border-radius: ${style.radius};
+    border-width: ${style.borderWidth};
     overflow: hidden;
+    margin: ${style.margin};
+    padding: ${style.padding};
   `;
 };
 
@@ -133,7 +136,6 @@ export function TriContainer(props: TriContainerProps) {
                 float: `${props.float}`,
                 width: `${props.float === "none" ? "100%" : `${props.width}%`}`,
                 height: "100%",
-                margin: "10px",
               }}
             />
             <p style={{ textAlign: "justify", margin: "20px 30px" }}>

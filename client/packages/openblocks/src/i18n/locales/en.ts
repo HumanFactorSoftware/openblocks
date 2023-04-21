@@ -300,6 +300,8 @@ export const en = {
     chartDesc: "Input Echarts",
     echartsJson: "Theme JSON",
     gridColumns: "Grid Columns",
+    gridColumnsDesc:
+      "The default number of columns is typically used for most containers",
   },
   style: {
     resetTooltip:
@@ -312,6 +314,7 @@ export const en = {
     validate: "Validation message",
     border: "Border",
     borderRadius: "Border radius",
+    borderWidth: "Border Width",
     background: "Background",
     headerBackground: "Header background",
     footerBackground: "Footer background",
