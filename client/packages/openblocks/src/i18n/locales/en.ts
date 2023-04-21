@@ -299,7 +299,7 @@ export const en = {
     chart: "Chart style",
     chartDesc: "Input Echarts",
     echartsJson: "Theme JSON",
-    gridColumns: "Grid Columns"
+    gridColumns: "Grid Columns",
   },
   style: {
     resetTooltip:
@@ -812,6 +812,9 @@ export const en = {
     jsonLottieCompName: "Lottie Animation",
     jsonLottieCompDesc: "Lottie Animation",
     jsonLottieCompKeywords: "",
+    formBuilderCompName: "Form Builder",
+    formBuilderCompDesc: "Form Builder",
+    formBuilderCompKeywords: "",
     containerCompName: "Container",
     containerCompDesc: "Container component",
     containerCompKeywords: "",
@@ -1335,6 +1338,10 @@ export const en = {
     animationStart: "Animation Start",
     valueDesc: "Current json Data",
     loop: "Loop",
+  },
+  formBuilder: {
+    dataSchema: "Data Schema",
+    uiSchema: "UI Schema",
   },
   audio: {
     src: "Audio URL",
@@ -2521,7 +2528,8 @@ export const en = {
     disableContent:
       "Disabling this ID provider may result in some users being unable to log in. Are you sure to proceed?",
     manualTip: "",
-    lockTip: "The content is locked. To make changes, please click the{icon}to unlock.",
+    lockTip:
+      "The content is locked. To make changes, please click the{icon}to unlock.",
     lockModalContent:
       "Changing the 'ID attribute' field can have significant impacts on user identification. Please confirm that you understand the implications of this change before proceeding.",
     payUserTag: "Premium",
