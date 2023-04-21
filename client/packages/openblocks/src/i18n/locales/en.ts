@@ -815,6 +815,9 @@ export const en = {
     jsonLottieCompName: "Lottie Animation",
     jsonLottieCompDesc: "Lottie Animation",
     jsonLottieCompKeywords: "",
+    formBuilderCompName: "Form Builder",
+    formBuilderCompDesc: "Form Builder",
+    formBuilderCompKeywords: "",
     containerCompName: "Container",
     containerCompDesc: "Container component",
     containerCompKeywords: "",
@@ -1338,6 +1341,10 @@ export const en = {
     animationStart: "Animation Start",
     valueDesc: "Current json Data",
     loop: "Loop",
+  },
+  formBuilder: {
+    dataSchema: "Data Schema",
+    uiSchema: "UI Schema",
   },
   audio: {
     src: "Audio URL",

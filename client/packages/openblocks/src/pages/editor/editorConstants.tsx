@@ -35,7 +35,7 @@ import {
   LeftTime,
   LeftTree,
   LeftVideo,
-  LeftSignature
+  LeftSignature,
 } from "openblocks-design";
 
 export const CompStateIcon: {
@@ -91,6 +91,7 @@ export const CompStateIcon: {
   custom: <LeftCommon />,
   jsonExplorer: <LeftJsonEditor />,
   jsonLottie: <LeftJsonEditor />,
+  formBuilder: <LeftJsonEditor />,
   jsonEditor: <LeftJsonEditor />,
   tree: <LeftTree />,
   treeSelect: <LeftSelect />,

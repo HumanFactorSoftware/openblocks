@@ -36,6 +36,7 @@ import { InputComp } from "./comps/textInputComp/inputComp";
 import { PasswordComp } from "./comps/textInputComp/passwordComp";
 import { TextAreaComp } from "./comps/textInputComp/textAreaComp";
 import { JsonLottieComp } from "./comps/jsonComp/jsonLottieComp";
+import { FormBuilderComp } from "./comps/formBuilderComp/formBuilderComp";
 import { TabsControlComp } from "./comps/selectInputComp/tabsControl";
 import { TimePickerComp, TimeRangeComp } from "./comps/dateComp/timeComp";
 
@@ -129,7 +130,12 @@ import { ToggleButtonComp } from "./comps/buttonComp/toggleButtonComp";
 import { defaultCollapsibleContainerData } from "./comps/containerComp/collapsibleContainerComp";
 import { RemoteCompInfo } from "types/remoteComp";
 import { ScannerComp } from "./comps/buttonComp/scannerComp";
-import { LottieIcon, MasonryIcon, TabsControlIcon } from "../assets/icons";
+import {
+  LottieIcon,
+  MasonryIcon,
+  TabsControlIcon,
+  FormBuilderIcon,
+} from "../assets/icons";
 import { SignatureComp } from "./comps/signatureComp";
 import { ContainerComp as FloatTextContainerComp } from "./comps/containerComp/textContainerComp";
 
@@ -725,6 +731,19 @@ const uiCompMap: Registry = {
       h: 47,
     },
   },
+  formBuilder: {
+    name: trans("uiComp.formBuilderCompName"),
+    enName: "Form Builder",
+    description: trans("uiComp.formBuilderCompDesc"),
+    categories: ["dataDisplay"],
+    icon: FormBuilderIcon,
+    keywords: trans("uiComp.formBuilderCompKeywords"),
+    comp: FormBuilderComp,
+    layoutInfo: {
+      w: 10,
+      h: 47,
+    },
+  },
   jsonEditor: {
     name: trans("uiComp.jsonEditorCompName"),
     enName: "JSON Editor",
@@ -877,7 +896,7 @@ const uiCompMap: Registry = {
     layoutInfo: {
       w: 24,
       h: 60,
-    }
+    },
   },
   signature: {
     name: trans("uiComp.signatureCompName"),
