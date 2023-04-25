@@ -4,17 +4,20 @@ import React from "react";
 
 import JsonSchemaFormSuite from "./JsonSchemaFormSuite";
 
-// Can be used to set initial schemas and mods (useful for development)
-const initialJsonSchema = {};
-const initialUiSchema = {};
 const mods = {};
 
 export default function PlaygroundContainer({
   dataSchema,
   uiSchema,
+  onDataChange,
+  onuiChange,
+  style,
 }: {
   dataSchema: any;
   uiSchema: any;
+  onDataChange: any;
+  onuiChange: any;
+  style: any;
 }) {
   const [schema, setSchema] = React.useState(dataSchema);
   const [uischema, setUischema] = React.useState(uiSchema);
@@ -22,6 +25,7 @@ export default function PlaygroundContainer({
   return (
     <div className="playground">
       <JsonSchemaFormSuite
+        style={style}
         lang={"json"}
         schema={schema}
         uischema={uischema}
@@ -29,6 +33,8 @@ export default function PlaygroundContainer({
         schemaTitle="Data Schema"
         uischemaTitle="UI Schema"
         onChange={(newSchema: string, newUiSchema: string) => {
+          onDataChange(newSchema);
+          onuiChange(newUiSchema);
           setSchema(newSchema);
           setUischema(newUiSchema);
         }}

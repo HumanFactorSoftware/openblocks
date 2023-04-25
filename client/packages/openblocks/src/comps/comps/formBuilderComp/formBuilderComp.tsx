@@ -1,15 +1,15 @@
-import { hiddenPropertyView } from "@openblocks-ee/index.sdk";
 import {
-  ArrayOrJSONObjectControl,
-  NumberControl,
-} from "comps/controls/codeControl";
+  TabContainerStyle,
+  hiddenPropertyView,
+  stringExposingStateControl,
+} from "@openblocks-ee/index.sdk";
 import { styleControl } from "comps/controls/styleControl";
-import { LottieStyle } from "comps/controls/styleControlConstants";
 import { trans } from "i18n";
 import { Section, sectionNames } from "openblocks-design";
 
-import { UICompBuilder, withDefault } from "../../generators";
+import { UICompBuilder } from "../../generators";
 import {
+  NameConfig,
   NameConfigHidden,
   withExposingConfigs,
 } from "../../generators/withExposing";
@@ -21,25 +21,50 @@ import PlaygroundContainer from "./PlaygroundContainer";
 
 let FormBuilderTmpComp = (function () {
   const childrenMap = {
-    dataSchema: withDefault(ArrayOrJSONObjectControl, JSON.stringify({})),
-    uiSchema: withDefault(ArrayOrJSONObjectControl, JSON.stringify({})),
-    width: withDefault(NumberControl, 100),
-    height: withDefault(NumberControl, 100),
-    backgroundColor: styleControl(LottieStyle),
+    dataSchema: stringExposingStateControl(
+      "dataSchema",
+      JSON.stringify({
+        type: "object",
+        properties: {
+          name: {
+            title: "Name",
+            type: "string",
+          },
+          phone: {
+            title: "Phone",
+            type: "number",
+          },
+        },
+        dependencies: {},
+        required: [],
+      })
+    ),
+    uiSchema: stringExposingStateControl(
+      "uiSchema",
+      JSON.stringify({
+        "ui:order": ["name", "phone"],
+      })
+    ),
+    //width: withDefault(NumberControl, 100),
+    //height: withDefault(NumberControl, 100),
+    style: styleControl(TabContainerStyle),
   };
 
   return new UICompBuilder(childrenMap, (props) => {
     return (
-      <div
-        style={{
-          height: "100%",
-          overflowY: "scroll",
-          backgroundColor: `${props.backgroundColor.background}`,
-        }}
-      >
+      <div style={{ overflow: "auto" }}>
         <PlaygroundContainer
-          dataSchema={JSON.stringify(props.dataSchema)}
-          uiSchema={JSON.stringify(props.uiSchema)}
+          dataSchema={props.dataSchema.value}
+          uiSchema={props.uiSchema.value}
+          style={props.style}
+          onDataChange={(e: any) => {
+            props.dataSchema.onChange(e);
+            //props.dataSchema.value = JSON.parse(e).value;
+          }}
+          onuiChange={(e: any) => {
+            props.uiSchema.onChange(e);
+            //props.dataSchema.value = JSON.parse(e).value;
+          }}
         />
       </div>
     );
@@ -56,7 +81,7 @@ let FormBuilderTmpComp = (function () {
             })}
           </Section>
           <Section name={sectionNames.style}>
-            {children.backgroundColor.getPropertyView()}
+            {children.style.getPropertyView()}
           </Section>
           <Section name={sectionNames.layout}>
             {hiddenPropertyView(children)}
@@ -72,5 +97,7 @@ FormBuilderTmpComp = class extends FormBuilderTmpComp {
   }
 };
 export const FormBuilderComp = withExposingConfigs(FormBuilderTmpComp, [
+  new NameConfig("dataSchema", trans("formBuilder.dataSchema")),
+  new NameConfig("uiSchema", trans("formBuilder.uiSchema")),
   NameConfigHidden,
 ]);

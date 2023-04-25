@@ -1,22 +1,14 @@
 // @flow
 import React from "react";
-// import {
-//   Alert,
-//   Modal,
-//   ModalHeader,
-//   Button,
-//   ModalBody,
-//   ModalFooter,
-// } from "reactstrap";
 import { withTheme } from "@rjsf/core";
 import { Theme } from "@rjsf/antd";
 import { Alert, Tabs } from "antd";
-import type { TabsProps } from "antd";
+import { TabContainerStyleType } from "comps/controls/styleControlConstants";
+import styled, { css } from "styled-components";
 import {
   FormBuilder,
   PredefinedGallery,
 } from "@ginkgo-bioworks/react-json-schema-form-builder";
-import withStyles from "react-jss";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
 import ErrorBoundary from "./ErrorBoundary";
@@ -27,12 +19,12 @@ type Props = {
   lang: string;
   schema: string;
   uischema: string;
+  style?: any;
   onChange?: (schema: string, uischema: string) => void;
   schemaTitle?: string;
   uischemaTitle?: string;
   width?: string;
   height?: string;
-  classes: any;
   mods: any;
 };
 
@@ -66,13 +58,82 @@ function checkError(text: string, language: string) {
   return "";
 }
 
-const styles = {
-  codeViewer: {
-    backgroundColor: "lightgray",
-    maxHeight: "550px",
-    overflowY: "auto",
-  },
+const getStyle = (style: TabContainerStyleType) => {
+  return css`
+    &.ant-tabs {
+      border: ${style.borderWidth} solid ${style.border};
+      border-radius: ${style.radius};
+      overflow: hidden;
+      margin: ${style.margin};
+      padding: ${style.padding};
+
+      > .ant-tabs-content-holder {
+        overflow: auto;
+
+        > .ant-tabs-content > div > .react-grid-layout {
+          background-color: ${style.background};
+          border-radius: 0;
+        }
+      }
+
+      > .ant-tabs-nav {
+        background-color: ${style.headerBackground};
+
+        .ant-tabs-tab {
+          div {
+            color: ${style.tabText};
+          }
+
+          &.ant-tabs-tab-active div {
+            color: ${style.accent};
+          }
+        }
+
+        .ant-tabs-ink-bar {
+          background-color: ${style.accent};
+        }
+
+        ::before {
+          border-color: ${style.border};
+        }
+      }
+    }
+  `;
 };
+
+const StyledTabs = styled(Tabs)<{
+  $style: TabContainerStyleType;
+  $isMobile?: boolean;
+}>`
+  &.ant-tabs {
+    height: 100%;
+  }
+
+  .ant-tabs-content-animated {
+    transition-duration: 0ms;
+  }
+
+  .ant-tabs-content {
+    height: 100%;
+    // margin-top: -16px;
+  }
+
+  .ant-tabs-nav {
+    padding: 0 ${(props) => (props.$isMobile ? 16 : 24)}px;
+    background: white;
+    margin: 0px;
+  }
+
+  .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0 0 0 20px;
+  }
+
+  .ant-tabs-nav-operations {
+    margin-right: -24px;
+  }
+
+  ${(props) => props.$style && getStyle(props.$style)}
+`;
 
 class JsonSchemaFormEditor extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -128,7 +189,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
           <div
             className="tab-pane"
             style={{
-              height: this.props.height ? this.props.height : "500px",
+              height: this.props.height ? this.props.height : "auto",
             }}
           >
             <ErrorBoundary onErr={() => {}}>
@@ -136,6 +197,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                 schema={this.props.schema}
                 uischema={this.props.uischema}
                 mods={this.props.mods}
+                classes={""}
                 onChange={(newSchema: string, newUiSchema: string) => {
                   if (this.props.onChange)
                     this.props.onChange(newSchema, newUiSchema);
@@ -152,7 +214,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
           <div
             className="tab-pane"
             style={{
-              height: this.props.height ? this.props.height : "500px",
+              height: this.props.height ? this.props.height : "900px",
             }}
           >
             <ErrorBoundary
@@ -222,7 +284,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
           <div
             className="tab-pane"
             style={{
-              height: this.props.height ? this.props.height : "500px",
+              height: this.props.height ? this.props.height : "900px",
               display: "flex",
               flexDirection: "row",
             }}
@@ -297,7 +359,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
           <div
             className="tab-pane"
             style={{
-              height: this.props.height ? this.props.height : "500px",
+              height: this.props.height ? this.props.height : "900px",
             }}
           >
             <ErrorBoundary onErr={() => {}}>
@@ -315,11 +377,15 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
         ),
       },
     ];
+    //const editorState = EditorContext;
+    //const maxWidth = editorState.getAppSettings().maxWidth;
+    //const isMobile = checkIsMobile(maxWidth);
+
     return (
       <div
         style={{
           width: this.props.width ? this.props.width : "100%",
-          height: this.props.height ? this.props.height : "500px",
+          height: this.props.height ? this.props.height : "900px",
         }}
         className="playground-main"
       >
@@ -350,16 +416,20 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
         >
           <h5>Form:</h5> {this.state.schemaFormErrorFlag}
         </Alert>
-        <Tabs defaultActiveKey="form-builder">
+        <StyledTabs
+          defaultActiveKey="form-builder"
+          $isMobile={false}
+          $style={this.props.style}
+        >
           {items.map((item: TabItem) => (
             <Tabs.TabPane tab={item.label} key={item.key}>
               {item.children}
             </Tabs.TabPane>
           ))}
-        </Tabs>
+        </StyledTabs>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(JsonSchemaFormEditor);
+export default JsonSchemaFormEditor;
