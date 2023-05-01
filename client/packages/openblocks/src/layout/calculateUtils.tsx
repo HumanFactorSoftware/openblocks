@@ -2,6 +2,8 @@ import _ from "lodash";
 import { GridItemProps } from "./gridItem";
 import { GridLayoutProps } from "./gridLayoutPropTypes";
 import type { Position } from "./utils";
+import { reduxStore } from "@openblocks-ee/redux/store/store";
+
 export type PositionParams = Pick<
   GridItemProps,
   | "margin"
@@ -11,8 +13,22 @@ export type PositionParams = Pick<
   | "rowHeight"
   | "maxRows"
 >;
-const gridColumns = localStorage.getItem("GridColumns");
-export const DEFAULT_GRID_COLUMNS = Number(gridColumns);
+let gridColumns: number;
+setTimeout(() => {
+  const commonSettings = reduxStore.getState()?.ui?.commonSettings;
+  if (commonSettings) {
+    const themeList = commonSettings.settings?.themeList;
+    if (themeList?.length) {
+      gridColumns = themeList[0]?.theme?.gridColumns;
+    }
+  }
+}, 1000);
+const getDefaultGridColumns = () => {
+  return gridColumns;
+};
+
+export { getDefaultGridColumns };
+export const DEFAULT_GRID_COLUMNS = getDefaultGridColumns() || 24;
 export const DEFAULT_ROW_HEIGHT = 8;
 export const DEFAULT_POSITION_PARAMS: PositionParams = {
   margin: [0, 0],
