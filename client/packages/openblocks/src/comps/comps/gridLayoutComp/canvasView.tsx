@@ -20,7 +20,11 @@ import { checkIsMobile } from "util/commonUtils";
 import { CanvasContainerID } from "constants/domLocators";
 import { CNRootContainer } from "constants/styleSelectors";
 
-const UICompContainer = styled.div<{ maxWidth?: number; readOnly?: boolean; bgColor: string }>`
+const UICompContainer = styled.div<{
+  maxWidth?: number;
+  readOnly?: boolean;
+  bgColor: string;
+}>`
   height: 100%;
   margin: 0 auto;
   max-width: ${(props) => props.maxWidth || 1600}px;
@@ -59,7 +63,8 @@ function getDragSelectedNames(
         const name = item.name;
         checkSelectFunc?.(
           document.getElementById(key) as HTMLDivElement, // fixme use react ref
-          (result) => (result ? selectedComps?.add(name) : selectedComps?.delete(name))
+          (result) =>
+            result ? selectedComps?.add(name) : selectedComps?.delete(name)
         );
       }
     });
@@ -77,7 +82,9 @@ export function CanvasView(props: ContainerBaseProps) {
   const maxWidthFromHook = useMaxWidth();
   const maxWidth = editorState.getAppSettings().maxWidth ?? maxWidthFromHook;
   const isMobile = checkIsMobile(maxWidth);
-  const defaultContainerPadding = isMobile ? DEFAULT_MOBILE_PADDING : DEFAULT_CONTAINER_PADDING;
+  const defaultContainerPadding = isMobile
+    ? DEFAULT_MOBILE_PADDING
+    : DEFAULT_CONTAINER_PADDING;
 
   const externalState = useContext(ExternalEditorContext);
   const {
@@ -90,6 +97,15 @@ export function CanvasView(props: ContainerBaseProps) {
 
   const isModule = appType === AppTypeEnum.Module;
   const bgColor = (useContext(ThemeContext)?.theme || defaultTheme).canvas;
+  const defaultGrid =
+    useContext(ThemeContext)?.theme?.gridColumns ||
+    defaultTheme?.gridColumns ||
+    "24";
+
+  const positionParams = {
+    ...props.positionParams,
+    cols: parseInt(defaultGrid),
+  };
 
   if (readOnly) {
     return (
@@ -105,6 +121,7 @@ export function CanvasView(props: ContainerBaseProps) {
               containerPadding={rootContainerPadding}
               overflow={rootContainerOverflow}
               {...props}
+              positionParams={positionParams}
               {...gridLayoutCanvasProps}
               bgColor={bgColor}
               radius="0px"
@@ -118,7 +135,11 @@ export function CanvasView(props: ContainerBaseProps) {
   return (
     <CanvasContainer maxWidth={maxWidth} id={CanvasContainerID}>
       <EditorContainer ref={scrollContainerRef}>
-        <UICompContainer maxWidth={maxWidth} className={CNRootContainer} bgColor={bgColor}>
+        <UICompContainer
+          maxWidth={maxWidth}
+          className={CNRootContainer}
+          bgColor={bgColor}
+        >
           <DragSelector
             onMouseDown={() => {
               setDragSelectedComp(EmptySet);
@@ -128,7 +149,11 @@ export function CanvasView(props: ContainerBaseProps) {
               setDragSelectedComp(EmptySet);
             }}
             onMouseMove={(checkSelectFunc) => {
-              const selectedName = getDragSelectedNames(props.items, props.layout, checkSelectFunc);
+              const selectedName = getDragSelectedNames(
+                props.items,
+                props.layout,
+                checkSelectFunc
+              );
               setDragSelectedComp(selectedName);
             }}
           >

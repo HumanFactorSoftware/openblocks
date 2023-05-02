@@ -3,3 +3,5 @@ logs/
 client/.yarn/cache/*.zip
 stacks/
 server/node-service/.yarn/cache/*.zip
+node_modules/*
+client/packages/openblocks-sdk/dist/*

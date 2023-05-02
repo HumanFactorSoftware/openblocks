@@ -1,8 +1,15 @@
 import { EditorContext, EditorState } from "comps/editorState";
 import { sameTypeMap, stateComp, valueComp } from "comps/generators";
-import { addMapChildAction, addMapCompChildAction } from "comps/generators/sameTypeMap";
+import {
+  addMapChildAction,
+  addMapCompChildAction,
+} from "comps/generators/sameTypeMap";
 import { hookCompCategory, HookCompType } from "comps/hooks/hookCompTypes";
-import { UICompLayoutInfo, uiCompRegistry, UICompType } from "comps/uiCompRegistry";
+import {
+  UICompLayoutInfo,
+  uiCompRegistry,
+  UICompType,
+} from "comps/uiCompRegistry";
 import { genRandomKey } from "comps/utils/idGenerator";
 import { parseCompType } from "comps/utils/remote";
 import {
@@ -58,6 +65,8 @@ import { checkIsMobile } from "util/commonUtils";
 import { ExternalEditorContext } from "util/context/ExternalEditorContext";
 import { selectCompModifierKeyPressed } from "util/keyUtils";
 import { defaultLayout, GridItemComp, GridItemDataType } from "../gridItemComp";
+import { ThemeContext } from "comps/utils/themeContext";
+import { defaultTheme } from "comps/controls/styleControlConstants";
 
 const childrenMap = {
   layout: valueComp<Layout>({}),
@@ -130,7 +139,9 @@ type ContainerParamProps = {
   onLayoutChange?: (Layout: Layout) => void;
 };
 
-export type ContainerBaseProps = ContainerParamProps & DispatchProps & ExtraProps;
+export type ContainerBaseProps = ContainerParamProps &
+  DispatchProps &
+  ExtraProps;
 
 const onLayoutChange = (
   currentLayout: Layout,
@@ -157,17 +168,23 @@ const onLayoutChange = (
     ) {
       const name = items[key]?.name;
       const type = items[key]?.compType;
-      name && compInfos.push({ compName: name, compType: type, type: "layout" });
+      name &&
+        compInfos.push({ compName: name, compType: type, type: "layout" });
     }
   });
   onLayoutChange?.(newLayout);
   // Purely changing the layout does not need to eval
   // log.debug("layout: onLayoutChange. currentLayout: ", currentLayout, " newLayout: ", newLayout);
-  dispatch(wrapActionExtraInfo(changeChildAction("layout", newLayout, true), { compInfos }));
+  dispatch(
+    wrapActionExtraInfo(changeChildAction("layout", newLayout, true), {
+      compInfos,
+    })
+  );
 };
 
 const onFlyDrop = (layout: Layout, items: Layout, dispatch: DispatchType) => {
-  const sourceDispatch = draggingUtils.getData<(action: CompAction) => void>("sourceDispatch");
+  const sourceDispatch =
+    draggingUtils.getData<(action: CompAction) => void>("sourceDispatch");
   if (sourceDispatch !== dispatch) {
     const items = draggingUtils.getData<Record<string, GridItem>>("items");
     const keys = Object.keys(items);
@@ -175,16 +192,26 @@ const onFlyDrop = (layout: Layout, items: Layout, dispatch: DispatchType) => {
     const sourceLayoutFn = dragStartInfo.sourceLayoutFn;
 
     // 1. Delete old Comp
-    sourceDispatch(deferAction(changeChildAction("layout", _.omit(sourceLayoutFn(), keys), true)));
+    sourceDispatch(
+      deferAction(
+        changeChildAction("layout", _.omit(sourceLayoutFn(), keys), true)
+      )
+    );
     keys.forEach((key) =>
       sourceDispatch(
-        deferAction(wrapChildAction("items", wrapChildAction(key, deleteCompAction())))
+        deferAction(
+          wrapChildAction("items", wrapChildAction(key, deleteCompAction()))
+        )
       )
     );
     // 2. Add a new Comp
     for (const [key, item] of Object.entries(items)) {
       if (item.comp) {
-        dispatch(deferAction(wrapChildAction("items", addMapCompChildAction(key, item.comp))));
+        dispatch(
+          deferAction(
+            wrapChildAction("items", addMapCompChildAction(key, item.comp))
+          )
+        );
       }
     }
     dispatch(deferAction(changeChildAction("layout", layout, true)));
@@ -203,16 +230,16 @@ const onDrop = (
   // log.debug("layout: onDrop start. layout: ", layout, " items: ", items, " compType: ", compType);
   if (hookCompCategory(compType) === "ui") {
     const compName = editorState.getNameGenerator().genItemName(compType);
-    editorState
-      .getHooksComp()
-      .dispatch(
-        wrapActionExtraInfo(
-          editorState
-            .getHooksComp()
-            .pushAction({ name: compName, compType: compType as HookCompType }),
-          { compInfos: [{ compName: compName, compType: compType, type: "add" }] }
-        )
-      );
+    editorState.getHooksComp().dispatch(
+      wrapActionExtraInfo(
+        editorState
+          .getHooksComp()
+          .pushAction({ name: compName, compType: compType as HookCompType }),
+        {
+          compInfos: [{ compName: compName, compType: compType, type: "add" }],
+        }
+      )
+    );
     editorState.setSelectedCompNames(new Set([compName]), "addComp");
   } else if (!!compType) {
     const nameGenerator = editorState.getNameGenerator();
@@ -224,7 +251,9 @@ const onDrop = (
       name: compName,
       comp:
         compInitialValue ||
-        (defaultDataFn ? defaultDataFn(compName, nameGenerator, editorState) : undefined),
+        (defaultDataFn
+          ? defaultDataFn(compName, nameGenerator, editorState)
+          : undefined),
     };
     const key = genRandomKey();
     const layoutItem = Object.values(items)[0];
@@ -256,14 +285,17 @@ const getExtraLayout = (
   selectedCompNames: Set<string>,
   dragSelectedNames?: Set<string>
 ): ExtraLayout => {
-  const validLayout = _.pickBy(layout, (layoutItem) => items.hasOwnProperty(layoutItem.i));
+  const validLayout = _.pickBy(layout, (layoutItem) =>
+    items.hasOwnProperty(layoutItem.i)
+  );
   return _.mapValues(validLayout, (layoutItem: LayoutItem) => {
     const key = layoutItem.i;
     const item = items[key];
     const autoHeight = item.autoHeight;
     const name = item.name;
     const compType = item.compType;
-    const isSelected = selectedCompNames.has(name) || dragSelectedNames?.has?.(name);
+    const isSelected =
+      selectedCompNames.has(name) || dragSelectedNames?.has?.(name);
     const hidden = item.hidden;
     return { autoHeight, isSelected, name, hidden, compType };
   });
@@ -289,7 +321,11 @@ const GridItemWrapper = React.forwardRef(
     const editorState = useContext(EditorContext);
     const { children, ...divProps } = props;
     return (
-      <ItemWrapper ref={ref} disableInteract={editorState.disableInteract} {...divProps}>
+      <ItemWrapper
+        ref={ref}
+        disableInteract={editorState.disableInteract}
+        {...divProps}
+      >
         {props.children}
       </ItemWrapper>
     );
@@ -311,12 +347,20 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   const [currentRowHeight, setRowHeight] = useState(DEFAULT_ROW_HEIGHT);
   const editorState = useContext(EditorContext);
   const { readOnly } = useContext(ExternalEditorContext);
-
+  const defaultGrid =
+    useContext(ThemeContext)?.theme?.gridColumns ||
+    defaultTheme?.gridColumns ||
+    "24";
   const isDroppable =
-    useContext(IsDroppable) && (_.isNil(props.isDroppable) || props.isDroppable) && !readOnly;
-  const isDraggable = !readOnly && (_.isNil(props.isDraggable) || props.isDraggable);
-  const isResizable = !readOnly && (_.isNil(props.isResizable) || props.isResizable);
-  const isSelectable = !readOnly && (_.isNil(props.isSelectable) || props.isSelectable);
+    useContext(IsDroppable) &&
+    (_.isNil(props.isDroppable) || props.isDroppable) &&
+    !readOnly;
+  const isDraggable =
+    !readOnly && (_.isNil(props.isDraggable) || props.isDraggable);
+  const isResizable =
+    !readOnly && (_.isNil(props.isResizable) || props.isResizable);
+  const isSelectable =
+    !readOnly && (_.isNil(props.isSelectable) || props.isSelectable);
   const extraLayout = useMemo(
     () =>
       getExtraLayout(
@@ -325,10 +369,17 @@ export function InnerGrid(props: ViewPropsWithSelect) {
         editorState.selectedCompNames,
         props.dragSelectedComps
       ),
-    [props.items, props.layout, editorState.selectedCompNames, props.dragSelectedComps]
+    [
+      props.items,
+      props.layout,
+      editorState.selectedCompNames,
+      props.dragSelectedComps,
+    ]
   );
 
-  const [containerSelectNames, setContainerSelectNames] = useState<Set<string>>(new Set([]));
+  const [containerSelectNames, setContainerSelectNames] = useState<Set<string>>(
+    new Set([])
+  );
 
   useEffect(() => {
     const selectedNames = new Set<string>(
@@ -342,7 +393,8 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   }, [extraLayout, containerSelectNames]);
 
   const canAddSelect = useMemo(
-    () => _.size(containerSelectNames) === _.size(editorState.selectedCompNames),
+    () =>
+      _.size(containerSelectNames) === _.size(editorState.selectedCompNames),
     [containerSelectNames, editorState]
   );
 
@@ -354,7 +406,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
           margin: [0, 0],
           containerPadding: [0, 0],
           containerWidth: width,
-          cols: DEFAULT_GRID_COLUMNS,
+          cols: parseInt(defaultGrid),
           rowHeight: currentRowHeight,
           maxRows: currentRowCount,
         };
@@ -363,7 +415,9 @@ export function InnerGrid(props: ViewPropsWithSelect) {
           window.clearTimeout(dispatchPositionParamsTimerRef.current);
           dispatchPositionParamsTimerRef.current = window.setTimeout(() => {
             props.dispatch(
-              deferAction(changeChildAction("positionParams", newPositionParams, false))
+              deferAction(
+                changeChildAction("positionParams", newPositionParams, false)
+              )
             );
             onPositionParamsChange?.(newPositionParams);
           }, 1000);
@@ -373,11 +427,19 @@ export function InnerGrid(props: ViewPropsWithSelect) {
         const bottomAndTopPadding = props.containerPadding?.[1] || 0;
         let rowCount = currentRowCount;
         if (currentRowCount === Infinity) {
-          rowCount = calcRowCount(height, bottomAndTopPadding, currentRowHeight);
+          rowCount = calcRowCount(
+            height,
+            bottomAndTopPadding,
+            currentRowHeight
+          );
           setRowCount(rowCount);
           onRowCountChange?.(rowCount);
         }
-        const nextRowHeight = calcRowHeight(height, bottomAndTopPadding, rowCount);
+        const nextRowHeight = calcRowHeight(
+          height,
+          bottomAndTopPadding,
+          rowCount
+        );
         setRowHeight(nextRowHeight);
       }
     },
@@ -397,7 +459,10 @@ export function InnerGrid(props: ViewPropsWithSelect) {
     },
     [editorState]
   );
-  const { width, ref } = useResizeDetector({ onResize, handleHeight: isRowCountLocked });
+  const { width, ref } = useResizeDetector({
+    onResize,
+    handleHeight: isRowCountLocked,
+  });
 
   const itemViewRef = useRef<GirdItemViewRecord>({});
   const itemViews = useMemo(() => {
@@ -418,7 +483,8 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   }, [props.items]);
 
   const clickItem = useCallback(
-    (e, name) => selectItem(e, name, canAddSelect, containerSelectNames, setSelectedNames),
+    (e, name) =>
+      selectItem(e, name, canAddSelect, containerSelectNames, setSelectedNames),
     [canAddSelect, containerSelectNames, setSelectedNames]
   );
 
@@ -441,7 +507,9 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       style={props.style}
       scrollContainerRef={props.scrollContainerRef}
       width={width ?? 0}
-      showGridLines={editorState.showGridLines() && (isDroppable || enableGridLines)}
+      showGridLines={
+        editorState.showGridLines() && (isDroppable || enableGridLines)
+      }
       isRowCountLocked={isRowCountLocked}
       isDraggable={isDraggable}
       isResizable={isResizable}
@@ -451,7 +519,8 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       extraLayout={extraLayout}
       onDropDragOver={(e) => {
         const compType = draggingUtils.getData<UICompType>("compType");
-        const compLayout = draggingUtils.getData<UICompLayoutInfo>("compLayout");
+        const compLayout =
+          draggingUtils.getData<UICompLayoutInfo>("compLayout");
         if (compType) {
           const defaultSize = checkIsMobile(maxWidth)
             ? { ...defaultLayout(compType), w: DEFAULT_GRID_COLUMNS * 2 }
@@ -468,7 +537,13 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       }}
       onLayoutChange={(newLayout) => {
         // log.debug("layout: onLayoutChange. currentLayout: ", currentLayout, " newLayout: ", newLayout);
-        onLayoutChange(props.layout, newLayout, props.dispatch, props.items, props.onLayoutChange);
+        onLayoutChange(
+          props.layout,
+          newLayout,
+          props.dispatch,
+          props.items,
+          props.onLayoutChange
+        );
       }}
       onFlyStart={(layout: Layout, layoutItems: Layout) => {
         const items = _.pick(props.items, Object.keys(layoutItems));
@@ -493,12 +568,14 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       rowHeight={currentRowHeight}
       overflow={props.overflow}
       extraHeight={props.extraHeight}
-      cols={DEFAULT_GRID_COLUMNS}
+      cols={props.positionParams.cols}
       autoHeight={props.autoHeight}
       minHeight={props.minHeight}
       bgColor={props.bgColor}
       radius={props.radius}
-      hintPlaceholder={!editorState.isDragging && !readOnly && props.hintPlaceholder}
+      hintPlaceholder={
+        !editorState.isDragging && !readOnly && props.hintPlaceholder
+      }
       selectedSize={_.size(containerSelectNames)}
       clickItem={clickItem}
       isCanvas={props.isCanvas}

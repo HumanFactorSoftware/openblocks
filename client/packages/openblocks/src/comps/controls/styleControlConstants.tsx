@@ -59,6 +59,7 @@ export const defaultTheme: ThemeDetail = {
   borderWidth: "1px",
   margin: "3px",
   padding: "3px",
+  gridColumns: "24",
 };
 
 export const SURFACE_COLOR = "#FFFFFF";
