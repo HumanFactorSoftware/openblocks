@@ -32,14 +32,21 @@ export interface AppViewInstanceOptions<I = any> {
 export class AppViewInstance<I = any, O = any> {
   private comp: RootComp | null = null;
   private prevOutputs: any = null;
-  private events = new Map<keyof EventHandlerMap, EventHandlerMap<O>[keyof EventHandlerMap]>();
+  private events = new Map<
+    keyof EventHandlerMap,
+    EventHandlerMap<O>[keyof EventHandlerMap]
+  >();
   private dataPromise: Promise<{ appDsl: any; moduleDslMap: any }>;
   private options: AppViewInstanceOptions = {
     baseUrl: "https://api.openblocks.dev",
     webUrl: "https://cloud.openblocks.dev",
   };
 
-  constructor(private appId: string, private node: Element, options: AppViewInstanceOptions = {}) {
+  constructor(
+    private appId: string,
+    private node: Element,
+    options: AppViewInstanceOptions = {}
+  ) {
     Object.assign(this.options, options);
     if (this.options.baseUrl) {
       sdkConfig.baseURL = this.options.baseUrl;
@@ -70,11 +77,11 @@ export class AppViewInstance<I = any, O = any> {
         .get(`/api/v1/applications/${this.appId}/view`)
         .then((i) => i.data)
         .catch((e) => {
-          if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
-            window.location.href = `${webUrl}${AUTH_LOGIN_URL}?${
-              AuthSearchParams.redirectUrl
-            }=${encodeURIComponent(window.location.href)}`;
-          }
+          // if (e.response?.status === API_STATUS_CODES.REQUEST_NOT_AUTHORISED) {
+          //   window.location.href = `${webUrl}${AUTH_LOGIN_URL}?${
+          //     AuthSearchParams.redirectUrl
+          //   }=${encodeURIComponent(window.location.href)}`;
+          // }
         });
 
       setGlobalSettings({
@@ -87,19 +94,21 @@ export class AppViewInstance<I = any, O = any> {
 
     if (this.options.moduleInputs && this.isModuleDSL(finalAppDsl)) {
       const inputsPath = "ui.comp.io.inputs";
-      const nextInputs = _.get(finalAppDsl, inputsPath, []).map((i: ModuleDSLIoInput) => {
-        const inputValue = this.options.moduleInputs[i.name];
-        if (inputValue) {
-          return {
-            ...i,
-            defaultValue: {
-              ...i.defaultValue,
-              comp: inputValue,
-            },
-          };
+      const nextInputs = _.get(finalAppDsl, inputsPath, []).map(
+        (i: ModuleDSLIoInput) => {
+          const inputValue = this.options.moduleInputs[i.name];
+          if (inputValue) {
+            return {
+              ...i,
+              defaultValue: {
+                ...i.defaultValue,
+                comp: inputValue,
+              },
+            };
+          }
+          return i;
         }
-        return i;
-      });
+      );
       _.set(finalAppDsl, inputsPath, nextInputs);
     }
 
@@ -142,7 +151,9 @@ export class AppViewInstance<I = any, O = any> {
           moduleDsl={data.moduleDslMap}
           moduleInputs={this.options.moduleInputs}
           onCompChange={(comp) => this.handleCompChange(comp)}
-          onModuleEventTriggered={(eventName) => this.emit("moduleEventTriggered", [eventName])}
+          onModuleEventTriggered={(eventName) =>
+            this.emit("moduleEventTriggered", [eventName])
+          }
         />
       </StyleSheetManager>,
       this.node
@@ -156,7 +167,10 @@ export class AppViewInstance<I = any, O = any> {
     }
   }
 
-  on<K extends keyof EventHandlerMap<O>>(event: K, handler?: EventHandlerMap<O>[K]): Off {
+  on<K extends keyof EventHandlerMap<O>>(
+    event: K,
+    handler?: EventHandlerMap<O>[K]
+  ): Off {
     if (!handler) {
       return () => {};
     }
