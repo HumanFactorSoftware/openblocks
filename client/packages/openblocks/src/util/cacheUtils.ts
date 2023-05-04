@@ -9,7 +9,11 @@ export const CACHE_PREFIX = "__cache__";
  * `ObjectUtils.setFields` will not save this cache.
  *
  */
-export function memo(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+export function memo(
+  target: any,
+  propertyKey: string,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
   const cachePropertyKey = CACHE_PREFIX + propertyKey;
   descriptor.value = function (...args: any[]) {
@@ -33,7 +37,7 @@ export const profilerCallback = (
   startTime: number,
   commitTime: number
 ) => {
-  if (actualDuration > 20) {
+  if (actualDuration > 200) {
     log.warn(id, phase, actualDuration, baseDuration, startTime, commitTime);
   }
 };

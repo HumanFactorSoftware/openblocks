@@ -18,6 +18,7 @@ import {
 import { ContextContainerComp } from "./contextContainerComp";
 import { ListViewImplComp } from "./listViewComp";
 import { getCurrentItemParams, getData } from "./listViewUtils";
+import { defaultTheme } from "comps/controls/styleControlConstants";
 
 const ListViewWrapper = styled.div<{ $style: any; $paddingWidth: string }>`
   height: 100%;
@@ -32,6 +33,47 @@ const FooterWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3px;
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    svg:hover {
+      path {
+        fill: ${defaultTheme.primary};
+      }
+    }
+  }
+
+  .ant-pagination {
+    color: ${defaultTheme.primary};
+    display: flex;
+  }
+  .ant-pagination-item {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+  }
+  .ant-pagination-item-active {
+    border-color: ${defaultTheme?.primary};
+
+    a {
+      color: ${defaultTheme?.textDark};
+    }
+  }
+
+  .ant-pagination-item:not(.ant-pagination-item-active) a {
+    color: ${defaultTheme.primary};
+
+    &:hover {
+      color: ${defaultTheme.primary};
+    }
+  }
+
+  .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector,
+  .ant-pagination-options-quick-jumper input:hover,
+  .ant-pagination-options-quick-jumper input:focus {
+    border-color: ${defaultTheme.primary};
+  }
 `;
 
 const BodyWrapper = styled.div<{ $autoHeight: boolean }>`
@@ -69,7 +111,14 @@ type ListItemProps = {
 };
 
 function ListItem(props: ListItemProps) {
-  const { itemIdx, offset, containerProps, autoHeight, scrollContainerRef, minHeight } = props;
+  const {
+    itemIdx,
+    offset,
+    containerProps,
+    autoHeight,
+    scrollContainerRef,
+    minHeight,
+  } = props;
 
   // disable the unmount function to save user's state with pagination
   // useEffect(() => {
@@ -112,19 +161,34 @@ export function ListView(props: Props) {
   const editorState = useContext(EditorContext);
   const isDragging = editorState.isDragging;
   const [listHeight, setListHeight] = useDelayState(0, isDragging);
-  const dynamicHeight = useMemo(() => children.dynamicHeight.getView(), [children.dynamicHeight]);
+  const dynamicHeight = useMemo(
+    () => children.dynamicHeight.getView(),
+    [children.dynamicHeight]
+  );
   const heightUnitOfRow = useMemo(
     () => children.heightUnitOfRow.getView(),
     [children.heightUnitOfRow]
   );
-  const containerFn = useMemo(() => children.container.getView(), [children.container]);
-  const itemIndexName = useMemo(() => children.itemIndexName.getView(), [children.itemIndexName]);
-  const itemDataName = useMemo(() => children.itemDataName.getView(), [children.itemDataName]);
+  const containerFn = useMemo(
+    () => children.container.getView(),
+    [children.container]
+  );
+  const itemIndexName = useMemo(
+    () => children.itemIndexName.getView(),
+    [children.itemIndexName]
+  );
+  const itemDataName = useMemo(
+    () => children.itemDataName.getView(),
+    [children.itemDataName]
+  );
   const { data, itemCount: totalCount } = useMemo(
     () => getData(children.noOfRows.getView()),
     [children.noOfRows]
   );
-  const autoHeight = useMemo(() => children.autoHeight.getView(), [children.autoHeight]);
+  const autoHeight = useMemo(
+    () => children.autoHeight.getView(),
+    [children.autoHeight]
+  );
   const noOfColumns = useMemo(
     () => Math.max(1, children.noOfColumns.getView()),
     [children.noOfColumns]
@@ -134,7 +198,10 @@ export function ListView(props: Props) {
     const total = pagination.total || totalCount;
     let current = pagination.current;
     let offset = (current - 1) * pagination.pageSize;
-    const currentPageSize = Math.max(0, Math.min(pagination.pageSize, total - offset));
+    const currentPageSize = Math.max(
+      0,
+      Math.min(pagination.pageSize, total - offset)
+    );
     return {
       pagination: { ...pagination, current: current, total: total },
       offset,
@@ -146,11 +213,16 @@ export function ListView(props: Props) {
 
   const commonLayout = comp.realSimpleContainer()!.children.layout.getView();
   const isOneItem =
-    pageInfo.currentPageSize > 0 && (_.isEmpty(commonLayout) || editorState.isDragging);
+    pageInfo.currentPageSize > 0 &&
+    (_.isEmpty(commonLayout) || editorState.isDragging);
   const noOfRows = isOneItem
     ? 1
     : Math.floor((pageInfo.currentPageSize + noOfColumns - 1) / noOfColumns);
-  const rowHeight = isOneItem ? "100%" : dynamicHeight ? "auto" : heightUnitOfRow * 44 + "px";
+  const rowHeight = isOneItem
+    ? "100%"
+    : dynamicHeight
+    ? "auto"
+    : heightUnitOfRow * 44 + "px";
 
   // minHeight is used to ensure that the container height will not shrink when dragging, and the current padding needs to be subtracted during calculation
   const minHeight = isDragging && autoHeight ? listHeight + "px" : "100%";
@@ -176,12 +248,17 @@ export function ListView(props: Props) {
               return <div key={itemIdx} style={{ flex: "auto" }}></div>;
             }
             const containerProps = containerFn(
-              { [itemIndexName]: itemIdx, [itemDataName]: getCurrentItemParams(data, itemIdx) },
+              {
+                [itemIndexName]: itemIdx,
+                [itemDataName]: getCurrentItemParams(data, itemIdx),
+              },
               String(itemIdx)
             ).getView();
             const unMountFn = () => {
               comp.children.container.dispatch(
-                deferAction(ContextContainerComp.batchDeleteAction([String(itemIdx)]))
+                deferAction(
+                  ContextContainerComp.batchDeleteAction([String(itemIdx)])
+                )
               );
             };
             return (
@@ -217,11 +294,17 @@ export function ListView(props: Props) {
             }}
             observerOptions={{ box: "border-box" }}
           >
-            <div style={{ height: autoHeight ? "auto" : "100%" }}>{renders}</div>
+            <div style={{ height: autoHeight ? "auto" : "100%" }}>
+              {renders}
+            </div>
           </ReactResizeDetector>
         </BodyWrapper>
         <FooterWrapper>
-          <Pagination size="small" itemRender={pageItemRender} {...pageInfo.pagination} />
+          <Pagination
+            size="small"
+            itemRender={pageItemRender}
+            {...pageInfo.pagination}
+          />
         </FooterWrapper>
       </ListViewWrapper>
     </BackgroundColorContext.Provider>

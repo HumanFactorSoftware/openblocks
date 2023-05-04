@@ -17,7 +17,7 @@ import {
 export function getButtonStyle(buttonStyle: ButtonStyleType) {
   const hoverColor = genHoverColor(buttonStyle.background);
   const activeColor = genActiveColor(buttonStyle.background);
-  console.log("border radius", buttonStyle.radius);
+
   return css`
     border-radius: ${buttonStyle.radius};
     margin: ${buttonStyle.margin};

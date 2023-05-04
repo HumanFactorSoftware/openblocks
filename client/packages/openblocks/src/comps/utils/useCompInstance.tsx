@@ -86,12 +86,15 @@ export function actionHandlerGenerator() {
 export function nestDispatchHandlerGenerator() {
   let depth = 0;
   let seq = 0;
-  const queue: PriorityQueue<{ action: CompAction; depth: number; seq: number }> =
-    new PriorityQueue((a, b) => {
-      // Depth first, the same depth is FIFO
-      const diff = a.depth - b.depth;
-      return diff !== 0 ? diff : b.seq - a.seq;
-    });
+  const queue: PriorityQueue<{
+    action: CompAction;
+    depth: number;
+    seq: number;
+  }> = new PriorityQueue((a, b) => {
+    // Depth first, the same depth is FIFO
+    const diff = a.depth - b.depth;
+    return diff !== 0 ? diff : b.seq - a.seq;
+  });
   return (action: CompAction, reduceFn: (action: CompAction) => void) => {
     // Find the nested dispatch action, add it to the queue, and execute reduce later
     if (depth > 0) {
@@ -133,7 +136,9 @@ export interface GetContainerParams<T extends CompConstructor> {
  * Get a Comp instance through a Comp class, because the instance will change, so put it in a container.
  * notice: keep this code unmanaged by react
  */
-export function getCompContainer<T extends CompConstructor>(params: GetContainerParams<T>) {
+export function getCompContainer<T extends CompConstructor>(
+  params: GetContainerParams<T>
+) {
   const {
     Comp,
     initialValue,
@@ -191,7 +196,10 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
         throw new Error("comp container is not initialized");
       }
       if (action && actionPreInterceptor?.(action) === false) {
-        log.info("action dropped because of preInterceptor return false", action);
+        log.info(
+          "action dropped because of preInterceptor return false",
+          action
+        );
         return;
       }
       // action is not necessarily jsonObject, not serializable, see how to log later
@@ -205,7 +213,7 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
       const reduceFn = wrapWithPromiseHandling((act: CompAction) => {
         let action = act;
         if (reduceContext && reduceContext.readOnly && action.editDSL) {
-          log.error("editDSL should be false in view mode, action: ", action);
+          //log.error("editDSL should be false in view mode, action: ", action);
           action = { ...action, editDSL: false };
         }
 
@@ -221,7 +229,12 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
           this.appCalmDownTimerHandle = window.setTimeout(() => {
             this.appCalmDowned = true;
             perfMark(MarkAppCalmDown);
-            perfMeasure(MeasureCalmDown, MarkAppDSLLoaded, MarkAppCalmDown, stats());
+            perfMeasure(
+              MeasureCalmDown,
+              MarkAppDSLLoaded,
+              MarkAppCalmDown,
+              stats()
+            );
             log.info("~~~ CALM DOWN ~~~");
           }, CALM_DOWN_TIMEOUT);
         }
@@ -229,7 +242,10 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
 
       // Nested processing is after async processing, nested async actions can also be processed in the correct order
       const size = showCost("reduce", () =>
-        actionHandler({ action, reduceFn: (act) => nestDispatchHandler(act, reduceFn) })
+        actionHandler({
+          action,
+          reduceFn: (act) => nestDispatchHandler(act, reduceFn),
+        })
       );
 
       // if (!_.isEmpty(actions)) console.info("~~ actions: ", actions);
@@ -237,9 +253,12 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
 
       if (size > 0) {
         cancelIdleCallback(this.clearQueueTimerHandle);
-        this.clearQueueTimerHandle = requestIdleCallback(() => this.dispatch(), {
-          timeout: CLEAR_ACTION_QUEUE_TIMEOUT,
-        });
+        this.clearQueueTimerHandle = requestIdleCallback(
+          () => this.dispatch(),
+          {
+            timeout: CLEAR_ACTION_QUEUE_TIMEOUT,
+          }
+        );
       }
     }
 
@@ -262,19 +281,25 @@ export function getCompContainer<T extends CompConstructor>(params: GetContainer
      */
     setComp(tmpComp: InstanceType<T>, actions?: CompAction[]) {
       if (!this.initialized) {
-        throw new Error("comp container is not initialized, setComp of container can't be called");
+        throw new Error(
+          "comp container is not initialized, setComp of container can't be called"
+        );
       }
       if (tmpComp === this.comp) {
         return;
       }
       // 1ms
-      const evaluatedComp = showCost("eval", () => evalAndReduceWithExposing(tmpComp));
+      const evaluatedComp = showCost("eval", () =>
+        evalAndReduceWithExposing(tmpComp)
+      );
       if (evaluatedComp === this.comp) {
         return;
       }
       this.comp = evaluatedComp;
       // FIXME: Check it out, why does it take 30ms to change the code editor, and only 1ms for others
-      showCost("setComp", () => this.changeListeners.forEach((x) => x(actions)));
+      showCost("setComp", () =>
+        this.changeListeners.forEach((x) => x(actions))
+      );
     }
   }
 
@@ -313,14 +338,18 @@ export function useCompInstance<T extends CompConstructor>(
     const finalHandlers = [...(handlers || []), updateHandler];
     finalHandlers.forEach((handler) => container.addChangeListener(handler));
     return () => {
-      finalHandlers.forEach((handler) => container.removeChangeListener(handler));
+      finalHandlers.forEach((handler) =>
+        container.removeChangeListener(handler)
+      );
     };
   }, [container, handlers]);
 
   return [comp, container] as const;
 }
 
-export function useCompContainer<T extends CompConstructor>(params: GetContainerParams<T>) {
+export function useCompContainer<T extends CompConstructor>(
+  params: GetContainerParams<T>
+) {
   return useMemo(() => {
     return getCompContainer(params);
   }, [params]);
