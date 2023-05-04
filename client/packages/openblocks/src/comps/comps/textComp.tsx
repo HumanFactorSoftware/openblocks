@@ -124,7 +124,15 @@ let TextTmpComp = (function () {
   return new UICompBuilder(childrenMap, (props) => {
     const value = props.text.value;
     return (
-      <TextContainer type={props.type} styleConfig={props.style}>
+      <TextContainer
+        type={props.type}
+        styleConfig={props.style}
+        style={{
+          justifyContent: props.horizontalAlignment,
+          alignItems: props.autoHeight ? "center" : props.verticalAlignment,
+          textAlign: props.horizontalAlignment,
+        }}
+      >
         {props.type === "markdown" ? (
           <TacoMarkDown>{value}</TacoMarkDown>
         ) : (
