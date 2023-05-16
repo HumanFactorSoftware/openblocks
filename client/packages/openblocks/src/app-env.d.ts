@@ -25,9 +25,6 @@ declare module "really-relaxed-json";
 declare module "tui-image-editor" {
   export = tuiImageEditor.ImageEditor;
 }
-declare module "@ginkgo-bioworks/react-json-schema-form-builder";
-declare module "react-json-editor-ajrm";
-declare module "react-json-editor-ajrm/locale/en";
 
 declare var numbro: any;
 declare var uuid: any;

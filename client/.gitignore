@@ -4,7 +4,7 @@
 /node_modules
 /packages/*/node_modules
 /packages/*/dist
-!/packages/openblocks-sdk/dist
+!/packages/openblocks-sdk-workmeet/dist
 /packages/*/tsdoc-metadata.json
 /.pnp
 .pnp.js

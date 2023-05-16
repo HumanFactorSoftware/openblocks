@@ -1,13 +1,23 @@
 import { NPM_PLUGIN_ASSETS_BASE_URL } from "constants/npmPlugins";
 import { trans } from "i18n";
 import { CompConstructor } from "openblocks-core";
-import { RemoteCompInfo, RemoteCompLoader, RemoteCompSource } from "types/remoteComp";
+import {
+  RemoteCompInfo,
+  RemoteCompLoader,
+  RemoteCompSource,
+} from "types/remoteComp";
 
-async function npmLoader(remoteInfo: RemoteCompInfo): Promise<CompConstructor | null> {
+async function npmLoader(
+  remoteInfo: RemoteCompInfo
+): Promise<CompConstructor | null> {
+  console.log("remoteInfo 123 npm", remoteInfo);
   // log.info("load npm plugin:", remoteInfo);
   const { packageName, packageVersion = "latest", compName } = remoteInfo;
   const entry = `${NPM_PLUGIN_ASSETS_BASE_URL}/${packageName}@${packageVersion}/index.js`;
+  // const entry = `https://testjs.projectanddemoserver.com/index.js`;
+  console.log("checking module", entry);
   const module = await import(/* @vite-ignore */ entry);
+  console.log("checking module", module);
   const comp = module.default?.[compName];
   if (!comp) {
     throw new Error(trans("npm.compNotFound", { compName }));
@@ -15,10 +25,16 @@ async function npmLoader(remoteInfo: RemoteCompInfo): Promise<CompConstructor | 
   return comp;
 }
 
-async function bundleLoader(remoteInfo: RemoteCompInfo): Promise<CompConstructor | null> {
+async function bundleLoader(
+  remoteInfo: RemoteCompInfo
+): Promise<CompConstructor | null> {
+  console.log("remoteInfo 123 bundleLoader", remoteInfo);
+
   const { packageName, packageVersion = "latest", compName } = remoteInfo;
   const entry = `/${packageName}/${packageVersion}/index.js?v=${REACT_APP_COMMIT_ID}`;
+  console.log("checking module", entry);
   const module = await import(/* @vite-ignore */ entry);
+  console.log("checking module", module);
   const comp = module.default?.[compName];
   if (!comp) {
     throw new Error(trans("npm.compNotFound", { compName }));

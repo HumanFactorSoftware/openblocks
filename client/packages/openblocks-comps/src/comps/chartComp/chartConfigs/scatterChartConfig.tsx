@@ -3,7 +3,7 @@ import {
   dropdownControl,
   BoolControl,
   showLabelPropertyView,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { ScatterSeriesOption } from "echarts";
 import { trans } from "i18n/comps";
 

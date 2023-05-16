@@ -1,11 +1,20 @@
-import { jsonControl, JSONObject, stateComp, toJSONObjectArray, toObject } from "openblocks-sdk";
-import { StringControl } from "openblocks-sdk";
-import { dropdownControl } from "openblocks-sdk";
-import { eventHandlerControl } from "openblocks-sdk";
-import { valueComp, withType } from "openblocks-sdk";
-import { ValueFromOption } from "openblocks-sdk";
-import { uiChildren } from "openblocks-sdk";
-import { RecordConstructorToComp, RecordConstructorToView } from "openblocks-core";
+import {
+  jsonControl,
+  JSONObject,
+  stateComp,
+  toJSONObjectArray,
+  toObject,
+} from "openblocks-sdk-workmeet";
+import { StringControl } from "openblocks-sdk-workmeet";
+import { dropdownControl } from "openblocks-sdk-workmeet";
+import { eventHandlerControl } from "openblocks-sdk-workmeet";
+import { valueComp, withType } from "openblocks-sdk-workmeet";
+import { ValueFromOption } from "openblocks-sdk-workmeet";
+import { uiChildren } from "openblocks-sdk-workmeet";
+import {
+  RecordConstructorToComp,
+  RecordConstructorToView,
+} from "openblocks-core";
 import { BarChartConfig } from "./chartConfigs/barChartConfig";
 import { XAxisConfig, YAxisConfig } from "./chartConfigs/cartesianAxisConfig";
 import { LegendConfig } from "./chartConfigs/legendConfig";
@@ -239,5 +248,9 @@ export const chartChildrenMap = {
 };
 
 const chartUiChildrenMap = uiChildren(chartChildrenMap);
-export type ChartCompPropsType = RecordConstructorToView<typeof chartUiChildrenMap>;
-export type ChartCompChildrenType = RecordConstructorToComp<typeof chartUiChildrenMap>;
+export type ChartCompPropsType = RecordConstructorToView<
+  typeof chartUiChildrenMap
+>;
+export type ChartCompChildrenType = RecordConstructorToComp<
+  typeof chartUiChildrenMap
+>;

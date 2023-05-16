@@ -4,7 +4,7 @@ import {
   ActionParamConfig,
   KeyedParamConfig,
   QueryConfig,
-} from "openblocks-sdk/dataSource";
+} from "openblocks-sdk-workmeet/dataSource";
 import {
   ParamsBooleanCodeControl,
   ParamsNumberControl,
@@ -29,7 +29,10 @@ import { CompConstructor } from "openblocks-core";
 import { dropdownControl } from "comps/controls/dropdownControl";
 import { ControlParams, ControlType } from "comps/controls/controlParams";
 import MarkdownTooltip from "openblocks-design/src/components/MarkdownTooltip";
-import { KeyValueControlParams, keyValueListControl } from "comps/controls/keyValueControl";
+import {
+  KeyValueControlParams,
+  keyValueListControl,
+} from "comps/controls/keyValueControl";
 import { VariablesControl } from "../httpQuery/graphqlQuery";
 
 function wrapConfig<CP extends {} = ControlParams>(
@@ -42,12 +45,19 @@ function wrapConfig<CP extends {} = ControlParams>(
       return (
         <QueryConfigWrapper key={config.key}>
           <QueryConfigLabel
-            tooltip={config.tooltip && <MarkdownTooltip>{config.tooltip}</MarkdownTooltip>}
+            tooltip={
+              config.tooltip && (
+                <MarkdownTooltip>{config.tooltip}</MarkdownTooltip>
+              )
+            }
           >
             {config.label}
           </QueryConfigLabel>
           <QueryConfigItemWrapper>
-            {this.propertyView({ placeholder: config.placeholder, ...(controlParams || {}) })}
+            {this.propertyView({
+              placeholder: config.placeholder,
+              ...(controlParams || {}),
+            })}
           </QueryConfigItemWrapper>
         </QueryConfigWrapper>
       );
@@ -89,15 +99,20 @@ function ActionSelectView(props: ActionSelectViewProps) {
     }) || [];
 
   const isActionOptionHasDesc = config.actions.some((i) => !!i.description);
-  const actionOptions = config.actions.filter(filter(currentCategory)).map((child) => ({
-    rawLabel: child.label,
-    label: isActionOptionHasDesc ? (
-      <DropdownOptionLabelWithDesc label={child.label} description={child.description || ""} />
-    ) : (
-      child.label
-    ),
-    value: child.actionName,
-  }));
+  const actionOptions = config.actions
+    .filter(filter(currentCategory))
+    .map((child) => ({
+      rawLabel: child.label,
+      label: isActionOptionHasDesc ? (
+        <DropdownOptionLabelWithDesc
+          label={child.label}
+          description={child.description || ""}
+        />
+      ) : (
+        child.label
+      ),
+      value: child.actionName,
+    }));
 
   const handleCategoryChange = (category: string) => {
     const firstAction = config.actions.find(filter(category));
@@ -108,7 +123,9 @@ function ActionSelectView(props: ActionSelectViewProps) {
   };
 
   useEffect(() => {
-    const action = config.actions.find((i) => i.actionName === currentActionName);
+    const action = config.actions.find(
+      (i) => i.actionName === currentActionName
+    );
     if (action) {
       if (Array.isArray(action.category)) {
         setCategory(action.category[0]);
@@ -169,7 +186,9 @@ function unionConfigToComp(config: QueryConfig): CompConstructor {
           <ActionSelectView
             config={config}
             currentActionName={currentActionName}
-            onActionChange={(value) => this.dispatchChangeAndPreserveAction({ actionName: value })}
+            onActionChange={(value) =>
+              this.dispatchChangeAndPreserveAction({ actionName: value })
+            }
           />
           {this.children.action.getPropertyView()}
         </>
@@ -190,7 +209,9 @@ function arrayConfigToComp(config: ActionArrayParamConfig): CompConstructor {
       return (
         <>
           {config.map((item) => (
-            <React.Fragment key={item.key}>{children[item.key].getPropertyView()}</React.Fragment>
+            <React.Fragment key={item.key}>
+              {children[item.key].getPropertyView()}
+            </React.Fragment>
           ))}
         </>
       );
@@ -242,7 +263,10 @@ export function configToComp(
       };
     });
     return wrapConfig(
-      dropdownControl(options, config.defaultValue ?? config.options?.[0].value),
+      dropdownControl(
+        options,
+        config.defaultValue ?? config.options?.[0].value
+      ),
       config
     );
   }
@@ -273,7 +297,10 @@ export function configToComp(
   }
 
   if (config.type === "sqlInput") {
-    Comp = wrapConfig(ParamsJsonControl, config, { styleName: "medium", language: "sql" });
+    Comp = wrapConfig(ParamsJsonControl, config, {
+      styleName: "medium",
+      language: "sql",
+    });
   }
 
   if (config.type === "graphqlInput") {
@@ -282,7 +309,10 @@ export function configToComp(
 
   if (config.type === "keyValueInput") {
     if (config.valueType === "json") {
-      Comp = wrapConfig(withDefault(VariablesControl, [{ key: "", value: "" }]), config);
+      Comp = wrapConfig(
+        withDefault(VariablesControl, [{ key: "", value: "" }]),
+        config
+      );
     } else {
       Comp = wrapConfig<KeyValueControlParams>(
         withDefault(keyValueListControl(), [{ key: "", value: "" }]),
@@ -310,7 +340,10 @@ export function toPluginQuery(queryConfig: QueryConfig) {
   const TmpQuery = configToComp(queryConfig);
   return class V2Query extends TmpQuery {
     override getView() {
-      const params = Object.entries(super.getView()).map(([key, value]) => ({ key, value }));
+      const params = Object.entries(super.getView()).map(([key, value]) => ({
+        key,
+        value,
+      }));
       return toQueryView(params as FunctionProperty[]);
     }
   };

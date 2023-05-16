@@ -8,7 +8,11 @@ import {
 import { getPieRadiusAndCenter } from "comps/chartComp/chartConfigs/pieChartConfig";
 import { EChartsOption } from "echarts";
 import _ from "lodash";
-import { chartColorPalette, isNumeric, JSONObject } from "openblocks-sdk";
+import {
+  chartColorPalette,
+  isNumeric,
+  JSONObject,
+} from "openblocks-sdk-workmeet";
 import { calcXYConfig } from "comps/chartComp/chartConfigs/cartesianAxisConfig";
 import Big from "big.js";
 
@@ -51,8 +55,15 @@ export function transformData(
 }
 
 const notAxisChartSet: Set<CharOptionCompType> = new Set(["pie"] as const);
-export const echartsConfigOmitChildren = ["hidden", "selectedPoints", "onEvent"] as const;
-type EchartsConfigProps = Omit<ChartCompPropsType, typeof echartsConfigOmitChildren[number]>;
+export const echartsConfigOmitChildren = [
+  "hidden",
+  "selectedPoints",
+  "onEvent",
+] as const;
+type EchartsConfigProps = Omit<
+  ChartCompPropsType,
+  typeof echartsConfigOmitChildren[number]
+>;
 
 export function isAxisChart(type: CharOptionCompType) {
   return !notAxisChartSet.has(type);
@@ -105,7 +116,11 @@ export function getSeriesConfig(props: EchartsConfigProps) {
       };
     } else {
       // pie
-      const radiusAndCenter = getPieRadiusAndCenter(seriesLength, index, props.chartConfig);
+      const radiusAndCenter = getPieRadiusAndCenter(
+        seriesLength,
+        index,
+        props.chartConfig
+      );
       return {
         ...props.chartConfig,
         radius: radiusAndCenter.radius,
@@ -122,7 +137,10 @@ export function getSeriesConfig(props: EchartsConfigProps) {
 }
 
 // https://echarts.apache.org/en/option.html
-export function getEchartsConfig(props: EchartsConfigProps, chartSize?: ChartSize): EChartsOption {
+export function getEchartsConfig(
+  props: EchartsConfigProps,
+  chartSize?: ChartSize
+): EChartsOption {
   if (props.mode === "json") {
     return props.echartsOption ? props.echartsOption : {};
   }

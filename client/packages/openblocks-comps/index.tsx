@@ -1,9 +1,9 @@
 import ReactDOM from "react-dom";
-import { CompIDE } from "openblocks-sdk";
+import { CompIDE } from "openblocks-sdk-workmeet";
 import { name, version, openblocks } from "./package.json";
 import compMap from "./src/index";
 
-import "openblocks-sdk/dist/style.css";
+import "openblocks-sdk-workmeet/dist/style.css";
 
 function CompDevApp() {
   return (

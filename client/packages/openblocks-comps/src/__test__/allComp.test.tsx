@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { CompConstructor, CustomAction } from "openblocks-core";
-import { evalAndReduce, isExposingMethodComp } from "openblocks-sdk";
+import { evalAndReduce, isExposingMethodComp } from "openblocks-sdk-workmeet";
 import { ChartCompWithDefault } from "comps/chartComp/chartComp";
 import log from "loglevel";
 
@@ -31,7 +31,9 @@ test("test comp don't change if no value change", () => {
         const newComp = evalAndReduce(comp);
         Object.keys((comp as any).children).forEach((key) => {
           log.log(
-            `${key}, isEqual ${(comp as any).children[key] === (newComp as any).children[key]}`
+            `${key}, isEqual ${
+              (comp as any).children[key] === (newComp as any).children[key]
+            }`
           );
         });
         throw new Error("bad " + name);
@@ -55,7 +57,9 @@ test("comp exposing method duplicate name", () => {
           methods.push((child as any).getMethodConfig());
         }
       });
-    const allMethodName = methods.flatMap((m) => m.map((methodConfig) => methodConfig.name));
+    const allMethodName = methods.flatMap((m) =>
+      m.map((methodConfig) => methodConfig.name)
+    );
     expect(allMethodName.length).toEqual(_.uniq(allMethodName).length);
   });
 });

@@ -9,7 +9,7 @@ import {
   NameConfig,
   eventHandlerControl,
   withMethodExposing,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 
 import styles from "./styles.module.css";
 

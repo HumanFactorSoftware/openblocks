@@ -9,7 +9,7 @@ import {
   dropdownControl,
   JSONValue,
   isNumeric,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { i18nObjs, trans } from "i18n/comps";
 import _, { isNil } from "lodash";
 import { xAxisTypeUrl } from "./chartUrls";
@@ -179,7 +179,9 @@ export const YAxisConfig = (function () {
     .build();
 })();
 
-function calcXAxisType(xAxisData: Array<JSONValue | undefined>): EchartsAxisType {
+function calcXAxisType(
+  xAxisData: Array<JSONValue | undefined>
+): EchartsAxisType {
   if (!xAxisData || xAxisData.length <= 0) {
     return "category";
   }
@@ -229,14 +231,17 @@ let measureCanvas: HTMLCanvasElement;
 
 // calculate x-axis text width
 function getXAxisDataLength(xAxisData: Array<JSONValue | undefined>) {
-  const canvas = measureCanvas || (measureCanvas = document.createElement("canvas"));
+  const canvas =
+    measureCanvas || (measureCanvas = document.createElement("canvas"));
   const context = canvas.getContext("2d");
   if (!context) {
     return [];
   }
   // echarts default font
   context.font = "normal 12px sans-serif";
-  return xAxisData.map((d) => (d ? context.measureText(d.toString()).width + 2 : 0));
+  return xAxisData.map((d) =>
+    d ? context.measureText(d.toString()).width + 2 : 0
+  );
 }
 
 export function calcXYConfig(
@@ -264,14 +269,21 @@ export function calcXYConfig(
     let rotate = 0;
     let labelWidth = maxDataWidth;
     // rotate when width is not enough
-    if (maxDataWidth && eachDataWidth < maxDataWidth && xAxisDirection === "horizontal") {
+    if (
+      maxDataWidth &&
+      eachDataWidth < maxDataWidth &&
+      xAxisDirection === "horizontal"
+    ) {
       labelWidth = Math.min(maxDataWidth, 150);
       // vertical rotate 0.87 => sin(60) when exceeding the right boundary
       const verticalRotate =
-        lastDataWidth && lastDataWidth * 0.87 > eachDataWidth / 2 + chartSize.right;
+        lastDataWidth &&
+        lastDataWidth * 0.87 > eachDataWidth / 2 + chartSize.right;
       rotate = verticalRotate ? 270 : 330;
       // to keep x-axis name under label, nameGap is related to label rotation angle
-      resXConfig.nameGap = verticalRotate ? labelWidth + 5 : labelWidth / 2 + 10;
+      resXConfig.nameGap = verticalRotate
+        ? labelWidth + 5
+        : labelWidth / 2 + 10;
     } else if (xAxisDirection === "vertical" && maxDataWidth) {
       // vertical direction
       resXConfig.nameGap = maxDataWidth + 10;

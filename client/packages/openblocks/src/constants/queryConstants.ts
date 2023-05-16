@@ -12,7 +12,7 @@ import { GoogleSheetsQuery } from "../comps/queries/googleSheetsQuery";
 import { GraphqlQuery } from "../comps/queries/httpQuery/graphqlQuery";
 import { toPluginQuery } from "comps/queries/pluginQuery/pluginQuery";
 import { MultiCompConstructor } from "openblocks-core";
-import { DataSourcePluginMeta } from "openblocks-sdk/dataSource";
+import { DataSourcePluginMeta } from "openblocks-sdk-workmeet/dataSource";
 
 export type DatasourceType =
   | "mysql"

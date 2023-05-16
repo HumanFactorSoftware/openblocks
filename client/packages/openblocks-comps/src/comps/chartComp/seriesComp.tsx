@@ -9,11 +9,20 @@ import {
   OptionsType,
   MultiCompBuilder,
   valueComp,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { trans } from "i18n/comps";
 
-import { ConstructorToComp, ConstructorToDataType, ConstructorToView } from "openblocks-core";
-import { CompAction, CustomAction, customAction, isMyCustomAction } from "openblocks-core";
+import {
+  ConstructorToComp,
+  ConstructorToDataType,
+  ConstructorToView,
+} from "openblocks-core";
+import {
+  CompAction,
+  CustomAction,
+  customAction,
+  isMyCustomAction,
+} from "openblocks-core";
 
 export type SeriesCompType = ConstructorToComp<typeof SeriesComp>;
 export type RawSeriesCompType = ConstructorToView<typeof SeriesComp>;
@@ -104,7 +113,9 @@ export class SeriesListComp extends SeriesListTmpComp {
         return !existColumns.includes(key) && isNumeric(chartData[0][key]);
       })
       .slice(0, 3);
-    exampleKeys.forEach((key) => actions.push(this.pushAction(newSeries(key, key))));
+    exampleKeys.forEach((key) =>
+      actions.push(this.pushAction(newSeries(key, key)))
+    );
     return actions;
   }
 

@@ -1,4 +1,4 @@
-import { JSONObject } from "openblocks-sdk";
+import { JSONObject } from "openblocks-sdk-workmeet";
 import { XAXisComponentOption } from "echarts";
 
 export type I18nObjects = {

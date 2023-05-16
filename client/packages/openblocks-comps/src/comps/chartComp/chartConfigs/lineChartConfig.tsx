@@ -7,7 +7,7 @@ import {
   withContext,
   StringControl,
   ColorOrBoolCodeControl,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { trans } from "i18n/comps";
 
 const BarTypeOptions = [

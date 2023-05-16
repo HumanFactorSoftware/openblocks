@@ -23,7 +23,7 @@ export const libs = [
     extractDefault: true,
   },
   {
-    name: "openblocks-sdk",
+    name: "openblocks-sdk-workmeet",
     from: "./src/index.sdk.ts",
   },
   {

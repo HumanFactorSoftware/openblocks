@@ -18,9 +18,14 @@ export default {
     "\\.md\\?url$": path.resolve(dirname, "./mocks/markdown-url-module.js"),
     "^@openblocks-ee(.*)$": path.resolve(
       dirname,
-      isEE ? "../../packages/openblocks/src/ee/$1" : "../../packages/openblocks/src/$1"
+      isEE
+        ? "../../packages/openblocks/src/ee/$1"
+        : "../../packages/openblocks/src/$1"
     ),
-    "openblocks-sdk": path.resolve(dirname, "../../packages/openblocks/src/index.sdk"),
+    "openblocks-sdk-workmeet": path.resolve(
+      dirname,
+      "../../packages/openblocks/src/index.sdk"
+    ),
   },
   globals,
   // roots: ["<rootDir>/src"],
@@ -33,7 +38,10 @@ export default {
   setupFiles: [path.resolve(dirname, "./jest.setup.js")],
   setupFilesAfterEnv: [path.resolve(dirname, "./jest.setup-after-env.js")],
   transform: {
-    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": path.resolve(dirname, "./transform/babelTransform.js"),
+    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": path.resolve(
+      dirname,
+      "./transform/babelTransform.js"
+    ),
     "^.+\\.css$": path.resolve(dirname, "./transform/cssTransform.js"),
     "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": path.resolve(
       dirname,

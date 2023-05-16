@@ -15,7 +15,7 @@ import {
   lightenColor,
   toHex,
   UnderlineCss,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import styled from "styled-components";
 import moment from "moment";
 import {

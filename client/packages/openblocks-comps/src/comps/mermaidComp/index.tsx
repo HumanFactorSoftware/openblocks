@@ -6,7 +6,7 @@ import {
   NameConfig,
   eventHandlerControl,
   withMethodExposing,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 
 import Mermaid from "./mermaid";
 
@@ -32,7 +32,9 @@ const CompBase = new UICompBuilder(childrenMap, (props: any) => {
   .setPropertyViewFn((children: any) => {
     return (
       <>
-        <Section name="Basic">{children.code.propertyView({ label: "code" })}</Section>
+        <Section name="Basic">
+          {children.code.propertyView({ label: "code" })}
+        </Section>
         <Section name="Interaction">{children.onEvent.propertyView()}</Section>
       </>
     );
@@ -41,4 +43,6 @@ const CompBase = new UICompBuilder(childrenMap, (props: any) => {
 
 const AppViewCompTemp = withMethodExposing(CompBase, []);
 
-export const MermaidComp = withExposingConfigs(AppViewCompTemp, [new NameConfig("code", "")]);
+export const MermaidComp = withExposingConfigs(AppViewCompTemp, [
+  new NameConfig("code", ""),
+]);

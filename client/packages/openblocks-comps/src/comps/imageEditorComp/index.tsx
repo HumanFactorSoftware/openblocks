@@ -11,12 +11,17 @@ import {
   eventHandlerControl,
   NameConfigHidden,
   stringExposingStateControl,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { useRef } from "react";
 import ReactResizeDetector from "react-resize-detector";
 import _ from "lodash";
 import { RecordConstructorToView } from "openblocks-core";
-import { Container, customTheme, EmbeddedButton, saveEvent } from "./imageEditorConstants";
+import {
+  Container,
+  customTheme,
+  EmbeddedButton,
+  saveEvent,
+} from "./imageEditorConstants";
 import { ImageEditor } from "./imageEditorClass";
 import { i18nObjs, trans } from "i18n/comps";
 
@@ -38,11 +43,23 @@ const childrenMap = {
   buttonText: withDefault(StringStateControl, trans("imageEditor.save")),
 };
 
-const ContainerImageEditor = (props: RecordConstructorToView<typeof childrenMap>) => {
+const ContainerImageEditor = (
+  props: RecordConstructorToView<typeof childrenMap>
+) => {
   const editorRef = useRef<any>(null);
   const conRef = useRef<HTMLDivElement>(null);
 
-  const menu = ["crop", "flip", "rotate", "draw", "shape", "icon", "text", "mask", "filter"];
+  const menu = [
+    "crop",
+    "flip",
+    "rotate",
+    "draw",
+    "shape",
+    "icon",
+    "text",
+    "mask",
+    "filter",
+  ];
   const menuMap = new Map<string, boolean>();
   menuMap.set("crop", props.crop);
   menuMap.set("flip", props.flip);
@@ -60,7 +77,10 @@ const ContainerImageEditor = (props: RecordConstructorToView<typeof childrenMap>
     const editor = editorRef.current;
     const container = conRef.current;
     editor.imageEditorInst.ui.resizeEditor({
-      uiSize: { width: container?.clientWidth, height: container?.clientHeight },
+      uiSize: {
+        width: container?.clientWidth,
+        height: container?.clientHeight,
+      },
     });
   };
 
@@ -131,7 +151,9 @@ let ImageEditorBasicComp = (function () {
               label: trans("imageEditor.buttonText"),
             })}
           </Section>
-          <Section name={sectionNames.interaction}>{children.onEvent.getPropertyView()}</Section>
+          <Section name={sectionNames.interaction}>
+            {children.onEvent.getPropertyView()}
+          </Section>
           <Section name={sectionNames.advanced}>
             {children.crop.propertyView({
               label: "Crop",
@@ -161,7 +183,9 @@ let ImageEditorBasicComp = (function () {
               label: "Filter",
             })}
           </Section>
-          <Section name={sectionNames.layout}>{hiddenPropertyView(children)}</Section>
+          <Section name={sectionNames.layout}>
+            {hiddenPropertyView(children)}
+          </Section>
         </>
       );
     })

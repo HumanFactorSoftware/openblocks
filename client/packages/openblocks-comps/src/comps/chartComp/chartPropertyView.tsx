@@ -9,7 +9,7 @@ import {
   RedButton,
   Section,
   sectionNames,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { trans } from "i18n/comps";
 import { examplesUrl, optionUrl } from "./chartConfigs/chartUrls";
 

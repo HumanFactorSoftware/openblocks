@@ -18,15 +18,15 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "openblocks-sdk": [
+      "openblocks-sdk-workmeet": [
         "../../openblocks/src/index.sdk.ts",
-        "../node_modules/openblocks-sdk/src/openblocks/index.sdk.ts"
+        "../node_modules/openblocks-sdk-workmeet/src/openblocks/index.sdk.ts"
       ],
       "*": [
         "*",
         "../../openblocks/src/*",
-        "../../openblocks-sdk/src/*",
-        "../node_modules/openblocks-sdk/src/openblocks/*"
+        "../../openblocks-sdk-workmeet/src/*",
+        "../node_modules/openblocks-sdk-workmeet/src/openblocks/*"
       ]
     }
   },

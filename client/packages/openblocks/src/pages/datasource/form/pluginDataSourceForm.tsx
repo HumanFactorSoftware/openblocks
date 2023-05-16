@@ -22,14 +22,17 @@ import {
   TacoMarkDown,
 } from "openblocks-design";
 import { DatasourceFormProps } from "./datasourceFormRegistry";
-import { DatasourceNameFormInputItem, GeneralSettingFormSectionLabel } from "../form";
+import {
+  DatasourceNameFormInputItem,
+  GeneralSettingFormSectionLabel,
+} from "../form";
 import {
   DataSourceParamConfig,
   ParamOption,
   DataSourceParamType,
   DataSourcePluginMeta,
   DataSourceExtraConfig,
-} from "openblocks-sdk/dataSource";
+} from "openblocks-sdk-workmeet/dataSource";
 import styled from "styled-components";
 import { trans } from "i18n";
 import { Datasource } from "constants/datasourceConstants";
@@ -63,7 +66,15 @@ function getFieldWidget(
   isEditing: boolean,
   isExtraParams: boolean
 ): ReactNode {
-  const { updatable = true, type, label, key, rules = [], tooltip, placeholder } = filedConfig;
+  const {
+    updatable = true,
+    type,
+    label,
+    key,
+    rules = [],
+    tooltip,
+    placeholder,
+  } = filedConfig;
 
   let selectOptions: ParamOption[] = [];
   let finalPlaceholder = placeholder;
@@ -124,11 +135,16 @@ function getDefaultValues(def: DataSourcePluginMeta, datasource?: Datasource) {
 }
 
 export const PluginDataSourceForm = (props: DatasourceFormProps) => {
-  const { form, datasource, dataSourceTypeInfo, onFormReadyStatusChange } = props;
-  const [extraParamConfigs, setExtraParamConfigs] = useState<DataSourceParamConfig[]>([]);
+  const { form, datasource, dataSourceTypeInfo, onFormReadyStatusChange } =
+    props;
+  const [extraParamConfigs, setExtraParamConfigs] = useState<
+    DataSourceParamConfig[]
+  >([]);
   const [isExtraParamsRefreshing, setExtraParamRefreshing] = useState(false);
-  const [isExtraParamsRefreshError, setExtraParamRefreshError] = useState(false);
-  const pluginDef = dataSourceTypeInfo?.definition || datasource.pluginDefinition;
+  const [isExtraParamsRefreshError, setExtraParamRefreshError] =
+    useState(false);
+  const pluginDef =
+    dataSourceTypeInfo?.definition || datasource.pluginDefinition;
   const pluginName = dataSourceTypeInfo?.id || datasource.pluginDefinition?.id;
   const isEditing = !!datasource;
   const hasDynamicConfig = !!pluginDef?.dataSourceConfig?.extra;
@@ -201,10 +217,15 @@ export const PluginDataSourceForm = (props: DatasourceFormProps) => {
 
   const dataSourceConfig = pluginDef.dataSourceConfig;
   const initialValues = getDefaultValues(pluginDef, datasource);
-  const hasGeneralSettings = dataSourceConfig.params?.[0]?.type !== "groupTitle";
+  const hasGeneralSettings =
+    dataSourceConfig.params?.[0]?.type !== "groupTitle";
 
   return (
-    <DatasourceForm form={form} initialValues={initialValues} onFieldsChange={handleFieldsChange}>
+    <DatasourceForm
+      form={form}
+      initialValues={initialValues}
+      onFieldsChange={handleFieldsChange}
+    >
       <Form.Item noStyle name="extra">
         <Input hidden />
       </Form.Item>
@@ -236,7 +257,11 @@ export const PluginDataSourceForm = (props: DatasourceFormProps) => {
         })}
       </FormSection>
       {isExtraParamsRefreshing && (
-        <Alert showIcon type="info" message={trans("query.dynamicDataSourceConfigLoadingText")} />
+        <Alert
+          showIcon
+          type="info"
+          message={trans("query.dynamicDataSourceConfigLoadingText")}
+        />
       )}
       {isExtraParamsRefreshError && (
         <Alert

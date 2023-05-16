@@ -26,7 +26,7 @@ import {
   withViewFn,
   ThemeContext,
   chartColorPalette,
-} from "openblocks-sdk";
+} from "openblocks-sdk-workmeet";
 import { getEchartsLocale, trans } from "i18n/comps";
 import { ItemColorComp } from "comps/chartComp/chartConfigs/lineChartConfig";
 import {

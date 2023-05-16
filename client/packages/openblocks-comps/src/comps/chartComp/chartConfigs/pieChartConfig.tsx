@@ -1,6 +1,6 @@
-import { MultiCompBuilder } from "openblocks-sdk";
+import { MultiCompBuilder } from "openblocks-sdk-workmeet";
 import { PieSeriesOption } from "echarts";
-import { dropdownControl } from "openblocks-sdk";
+import { dropdownControl } from "openblocks-sdk-workmeet";
 import { ConstructorToView } from "openblocks-core";
 import { trans } from "i18n/comps";
 
@@ -69,12 +69,15 @@ export function getPieRadiusAndCenter(
 
   /*** calculate center coordinates ***/
   const pieDiameter = 100 / columnPieNum;
-  const xPosition = (pieDiameter * (pieIndex % columnPieNum) + pieDiameter / 2).toFixed(2) + "%";
+  const xPosition =
+    (pieDiameter * (pieIndex % columnPieNum) + pieDiameter / 2).toFixed(2) +
+    "%";
   const rowIndex = Math.floor(pieIndex / columnPieNum) + 1;
   const yPosition =
-    ((100 / Math.floor((columnPieNum * 2 + seriesLength - 1) / columnPieNum)) * rowIndex).toFixed(
-      2
-    ) + "%";
+    (
+      (100 / Math.floor((columnPieNum * 2 + seriesLength - 1) / columnPieNum)) *
+      rowIndex
+    ).toFixed(2) + "%";
   // log.log("Echarts height: index:", pieConfig, radius, pieIndex, xPosition, yPosition);
   return {
     radius: radius,
