@@ -466,6 +466,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     } = this.props as Required<GridLayoutProps>;
     const { showName } = this.props;
     const selectable = isSelectable;
+    console.log("item.w: ", item.w);
+    console.log("this.state.propsLayout: ", this.state.propsLayout);
     return (
       <GridItem
         compType={extraItem?.compType}
@@ -487,7 +489,11 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         isResizable={isResizable && isItemResizable(item)}
         isSelectable={selectable}
         transformScale={transformScale}
-        w={this.state.propsLayout ? this.state.propsLayout[item.i].w : item.w}
+        w={
+          this.state.propsLayout && this.state.propsLayout[item.i]
+            ? this.state.propsLayout[item.i].w
+            : item.w
+        }
         h={extraItem?.hidden && !extraItem?.isSelected ? 0 : item.h}
         x={item.x}
         y={item.y}
