@@ -78,7 +78,6 @@ const DELAY_COLLISION_MS = 100;
 const DELAY_HIGHER_MS = 5;
 export const FLY_START_INFO = "flyStartInfo";
 export const FLY_OVER_INFO = "flyOverInfo";
-
 const DragPlaceHolder = styled.div<{ compType: UICompType }>`
   height: 100%;
   background-color: ${(props) =>
@@ -156,7 +155,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
       );
       // log.debug("layout: getDrivedState. nextProps: ", nextProps.layout, " prevState: ", prevState.layout, " newLayoutBase: ", newLayoutBase, " newLayout: ", newLayout);
       return {
-        layout: newLayout,
+        layout: nextProps.layout,
         // We need to save these props to state for using
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         children: nextProps.children,
@@ -466,8 +465,6 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     } = this.props as Required<GridLayoutProps>;
     const { showName } = this.props;
     const selectable = isSelectable;
-    console.log("item.w: ", item.w);
-    console.log("this.state.propsLayout: ", this.state.propsLayout);
     return (
       <GridItem
         compType={extraItem?.compType}
@@ -490,8 +487,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         isSelectable={selectable}
         transformScale={transformScale}
         w={
-          this.state.propsLayout && this.state.propsLayout[item.i]
-            ? this.state.propsLayout[item.i].w
+          item.i === "moduleContainer"
+            ? this.state.propsLayout?.["moduleContainer"]?.w ?? item.w
             : item.w
         }
         h={extraItem?.hidden && !extraItem?.isSelected ? 0 : item.h}
@@ -1143,6 +1140,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           <div style={contentStyle}>
             {showGridLines && this.gridLines()}
             {mounted &&
+              this.state &&
+              this.state.propsLayout &&
               Object.values(layout).map((item) =>
                 this.processGridItem(item, childrenMap)
               )}
