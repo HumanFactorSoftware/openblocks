@@ -23,7 +23,6 @@ import _ from "lodash";
 import { GridItemComp, GridItemDataType } from "../gridItemComp";
 import { IContainer, isContainer } from "./iContainer";
 import { CompTree, getCompTree } from "./utils";
-console.log("hii Called");
 const children = {
   layout: valueComp<Layout>({}),
   items: sameTypeMap(GridItemComp),

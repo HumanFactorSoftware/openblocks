@@ -449,7 +449,7 @@ export function GridItem(props: GridItemProps) {
       width = position.width;
       height = position.height;
     }
-    console.log("My Position", position);
+
     // If dragging, use the exact width and height as returned from dragging callbacks.
     if (dragging) {
       top = Math.round(dragging.top);
