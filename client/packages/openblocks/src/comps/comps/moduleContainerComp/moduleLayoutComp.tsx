@@ -23,6 +23,7 @@ import ModuleMethodListComp from "./moduleMethodListComp";
 import { ConfigViewWrapper } from "./styled";
 import { CNRootContainer } from "constants/styleSelectors";
 import styled from "styled-components";
+import { ThemeContext } from "comps/utils/themeContext";
 
 export const MODULE_LAYOUT_COMP = "@moduleLayoutComp";
 
@@ -41,7 +42,7 @@ const childrenMap = {
   container: ModuleContainerComp,
   containerSize: valueComp({
     height: defaultHeight,
-    width: defaultWidth,
+    width: DEFAULT_POSITION_PARAMS.cols,
   }),
   containerRowCount: valueComp<number>(Infinity),
   positionParams: stateComp<PositionParams>(DEFAULT_POSITION_PARAMS),
@@ -58,13 +59,20 @@ interface IProps {
 const moduleContainerId = "moduleContainer";
 
 function ModuleLayoutView(props: IProps) {
-  const { containerSize, containerView, positionParams, onPositionParamsChange, onLayoutChange } =
-    props;
+  const {
+    containerSize,
+    containerView,
+    positionParams,
+    onPositionParamsChange,
+    onLayoutChange,
+  } = props;
   const { readOnly } = useContext(ExternalEditorContext);
-
+  const defaultGrid = useContext(ThemeContext)?.theme?.gridColumns || "24";
   if (readOnly) {
     return (
-      <ModulePreviewWrapper className={CNRootContainer}>{props.containerView}</ModulePreviewWrapper>
+      <ModulePreviewWrapper className={CNRootContainer}>
+        {props.containerView}
+      </ModulePreviewWrapper>
     );
   }
 
@@ -94,7 +102,7 @@ function ModuleLayoutView(props: IProps) {
     <CanvasView
       layout={layout}
       items={items}
-      positionParams={positionParams}
+      positionParams={{ ...positionParams, cols: parseInt(defaultGrid) }}
       onPositionParamsChange={onPositionParamsChange}
       dispatch={_.noop}
       onLayoutChange={onLayoutChange}
@@ -103,9 +111,15 @@ function ModuleLayoutView(props: IProps) {
   );
 }
 
-export const ModuleLayoutCompBase = new UICompBuilder(childrenMap, () => null).build();
+export const ModuleLayoutCompBase = new UICompBuilder(
+  childrenMap,
+  () => null
+).build();
 
-export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer {
+export class ModuleLayoutComp
+  extends ModuleLayoutCompBase
+  implements IContainer
+{
   getView(): JSX.Element {
     const isRowCountLocked = this.children.autoScaleCompHeight.getView();
     const rowCount = this.children.containerRowCount.getView();
@@ -121,7 +135,9 @@ export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer
           },
         })}
         onPositionParamsChange={(params) => {
-          setTimeout(() => this.children.positionParams.dispatchChangeValueAction(params));
+          setTimeout(() =>
+            this.children.positionParams.dispatchChangeValueAction(params)
+          );
         }}
         onLayoutChange={(layout) => {
           this.children.containerSize.dispatchChangeValueAction({
@@ -197,7 +213,9 @@ export class ModuleLayoutComp extends ModuleLayoutCompBase implements IContainer
     return this.children.io.children.outputs.getView();
   }
 
-  realSimpleContainer(key?: string | undefined): SimpleContainerComp | undefined {
+  realSimpleContainer(
+    key?: string | undefined
+  ): SimpleContainerComp | undefined {
     return this.children.container.realSimpleContainer(key);
   }
 

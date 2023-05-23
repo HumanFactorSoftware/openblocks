@@ -568,7 +568,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       rowHeight={currentRowHeight}
       overflow={props.overflow}
       extraHeight={props.extraHeight}
-      cols={props.positionParams.cols}
+      cols={parseInt(defaultGrid)}
       autoHeight={props.autoHeight}
       minHeight={props.minHeight}
       bgColor={props.bgColor}

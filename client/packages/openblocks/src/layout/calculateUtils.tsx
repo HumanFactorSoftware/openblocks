@@ -95,6 +95,7 @@ export function calcGridItemPosition(
   w: number,
   h: number
 ): Position {
+  // console.log("my position ", positionParams);
   const { margin, containerPadding, rowHeight } = positionParams;
   const colWidth = calcGridColWidth(positionParams);
 
