@@ -78,7 +78,6 @@ const DELAY_COLLISION_MS = 100;
 const DELAY_HIGHER_MS = 5;
 export const FLY_START_INFO = "flyStartInfo";
 export const FLY_OVER_INFO = "flyOverInfo";
-
 const DragPlaceHolder = styled.div<{ compType: UICompType }>`
   height: 100%;
   background-color: ${(props) =>
@@ -469,7 +468,6 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     } = this.props as Required<GridLayoutProps>;
     const { showName } = this.props;
     const selectable = isSelectable;
-
     return (
       <GridItem
         compType={extraItem?.compType}
@@ -1141,6 +1139,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           <div style={contentStyle}>
             {showGridLines && this.gridLines()}
             {mounted &&
+              this.state &&
+              this.state.propsLayout &&
               Object.values(layout).map((item) =>
                 this.processGridItem(item, childrenMap)
               )}
