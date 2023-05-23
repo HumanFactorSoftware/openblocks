@@ -156,7 +156,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
       );
       // log.debug("layout: getDrivedState. nextProps: ", nextProps.layout, " prevState: ", prevState.layout, " newLayoutBase: ", newLayoutBase, " newLayout: ", newLayout);
       return {
-        layout: newLayout,
+        layout: nextProps.layout,
         // We need to save these props to state for using
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         children: nextProps.children,
@@ -438,6 +438,9 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     item: LayoutItem,
     childrenMap: _.Dictionary<React.ReactElement>
   ): React.ReactElement | undefined {
+    if (this.state.propsLayout && this.state.propsLayout[item.i]) {
+      item = this.state.propsLayout[item.i];
+    }
     const draggingExtraLayout =
       draggingUtils.getData<FlyStartInfo>(FLY_START_INFO)?.flyExtraLayout;
     const extraItem =
@@ -466,8 +469,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     } = this.props as Required<GridLayoutProps>;
     const { showName } = this.props;
     const selectable = isSelectable;
-    console.log("item.w: ", item.w);
-    console.log("this.state.propsLayout: ", this.state.propsLayout);
+
     return (
       <GridItem
         compType={extraItem?.compType}
@@ -489,11 +491,7 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
         isResizable={isResizable && isItemResizable(item)}
         isSelectable={selectable}
         transformScale={transformScale}
-        w={
-          this.state.propsLayout && this.state.propsLayout[item.i]
-            ? this.state.propsLayout[item.i].w
-            : item.w
-        }
+        w={item.w}
         h={extraItem?.hidden && !extraItem?.isSelected ? 0 : item.h}
         x={item.x}
         y={item.y}

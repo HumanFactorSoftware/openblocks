@@ -28,7 +28,7 @@ const getDefaultGridColumns = () => {
 };
 
 export { getDefaultGridColumns };
-export const DEFAULT_GRID_COLUMNS = getDefaultGridColumns() || 24;
+export const DEFAULT_GRID_COLUMNS = 12;
 export const DEFAULT_ROW_HEIGHT = 8;
 export const DEFAULT_POSITION_PARAMS: PositionParams = {
   margin: [0, 0],

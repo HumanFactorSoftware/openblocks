@@ -2,10 +2,12 @@ import { AppState } from "redux/reducers";
 import { SystemConfig } from "constants/configConstants";
 
 export const getSystemConfigFetching = (state: AppState) => {
-  return state.ui.config.fetchingConfig;
+  return state.ui.config.fetchingConfig || state.ui.commonSettings.fetching;
 };
 
-export const selectSystemConfig = (state: AppState): SystemConfig | undefined => {
+export const selectSystemConfig = (
+  state: AppState
+): SystemConfig | undefined => {
   return state.ui.config.systemConfig;
 };
 

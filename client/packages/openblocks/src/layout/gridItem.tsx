@@ -13,7 +13,10 @@ import React, {
 import { Resizable, ResizeCallbackData } from "react-resizable";
 import { TransparentImg } from "../util/commonUtils";
 import { calcGridItemPosition, calcWH, calcXY, clamp } from "./calculateUtils";
-import { CompSelectionWrapper, getGridItemPadding } from "./compSelectionWrapper";
+import {
+  CompSelectionWrapper,
+  getGridItemPadding,
+} from "./compSelectionWrapper";
 import { draggingUtils } from "./draggingUtils";
 import type { ResizeHandleAxis } from "./gridLayoutPropTypes";
 import Handle from "./handler";
@@ -62,9 +65,21 @@ export type GridItemProps = {
   layoutHide?: boolean;
   i: string;
   resizeHandles: ResizeHandleAxis[];
-  onDragStart?: (i: string, e: DragEvent<HTMLDivElement>, node: HTMLDivElement) => void;
-  onDrag?: (i: string, e: DragEvent<HTMLDivElement>, node: HTMLDivElement) => void;
-  onDragEnd?: (i: string, e: DragEvent<HTMLDivElement>, node: HTMLDivElement) => void;
+  onDragStart?: (
+    i: string,
+    e: DragEvent<HTMLDivElement>,
+    node: HTMLDivElement
+  ) => void;
+  onDrag?: (
+    i: string,
+    e: DragEvent<HTMLDivElement>,
+    node: HTMLDivElement
+  ) => void;
+  onDragEnd?: (
+    i: string,
+    e: DragEvent<HTMLDivElement>,
+    node: HTMLDivElement
+  ) => void;
   onResizeStart?: GridItemCallback<GridResizeEvent>;
   onResize?: GridItemCallback<GridResizeEvent>;
   onResizeStop?: GridItemCallback<GridResizeEvent>;
@@ -91,9 +106,19 @@ const ResizableStyled = styled(Resizable)`
  * An individual item within a ReactGridLayout.
  */
 export function GridItem(props: GridItemProps) {
-  const position = calcGridItemPosition(props, props.x, props.y, props.w, props.h);
-  const [resizing, setResizing] = useState<{ width: number; height: number } | undefined>();
-  const [dragging, setDragging] = useState<{ top: number; left: number } | undefined>();
+  const position = calcGridItemPosition(
+    props,
+    props.x,
+    props.y,
+    props.w,
+    props.h
+  );
+  const [resizing, setResizing] = useState<
+    { width: number; height: number } | undefined
+  >();
+  const [dragging, setDragging] = useState<
+    { top: number; left: number } | undefined
+  >();
   const elementRef = useRef<HTMLDivElement>(null);
 
   // record the real height of the comp content
@@ -120,7 +145,10 @@ export function GridItem(props: GridItemProps) {
     draggingUtils.clearData();
   };
 
-  const mixinDraggable = (child: ReactElement, isDraggable: boolean): ReactElement => {
+  const mixinDraggable = (
+    child: ReactElement,
+    isDraggable: boolean
+  ): ReactElement => {
     const { i } = props as Required<GridItemProps>;
     return (
       <div
@@ -157,8 +185,20 @@ export function GridItem(props: GridItemProps) {
     // This is the max possible width - doesn't go to infinity because of the width of the window
     const maxWidth = calcGridItemPosition(props, 0, 0, cols - x, 0).width;
     // Calculate min/max constraints using our min & maxes
-    const mins = calcGridItemPosition(props, 0, 0, minW as number, minH as number);
-    const maxes = calcGridItemPosition(props, 0, 0, maxW as number, maxH as number);
+    const mins = calcGridItemPosition(
+      props,
+      0,
+      0,
+      minW as number,
+      minH as number
+    );
+    const maxes = calcGridItemPosition(
+      props,
+      0,
+      0,
+      maxW as number,
+      maxH as number
+    );
     const minConstraints: [number, number] = [mins.width, mins.height];
     const maxConstraints: [number, number] = [
       Math.min(maxes.width, Infinity),
@@ -190,7 +230,10 @@ export function GridItem(props: GridItemProps) {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  const onResizeStop = (e: React.SyntheticEvent, callbackData: ResizeCallbackData) => {
+  const onResizeStop = (
+    e: React.SyntheticEvent,
+    callbackData: ResizeCallbackData
+  ) => {
     onResizeHandler(e, callbackData, "onResizeStop");
   };
 
@@ -199,7 +242,10 @@ export function GridItem(props: GridItemProps) {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  const onResizeStart = (e: React.SyntheticEvent, callbackData: ResizeCallbackData) => {
+  const onResizeStart = (
+    e: React.SyntheticEvent,
+    callbackData: ResizeCallbackData
+  ) => {
     onResizeHandler(e, callbackData, "onResizeStart");
   };
 
@@ -208,7 +254,10 @@ export function GridItem(props: GridItemProps) {
    * @param  {Event}  e             event data
    * @param  {Object} callbackData  an object with node and size information
    */
-  const onResize = (e: React.SyntheticEvent, callbackData: ResizeCallbackData) => {
+  const onResize = (
+    e: React.SyntheticEvent,
+    callbackData: ResizeCallbackData
+  ) => {
     onResizeHandler(e, callbackData, "onResize");
   };
 
@@ -260,7 +309,13 @@ export function GridItem(props: GridItemProps) {
           }
           localDragging = getDraggingNewPosition(localDragging, deltaX, deltaY);
         }
-        const xy = calcXY(props, localDragging.top, localDragging.left, props.w, props.h);
+        const xy = calcXY(
+          props,
+          localDragging.top,
+          localDragging.left,
+          props.w,
+          props.h
+        );
         [xx, yy] = [xy.x, xy.y];
       }
     }
@@ -286,17 +341,26 @@ export function GridItem(props: GridItemProps) {
     });
   };
 
-  const adjustWrapperHeight = (width?: number, height?: number, src?: string) => {
+  const adjustWrapperHeight = (
+    width?: number,
+    height?: number,
+    src?: string
+  ) => {
     if (_.isNil(height)) return;
     if (!width) {
       width = position.width;
     }
     const padding = getGridItemPadding(props.compType);
-    const { h } = calcWH(props, width + padding[0] * 2, height + padding[1] * 2, {
-      w: true,
-      h: true,
-      ceil: true,
-    });
+    const { h } = calcWH(
+      props,
+      width + padding[0] * 2,
+      height + padding[1] * 2,
+      {
+        w: true,
+        h: true,
+        ceil: true,
+      }
+    );
     if (props.h !== h) {
       props.onHeightChange?.(props.i, h);
     }
@@ -358,7 +422,8 @@ export function GridItem(props: GridItemProps) {
           // module container is not draggable and not show name
           show: !!(isDraggable && name),
           name: name,
-          pos: nameTop > 16 ? "top" : nameBottom > 16 ? "bottom" : "bottomInside",
+          pos:
+            nameTop > 16 ? "top" : nameBottom > 16 ? "bottom" : "bottomInside",
         }}
         placeholder={placeholder}
         onInnerResize={onInnerSizeChange}
@@ -384,7 +449,7 @@ export function GridItem(props: GridItemProps) {
       width = position.width;
       height = position.height;
     }
-
+    console.log("My Position", position);
     // If dragging, use the exact width and height as returned from dragging callbacks.
     if (dragging) {
       top = Math.round(dragging.top);
@@ -395,9 +460,23 @@ export function GridItem(props: GridItemProps) {
       left = position.left;
     }
     return { width, height, top, left };
-  }, [dragging, position.height, position.left, position.top, position.width, resizing]);
+  }, [
+    dragging,
+    position.height,
+    position.left,
+    position.top,
+    position.width,
+    resizing,
+  ]);
 
-  const { isDraggable, isResizable, layoutHide, children, isSelected, clickItem } = props;
+  const {
+    isDraggable,
+    isResizable,
+    layoutHide,
+    children,
+    isSelected,
+    clickItem,
+  } = props;
   const pos = calcPosition();
   const render = () => {
     let child = React.Children.only(children);
@@ -439,7 +518,13 @@ export function GridItem(props: GridItemProps) {
     return newChild;
   };
 
-  const renderResult = useMemo(render, [pos, children, layoutHide, isSelected, clickItem]);
+  const renderResult = useMemo(render, [
+    pos,
+    children,
+    layoutHide,
+    isSelected,
+    clickItem,
+  ]);
 
   return renderResult;
 }

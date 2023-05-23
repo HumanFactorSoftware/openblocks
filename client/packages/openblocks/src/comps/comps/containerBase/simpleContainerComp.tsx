@@ -1,33 +1,51 @@
 import { JSONValue } from "util/jsonTypes";
-import { changeValueAction, CustomAction, multiChangeAction } from "openblocks-core";
+import {
+  changeValueAction,
+  CustomAction,
+  multiChangeAction,
+} from "openblocks-core";
 import { ConstructorToDataType } from "openblocks-core";
 import { sameTypeMap, stateComp, valueComp } from "comps/generators";
 import { MultiCompBuilder } from "comps/generators/multi";
-import { addMapChildAction, multiMapAction } from "comps/generators/sameTypeMap";
+import {
+  addMapChildAction,
+  multiMapAction,
+} from "comps/generators/sameTypeMap";
 import { NameGenerator } from "comps/utils";
 import { genRandomKey } from "comps/utils/idGenerator";
-import { DEFAULT_POSITION_PARAMS, Layout, LayoutItem, PositionParams } from "layout";
+import {
+  DEFAULT_POSITION_PARAMS,
+  Layout,
+  LayoutItem,
+  PositionParams,
+} from "layout";
 import _ from "lodash";
 import { GridItemComp, GridItemDataType } from "../gridItemComp";
 import { IContainer, isContainer } from "./iContainer";
 import { CompTree, getCompTree } from "./utils";
-
+console.log("hii Called");
 const children = {
   layout: valueComp<Layout>({}),
   items: sameTypeMap(GridItemComp),
   positionParams: stateComp<PositionParams>(DEFAULT_POSITION_PARAMS),
 };
 
-const SimpleContainerTmpComp = new MultiCompBuilder(children, (props, dispatch) => {
-  return {
-    ...props,
-    dispatch: dispatch,
-  };
-})
+const SimpleContainerTmpComp = new MultiCompBuilder(
+  children,
+  (props, dispatch) => {
+    return {
+      ...props,
+      dispatch: dispatch,
+    };
+  }
+)
   .setPropertyViewFn(() => <></>)
   .build();
 
-export class SimpleContainerComp extends SimpleContainerTmpComp implements IContainer {
+export class SimpleContainerComp
+  extends SimpleContainerTmpComp
+  implements IContainer
+{
   realSimpleContainer(key?: string): SimpleContainerComp | undefined {
     const compMap = this.children.items.children;
     if (_.isNil(key) || compMap.hasOwnProperty(key)) {
