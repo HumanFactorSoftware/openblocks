@@ -103,7 +103,6 @@ export type UICompType =
   | "custom"
   | "jsonExplorer"
   | "jsonLottie"
-  | "formBuilder"
   | "jsonEditor"
   | "tree"
   | "treeSelect"

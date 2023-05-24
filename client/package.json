@@ -1,6 +1,6 @@
 {
   "name": "taco-fe",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "private": true,
   "workspaces": [
@@ -73,7 +73,6 @@
     "eslint-plugin-only-ascii@^0.0.0": "patch:eslint-plugin-only-ascii@npm%3A0.0.0#./.yarn/patches/eslint-plugin-only-ascii-npm-0.0.0-29e3417685.patch"
   },
   "dependencies": {
-    "@ginkgo-bioworks/react-json-schema-form-builder": "^2.10.1",
     "@lottiefiles/react-lottie-player": "^3.5.0",
     "antd-mobile": "^5.28.0",
     "chalk": "4",
