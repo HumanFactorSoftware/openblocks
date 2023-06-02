@@ -23,6 +23,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   RatingStyle,
   RatingStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { migrateOldData } from "comps/generators/simpleGenerators";
 import {
@@ -121,6 +123,9 @@ const getStyle = (style: RatingStyleType) => {
   return css`
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     .ant-rate {
       color: ${style.checked};

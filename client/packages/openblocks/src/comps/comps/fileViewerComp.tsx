@@ -2,6 +2,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   FileViewerStyle,
   FileViewerStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { isEmpty } from "lodash";
 import { useState } from "react";
@@ -20,6 +22,9 @@ import { trans } from "i18n";
 
 const getStyle = (style: FileViewerStyleType) => {
   return css`
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
+
     margin: ${style.margin};
     padding: ${style.padding};
 

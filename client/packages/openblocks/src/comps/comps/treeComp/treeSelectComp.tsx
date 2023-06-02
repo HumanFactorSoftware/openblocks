@@ -16,8 +16,10 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { styleControl } from "comps/controls/styleControl";
 import {
+  heightCalculator,
   TreeSelectStyle,
   TreeSelectStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { LabelControl } from "comps/controls/labelControl";
 import { dropdownControl } from "comps/controls/dropdownControl";
@@ -54,6 +56,13 @@ const StyledTreeSelect = styled(TreeSelect)<{ $style: TreeSelectStyleType }>`
   width: 100%;
   margin: ${(props) => props.$style.margin};
   padding: ${(props) => props.$style.padding};
+
+  width: ${(props) => {
+    return widthCalculator(props.$style.margin);
+  }};
+  height: ${(props) => {
+    return heightCalculator(props.$style.margin);
+  }};
 
   ${(props) => props.$style && getStyle(props.$style)}
 `;

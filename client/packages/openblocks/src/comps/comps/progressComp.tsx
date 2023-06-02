@@ -12,6 +12,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   ProgressStyle,
   ProgressStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { hiddenPropertyView } from "comps/utils/propertyUtils";
@@ -23,6 +25,9 @@ const getStyle = (style: ProgressStyleType) => {
     .ant-progress-text {
       color: ${style.text};
     }
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
+
     margin: ${style.margin};
     padding: ${style.padding};
 

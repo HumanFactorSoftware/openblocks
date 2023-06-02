@@ -37,8 +37,10 @@ import {
 import { RefControl } from "../../controls/refControl";
 import { styleControl } from "comps/controls/styleControl";
 import {
+  heightCalculator,
   InputLikeStyle,
   InputLikeStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import {
   disabledPropertyView,
@@ -70,6 +72,9 @@ const getStyle = (style: InputLikeStyleType) => {
       border-color: ${style.border};
       margin: ${style.margin};
       padding: ${style.padding};
+
+      width: ${widthCalculator(style.margin)};
+      height: ${heightCalculator(style.margin)};
 
       &.ant-input-number-focused {
         border-color: ${style.accent};

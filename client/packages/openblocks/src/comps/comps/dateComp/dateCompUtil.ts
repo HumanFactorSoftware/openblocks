@@ -1,7 +1,11 @@
 import moment, { Moment } from "moment/moment";
 import { DateParser, TimeParser } from "util/dateTimeUtils";
 import { range } from "lodash";
-import { DateTimeStyleType } from "../../controls/styleControlConstants";
+import {
+  DateTimeStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "../../controls/styleControlConstants";
 import { css } from "styled-components";
 import { isDarkColor, lightenColor } from "components/colorSelect/colorUtils";
 import { CommonPickerMethods } from "antd/lib/date-picker/generatePicker/interface";
@@ -74,6 +78,9 @@ export const getStyle = (style: DateTimeStyleType) => {
     border-width: ${style.borderWidth};
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     &:not(.ant-picker-disabled) {
       border-color: ${style.border};

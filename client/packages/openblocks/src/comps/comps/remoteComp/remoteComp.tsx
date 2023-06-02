@@ -3,7 +3,13 @@ import { simpleMultiComp } from "comps/generators";
 import { withExposingConfigs } from "comps/generators/withExposing";
 import { GreyTextColor } from "constants/style";
 import log from "loglevel";
-import { Comp, CompAction, CompParams, customAction, isCustomAction } from "openblocks-core";
+import {
+  Comp,
+  CompAction,
+  CompParams,
+  customAction,
+  isCustomAction,
+} from "openblocks-core";
 import { WhiteLoading } from "openblocks-design";
 import { useState } from "react";
 import { useMount } from "react-use";
@@ -97,18 +103,23 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
     }
 
     private async load() {
+      console.log("Loader Load", remoteInfo);
       if (!remoteInfo) {
         return;
       }
+      console.log("remote Info found 1");
       let finalLoader = loader;
       if (!loader) {
+        console.log("Final Loader not found", loaders);
         finalLoader = loaders[remoteInfo.source];
       }
       if (!finalLoader) {
         log.error("loader not found, remote info:", remoteInfo);
         return;
       }
+      console.log("Final Loader ", finalLoader);
       const RemoteExportedComp = await finalLoader(remoteInfo);
+      console.log("Final Loader ", RemoteExportedComp);
       if (!RemoteExportedComp) {
         return;
       }
@@ -134,8 +145,13 @@ export function remoteComp<T extends RemoteCompInfo = RemoteCompInfo>(
 
     getView() {
       const key = `${remoteInfo?.packageName}-${remoteInfo?.packageVersion}-${remoteInfo?.compName}`;
+      console.log("Key", remoteInfo);
       return (
-        <RemoteCompView key={key} loadComp={() => this.load()} loadingElement={loadingElement} />
+        <RemoteCompView
+          key={key}
+          loadComp={() => this.load()}
+          loadingElement={loadingElement}
+        />
       );
     }
 

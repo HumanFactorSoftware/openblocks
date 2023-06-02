@@ -6,11 +6,19 @@ import { darkenColor } from "components/colorSelect/colorUtils";
 import { Section, sectionNames } from "components/Section";
 import { IconControl } from "comps/controls/iconControl";
 import { styleControl } from "comps/controls/styleControl";
-import { FileStyle, FileStyleType } from "comps/controls/styleControlConstants";
+import {
+  FileStyle,
+  FileStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "comps/controls/styleControlConstants";
 import { withMethodExposing } from "comps/generators/withMethodExposing";
 import { hasIcon } from "comps/utils";
 import { getComponentDocUrl } from "comps/utils/compDocUtil";
-import { disabledPropertyView, hiddenPropertyView } from "comps/utils/propertyUtils";
+import {
+  disabledPropertyView,
+  hiddenPropertyView,
+} from "comps/utils/propertyUtils";
 import { trans } from "i18n";
 import _ from "lodash";
 import mime from "mime";
@@ -34,10 +42,20 @@ import {
   StringControl,
 } from "../../controls/codeControl";
 import { dropdownControl } from "../../controls/dropdownControl";
-import { changeEvent, eventHandlerControl } from "../../controls/eventHandlerControl";
+import {
+  changeEvent,
+  eventHandlerControl,
+} from "../../controls/eventHandlerControl";
 import { stateComp, UICompBuilder, withDefault } from "../../generators";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { formDataChildren, FormDataPropertyView } from "../formComp/formDataConstants";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
+import {
+  formDataChildren,
+  FormDataPropertyView,
+} from "../formComp/formDataConstants";
 
 const FileSizeControl = codeControl((value) => {
   if (typeof value === "number") {
@@ -60,7 +78,9 @@ const FileSizeControl = codeControl((value) => {
     const regExp = new RegExp("^\\d+\\s*[kmgt]b$", "i");
     if (regExp.test(str)) {
       const num: number = parseInt(str.match("^\\d+")?.[0] ?? "", 10);
-      const exponent = units.findIndex((unit) => str.search(new RegExp(unit, "i")) !== -1);
+      const exponent = units.findIndex(
+        (unit) => str.search(new RegExp(unit, "i")) !== -1
+      );
       return num * Math.pow(1024, exponent);
     }
   }
@@ -104,7 +124,9 @@ const commonChildren = {
   ...validationChildren,
 };
 
-const commonValidationFields = (children: RecordConstructorToComp<typeof validationChildren>) => [
+const commonValidationFields = (
+  children: RecordConstructorToComp<typeof validationChildren>
+) => [
   children.minSize.propertyView({
     label: trans("file.minSize"),
     placeholder: "1kb",
@@ -126,16 +148,19 @@ const commonProps = (
   multiple: props.uploadType === "multiple",
   directory: props.uploadType === "directory",
   showUploadList: props.showUploadList,
-  customRequest: (options: UploadRequestOption) => options.onSuccess && options.onSuccess({}), // Override the default upload logic and do not upload to the specified server
+  customRequest: (options: UploadRequestOption) =>
+    options.onSuccess && options.onSuccess({}), // Override the default upload logic and do not upload to the specified server
 });
 
 const getStyle = (style: FileStyleType) => {
   return css`
     .ant-btn {
       border-radius: ${style.radius};
-          margin: ${style.margin};
-    padding: ${style.padding};
+      margin: ${style.margin};
+      padding: ${style.padding};
 
+      width: ${widthCalculator(style.margin)};
+      height: ${heightCalculator(style.margin)};
     }
 
     .ant-btn:not(:disabled) {
@@ -157,7 +182,7 @@ const getStyle = (style: FileStyleType) => {
   `;
 };
 
-const StyledUpload = styled(AntdUpload) <{ $style: FileStyleType }>`
+const StyledUpload = styled(AntdUpload)<{ $style: FileStyleType }>`
   .ant-upload,
   .ant-btn {
     width: 100%;
@@ -206,9 +231,12 @@ export function resolveParsedValue(files: UploadFile[]) {
             const ext = mime.getExtension(f.originFileObj?.type ?? "");
             if (ext === "xlsx" || ext === "csv") {
               const workbook = XLSX.read(a, { raw: true });
-              return XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
-                raw: false,
-              });
+              return XLSX.utils.sheet_to_json(
+                workbook.Sheets[workbook.SheetNames[0]],
+                {
+                  raw: false,
+                }
+              );
             }
             const text = new TextDecoder("utf-8").decode(a);
             if (text) {
@@ -239,7 +267,8 @@ const Upload = (
     }
   }, [files]);
   // chrome86 bug: button children should not contain only empty span
-  const hasChildren = hasIcon(props.prefixIcon) || !!props.text || hasIcon(props.suffixIcon);
+  const hasChildren =
+    hasIcon(props.prefixIcon) || !!props.text || hasIcon(props.suffixIcon);
   return (
     <StyledUpload
       {...commonProps(props)}
@@ -261,7 +290,9 @@ const Upload = (
         return true;
       }}
       onChange={(param: UploadChangeParam) => {
-        const uploadingFiles = param.fileList.filter((f) => f.status === "uploading");
+        const uploadingFiles = param.fileList.filter(
+          (f) => f.status === "uploading"
+        );
         // the onChange callback will be executed when the state of the antd upload file changes.
         // so make a trick logic: the file list with loading will not be processed
         if (uploadingFiles.length !== 0) {
@@ -283,23 +314,38 @@ const Upload = (
           dispatch(
             multiChangeAction({
               value: changeValueAction(
-                [...props.value.slice(0, index), ...props.value.slice(index + 1)],
+                [
+                  ...props.value.slice(0, index),
+                  ...props.value.slice(index + 1),
+                ],
                 false
               ),
               files: changeValueAction(
-                [...props.files.slice(0, index), ...props.files.slice(index + 1)],
+                [
+                  ...props.files.slice(0, index),
+                  ...props.files.slice(index + 1),
+                ],
                 false
               ),
               parsedValue: changeValueAction(
-                [...props.parsedValue.slice(0, index), ...props.parsedValue.slice(index + 1)],
+                [
+                  ...props.parsedValue.slice(0, index),
+                  ...props.parsedValue.slice(index + 1),
+                ],
                 false
               ),
             })
           );
           props.onEvent("change");
         } else {
-          const unresolvedValueIdx = Math.min(props.value.length, uploadedFiles.length);
-          const unresolvedParsedValueIdx = Math.min(props.parsedValue.length, uploadedFiles.length);
+          const unresolvedValueIdx = Math.min(
+            props.value.length,
+            uploadedFiles.length
+          );
+          const unresolvedParsedValueIdx = Math.min(
+            props.parsedValue.length,
+            uploadedFiles.length
+          );
 
           // After all files are processed, perform base64 encoding on the latest file list uniformly
           Promise.all([
@@ -308,10 +354,21 @@ const Upload = (
           ]).then(([value, parsedValue]) => {
             dispatch(
               multiChangeAction({
-                value: changeValueAction([...props.value, ...value].slice(-maxFiles), false),
+                value: changeValueAction(
+                  [...props.value, ...value].slice(-maxFiles),
+                  false
+                ),
                 files: changeValueAction(
                   uploadedFiles
-                    .map((file) => _.pick(file, ["uid", "name", "type", "size", "lastModified"]))
+                    .map((file) =>
+                      _.pick(file, [
+                        "uid",
+                        "name",
+                        "type",
+                        "size",
+                        "lastModified",
+                      ])
+                    )
                     .slice(-maxFiles),
                   false
                 ),
@@ -336,9 +393,13 @@ const Upload = (
       <Button disabled={props.disabled}>
         {hasChildren && (
           <span>
-            {hasIcon(props.prefixIcon) && <IconWrapper>{props.prefixIcon}</IconWrapper>}
+            {hasIcon(props.prefixIcon) && (
+              <IconWrapper>{props.prefixIcon}</IconWrapper>
+            )}
             {!!props.text && props.text}
-            {hasIcon(props.suffixIcon) && <IconWrapper>{props.suffixIcon}</IconWrapper>}
+            {hasIcon(props.suffixIcon) && (
+              <IconWrapper>{props.suffixIcon}</IconWrapper>
+            )}
           </span>
         )}
       </Button>
@@ -374,14 +435,20 @@ let FileTmpComp = new UICompBuilder(childrenMap, (props, dispatch) => (
           tooltip: (
             <>
               {trans("file.reference")}{" "}
-              <a href={trans("file.fileTypeTooltipUrl")} target="_blank" rel="noreferrer">
+              <a
+                href={trans("file.fileTypeTooltipUrl")}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {trans("file.fileTypeTooltip")}
               </a>
             </>
           ),
         })}
         {children.uploadType.propertyView({ label: trans("file.uploadType") })}
-        {children.showUploadList.propertyView({ label: trans("file.showUploadList") })}
+        {children.showUploadList.propertyView({
+          label: trans("file.showUploadList"),
+        })}
         {children.parseFiles.propertyView({
           label: trans("file.parseFiles"),
           tooltip: ParseFileTooltip,
@@ -403,12 +470,18 @@ let FileTmpComp = new UICompBuilder(childrenMap, (props, dispatch) => (
       </Section>
 
       <Section name={sectionNames.layout}>
-        {children.prefixIcon.propertyView({ label: trans("button.prefixIcon") })}
-        {children.suffixIcon.propertyView({ label: trans("button.suffixIcon") })}
+        {children.prefixIcon.propertyView({
+          label: trans("button.prefixIcon"),
+        })}
+        {children.suffixIcon.propertyView({
+          label: trans("button.suffixIcon"),
+        })}
         {hiddenPropertyView(children)}
       </Section>
 
-      <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+      <Section name={sectionNames.style}>
+        {children.style.getPropertyView()}
+      </Section>
     </>
   ))
   .build();

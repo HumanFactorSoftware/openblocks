@@ -347,10 +347,6 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   const [currentRowHeight, setRowHeight] = useState(DEFAULT_ROW_HEIGHT);
   const editorState = useContext(EditorContext);
   const { readOnly } = useContext(ExternalEditorContext);
-  // const defaultGrid =
-  //   useContext(ThemeContext)?.theme?.gridColumns ||
-  //   defaultTheme?.gridColumns ||
-  //   "24";
   const defaultGrid =
     useContext(ThemeContext)?.theme?.gridColumns ||
     defaultTheme?.gridColumns ||
@@ -572,7 +568,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       rowHeight={currentRowHeight}
       overflow={props.overflow}
       extraHeight={props.extraHeight}
-      cols={parseInt(defaultGrid)}
+      cols={props.positionParams.cols}
       autoHeight={props.autoHeight}
       minHeight={props.minHeight}
       bgColor={props.bgColor}

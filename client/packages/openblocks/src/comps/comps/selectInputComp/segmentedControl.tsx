@@ -8,6 +8,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   SegmentStyle,
   SegmentStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { UICompBuilder } from "../../generators";
@@ -40,6 +42,9 @@ const getStyle = (style: SegmentStyleType) => {
   return css`
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     &.ant-segmented:not(.ant-segmented-disabled) {
       background-color: ${style.background};

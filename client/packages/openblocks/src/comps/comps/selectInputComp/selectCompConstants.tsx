@@ -33,9 +33,11 @@ import {
 } from "../formComp/formDataConstants";
 import {
   CascaderStyleType,
+  heightCalculator,
   MultiSelectStyleType,
   SelectStyleType,
   TreeSelectStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { stateComp, withDefault } from "../../generators";
 import {
@@ -62,6 +64,9 @@ export const getStyle = (
   return css`
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     &.ant-select .ant-select-selector,
     &.ant-select-multiple .ant-select-selection-item {

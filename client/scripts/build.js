@@ -7,7 +7,7 @@ import axios from "axios";
 import { buildVars } from "openblocks-dev-utils/buildVars.js";
 import { currentDirName, readJson } from "openblocks-dev-utils/util.js";
 
-const builtinPlugins = ["openblocks-comps"];
+const builtinPlugins = ["openblocks-comps-workmeet"];
 const curDirName = currentDirName(import.meta.url);
 
 async function downloadFile(url, dest) {
@@ -33,7 +33,9 @@ async function downloadBuiltinPlugin(name) {
   console.log();
   console.log(chalk.cyan`plugin ${name} downloading...`);
 
-  const packageRes = await axios.get(`https://registry.npmjs.com/${name}/latest`);
+  const packageRes = await axios.get(
+    `https://registry.npmjs.com/${name}/latest`
+  );
   const tarball = packageRes.data.dist.tarball;
   const tarballFileName = `${name}.tgz`;
   const targetDir = `./packages/openblocks/build/${name}/latest`;
@@ -44,7 +46,10 @@ async function downloadBuiltinPlugin(name) {
 
   await downloadFile(tarball, path.join(process.cwd(), tarballFileName));
 
-  shell.exec(`tar -zxf ${tarballFileName} -C ${targetDir} --strip-components 1`, { fatal: true });
+  shell.exec(
+    `tar -zxf ${tarballFileName} -C ${targetDir} --strip-components 1`,
+    { fatal: true }
+  );
   shell.rm(tarballFileName);
 }
 
@@ -57,11 +62,17 @@ async function buildBuiltinPlugin(name) {
 
   shell.exec(`yarn workspace ${name} build_only`, { fatal: true });
 
-  const packageJsonFile = path.join(curDirName, `../packages/${name}/package.json`);
+  const packageJsonFile = path.join(
+    curDirName,
+    `../packages/${name}/package.json`
+  );
   const packageJSON = readJson(packageJsonFile);
   const tarballFileName = `./packages/${name}/${name}-${packageJSON.version}.tgz`;
 
-  shell.exec(`tar -zxf ${tarballFileName} -C ${targetDir} --strip-components 1`, { fatal: true });
+  shell.exec(
+    `tar -zxf ${tarballFileName} -C ${targetDir} --strip-components 1`,
+    { fatal: true }
+  );
   shell.rm(tarballFileName);
 }
 
@@ -83,7 +94,9 @@ buildVars.forEach(({ name, defaultValue }) => {
   shell.env[name] = shell.env[name] ?? defaultValue;
 });
 
-shell.exec(`BUILD_TARGET=browserCheck yarn workspace openblocks build`, { fatal: true });
+shell.exec(`BUILD_TARGET=browserCheck yarn workspace openblocks build`, {
+  fatal: true,
+});
 shell.exec(`yarn workspace openblocks build`, { fatal: true });
 
 if (process.env.REACT_APP_BUNDLE_BUILTIN_PLUGIN) {
@@ -96,7 +109,9 @@ if (process.argv.includes("--internal-deploy")) {
   const deployDir = shell.env["DEPLOY_DIR"];
   console.log();
   console.log(chalk.cyan`deploying...`);
-  shell.exec("docker cp ./packages/openblocks/build openblocks-fe:/var/www/", { fatal: true });
+  shell.exec("docker cp ./packages/openblocks/build openblocks-fe:/var/www/", {
+    fatal: true,
+  });
   shell.exec(
     `docker exec openblocks-fe /bin/sh -c "cd /var/www/ && rm -rf ${deployDir} && mv build ${deployDir}"`,
     { fatal: true }
@@ -104,4 +119,6 @@ if (process.argv.includes("--internal-deploy")) {
 }
 
 console.log();
-console.log(chalk.green`Done! time: ${((Date.now() - start) / 1000).toFixed(2)}s`);
+console.log(
+  chalk.green`Done! time: ${((Date.now() - start) / 1000).toFixed(2)}s`
+);

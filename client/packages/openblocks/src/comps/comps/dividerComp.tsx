@@ -11,6 +11,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   DividerStyle,
   DividerStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { migrateOldData } from "comps/generators/simpleGenerators";
 import { hiddenPropertyView } from "comps/utils/propertyUtils";
@@ -25,7 +27,15 @@ const StyledDivider = styled(Divider)<IProps>`
     display: flex;
     align-items: center;
   }
-  margin: ${(props) => props.$style.margin};
+  width: ${(props) => {
+    return widthCalculator(props.$style.margin);
+  }};
+  height: ${(props) => {
+    return heightCalculator(props.$style.margin);
+  }};
+  margin: ${(props) => {
+    return props.$style.margin;
+  }};
   padding: ${(props) => props.$style.padding};
   border-top: 1px ${(props) => (props.dashed ? "dashed" : "solid")}
     ${(props) => props.$style.color};

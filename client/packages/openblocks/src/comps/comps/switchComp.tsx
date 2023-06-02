@@ -10,6 +10,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   SwitchStyle,
   SwitchStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { migrateOldData } from "comps/generators/simpleGenerators";
 import { Section, sectionNames } from "openblocks-design";
@@ -55,6 +57,9 @@ const getStyle = (style: SwitchStyleType) => {
   return css`
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     .ant-switch-handle::before {
       background-color: ${style.handle};

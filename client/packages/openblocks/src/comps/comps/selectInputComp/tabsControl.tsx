@@ -8,6 +8,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   SegmentStyle,
   SegmentStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { dropdownControl } from "comps/controls/dropdownControl";
 
@@ -39,6 +41,9 @@ const getStyle = (style: SegmentStyleType, orientation: string) => {
   return css`
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
 
     &.ant-segmented:not(.ant-segmented-disabled) {
       background-color: ${style.background};

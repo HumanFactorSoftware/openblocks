@@ -466,6 +466,8 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
     } = this.props as Required<GridLayoutProps>;
     const { showName } = this.props;
     const selectable = isSelectable;
+    const positionParams = genPositionParams(this.props);
+
     return (
       <GridItem
         compType={extraItem?.compType}
