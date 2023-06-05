@@ -27,10 +27,11 @@ const StyledDivider = styled(Divider)<IProps>`
     display: flex;
     align-items: center;
   }
+  min-width: 0;
   width: ${(props) => {
     return widthCalculator(props.$style.margin);
   }};
-  height: ${(props) => {
+  min-height: ${(props) => {
     return heightCalculator(props.$style.margin);
   }};
   margin: ${(props) => {

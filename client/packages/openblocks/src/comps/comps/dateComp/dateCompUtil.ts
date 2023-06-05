@@ -76,11 +76,7 @@ export const getStyle = (style: DateTimeStyleType) => {
   return css`
     border-radius: ${style.radius};
     border-width: ${style.borderWidth};
-    margin: ${style.margin};
     padding: ${style.padding};
-
-    width: ${widthCalculator(style.margin)};
-    height: ${heightCalculator(style.margin)};
 
     &:not(.ant-picker-disabled) {
       border-color: ${style.border};

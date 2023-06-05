@@ -54,16 +54,6 @@ import { RefControl } from "comps/controls/refControl";
 
 const StyledTreeSelect = styled(TreeSelect)<{ $style: TreeSelectStyleType }>`
   width: 100%;
-  margin: ${(props) => props.$style.margin};
-  padding: ${(props) => props.$style.padding};
-
-  width: ${(props) => {
-    return widthCalculator(props.$style.margin);
-  }};
-  height: ${(props) => {
-    return heightCalculator(props.$style.margin);
-  }};
-
   ${(props) => props.$style && getStyle(props.$style)}
 `;
 

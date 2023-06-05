@@ -26,20 +26,11 @@ import { trans } from "i18n";
 
 const getStyle = (style: RadioStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
-    width: ${widthCalculator(style.margin)};
-    height: ${heightCalculator(style.margin)};
-
     .ant-radio-wrapper:not(.ant-radio-wrapper-disabled) {
       color: ${style.staticText};
-      height: 22px;
+      // height: 22px;
       max-width: calc(100% - 8px);
-
-      margin: ${style.margin};
       padding: ${style.padding};
-
       span:not(.ant-radio) {
         ${EllipsisTextCss};
       }

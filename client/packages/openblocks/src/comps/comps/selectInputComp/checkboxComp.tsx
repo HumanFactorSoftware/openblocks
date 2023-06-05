@@ -34,20 +34,10 @@ import { RefControl } from "comps/controls/refControl";
 
 export const getStyle = (style: CheckboxStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
-    width: ${widthCalculator(style.margin)};
-    height: ${heightCalculator(style.margin)};
-
     &,
     .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled) {
       color: ${style.staticText};
       max-width: calc(100% - 8px);
-
-      margin: ${style.margin};
-      padding: ${style.padding};
-
       span:not(.ant-checkbox) {
         ${EllipsisTextCss};
       }
@@ -82,6 +72,7 @@ export const getStyle = (style: CheckboxStyleType) => {
     }
 
     .ant-checkbox-wrapper {
+      padding: ${style.padding};
       .ant-checkbox-inner,
       .ant-checkbox-checked::after {
         border-radius: ${style.radius};

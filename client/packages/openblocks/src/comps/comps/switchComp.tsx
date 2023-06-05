@@ -55,11 +55,7 @@ const EventOptions = [
 
 const getStyle = (style: SwitchStyleType) => {
   return css`
-    margin: ${style.margin};
     padding: ${style.padding};
-
-    width: ${widthCalculator(style.margin)};
-    height: ${heightCalculator(style.margin)};
 
     .ant-switch-handle::before {
       background-color: ${style.handle};

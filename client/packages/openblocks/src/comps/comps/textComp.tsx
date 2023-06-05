@@ -31,16 +31,16 @@ const getStyle = (style: TextStyleType) => {
     border-radius: 4px;
     color: ${style.text};
     background-color: ${style.background};
-    margin: ${style.margin};
-    padding: ${style.padding};
-
-    width: ${widthCalculator(style.margin)};
-    height: ${heightCalculator(style.margin)};
 
     .markdown-body a {
       color: ${style.links};
     }
     .markdown-body {
+      margin: ${style.margin} !important;
+      padding: ${style.padding};
+
+      width: ${widthCalculator(style.margin)};
+      height: ${heightCalculator(style.margin)};
       h1 {
         line-height: 1.5;
       }

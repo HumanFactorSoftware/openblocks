@@ -1011,7 +1011,7 @@ export type RichTextEditorStyleType = StyleConfigType<
 >;
 
 export function widthCalculator(margin: string) {
-  const marginArr = margin.trim().split(" ");
+  const marginArr = margin?.trim().split(" ") || "";
   if (marginArr.length === 1) {
     return `calc(100% - ${
       parseInt(margin.replace(/[^\d.]/g, "")) * 2 + margin.replace(/[0-9]/g, "")
@@ -1023,17 +1023,17 @@ export function widthCalculator(margin: string) {
     })`;
   } else {
     return `calc(100% - ${
-      parseInt(marginArr[1].replace(/[^\d.]/g, "")) +
-      marginArr[1].replace(/[0-9]/g, "")
+      parseInt(marginArr[1]?.replace(/[^\d.]/g, "") || "0") +
+      marginArr[1]?.replace(/[0-9]/g, "" || "px")
     } - ${
-      parseInt(marginArr[3].replace(/[^\d.]/g, "")) +
-      marginArr[3].replace(/[0-9]/g, "")
+      parseInt(marginArr[3]?.replace(/[^\d.]/g, "") || "0") +
+      marginArr[3]?.replace(/[0-9]/g, "" || "px")
     })`;
   }
 }
 
 export function heightCalculator(margin: string) {
-  const marginArr = margin.trim().split(" ");
+  const marginArr = margin?.trim().split(" ") || "";
   if (marginArr.length === 1) {
     return `calc(100% - ${
       parseInt(margin.replace(/[^\d.]/g, "")) * 2 + margin.replace(/[0-9]/g, "")
@@ -1045,11 +1045,11 @@ export function heightCalculator(margin: string) {
     })`;
   } else {
     return `calc(100% - ${
-      parseInt(marginArr[0].replace(/[^\d.]/g, "")) +
-      marginArr[0].replace(/[0-9]/g, "")
+      parseInt(marginArr[0]?.replace(/[^\d.]/g, "") || "0") +
+        marginArr[0]?.replace(/[0-9]/g, "") || "px"
     } - ${
-      parseInt(marginArr[2].replace(/[^\d.]/g, "")) +
-      marginArr[2].replace(/[0-9]/g, "")
+      parseInt(marginArr[2]?.replace(/[^\d.]/g, "") || "0") +
+        marginArr[2]?.replace(/[0-9]/g, "") || "px"
     })`;
   }
 }
