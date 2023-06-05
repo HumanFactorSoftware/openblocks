@@ -17,8 +17,10 @@ import { eventHandlerControl } from "comps/controls/eventHandlerControl";
 import { TabsOptionControl } from "comps/controls/optionsControl";
 import { styleControl } from "comps/controls/styleControl";
 import {
+  heightCalculator,
   TabContainerStyle,
   TabContainerStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { sameTypeMap, UICompBuilder, withDefault } from "comps/generators";
 import { addMapChildAction } from "comps/generators/sameTypeMap";
@@ -86,6 +88,9 @@ const getStyle = (style: TabContainerStyleType) => {
       overflow: hidden;
       margin: ${style.margin};
       padding: ${style.padding};
+
+      width: ${widthCalculator(style.margin)};
+      height: ${heightCalculator(style.margin)};
 
       > .ant-tabs-content-holder
         > .ant-tabs-content

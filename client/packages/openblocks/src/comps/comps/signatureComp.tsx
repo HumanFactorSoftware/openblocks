@@ -1,4 +1,3 @@
-
 import { DeleteOutlined } from "@ant-design/icons";
 import { Skeleton } from "antd";
 import { BoolControl } from "comps/controls/boolControl";
@@ -8,8 +7,10 @@ import { LabelControl } from "comps/controls/labelControl";
 import { styleControl } from "comps/controls/styleControl";
 import {
   contrastColor,
+  heightCalculator,
   SignatureStyle,
   SignatureStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { stateComp, withDefault } from "comps/generators/simpleGenerators";
 import { hiddenPropertyView } from "comps/utils/propertyUtils";
@@ -21,8 +22,15 @@ import ReactResizeDetector from "react-resize-detector";
 import type SignatureCanvasType from "react-signature-canvas";
 import styled from "styled-components";
 import { UICompBuilder } from "../generators";
-import { NameConfig, NameConfigHidden, withExposingConfigs } from "../generators/withExposing";
-import { formDataChildren, FormDataPropertyView } from "./formComp/formDataConstants";
+import {
+  NameConfig,
+  NameConfigHidden,
+  withExposingConfigs,
+} from "../generators/withExposing";
+import {
+  formDataChildren,
+  FormDataPropertyView,
+} from "./formComp/formDataConstants";
 
 const Wrapper = styled.div<{ $style: SignatureStyleType; isEmpty: boolean }>`
   height: 100%;
@@ -34,8 +42,14 @@ const Wrapper = styled.div<{ $style: SignatureStyleType; isEmpty: boolean }>`
   overflow: hidden;
   width: 100%;
   height: 100%;
-  margin: ${(props)=>props.$style.margin};
-  padding: ${(props)=>props.$style.padding};
+  width: ${(props) => {
+    return widthCalculator(props.$style.margin);
+  }};
+  height: ${(props) => {
+    return heightCalculator(props.$style.margin);
+  }};
+  margin: ${(props) => props.$style.margin};
+  padding: ${(props) => props.$style.padding};
 
   .signature {
     background-color: ${(props) => props.$style.background};

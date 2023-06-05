@@ -1,5 +1,9 @@
 import { Radio as AntdRadio } from "antd";
-import { RadioStyleType } from "comps/controls/styleControlConstants";
+import {
+  RadioStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { UICompBuilder } from "../../generators";
 import {
@@ -22,17 +26,11 @@ import { trans } from "i18n";
 
 const getStyle = (style: RadioStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
     .ant-radio-wrapper:not(.ant-radio-wrapper-disabled) {
       color: ${style.staticText};
-      height: 22px;
+      // height: 22px;
       max-width: calc(100% - 8px);
-
-      margin: ${style.margin};
       padding: ${style.padding};
-
       span:not(.ant-radio) {
         ${EllipsisTextCss};
       }

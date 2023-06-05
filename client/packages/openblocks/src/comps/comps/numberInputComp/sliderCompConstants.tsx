@@ -21,8 +21,7 @@ import { trans } from "i18n";
 
 const getStyle = (style: SliderStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
+    margin: 0 !important;
     &.ant-slider:not(.ant-slider-disabled) {
       &,
       &:hover,

@@ -14334,9 +14334,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"openblocks-comps@workspace:packages/openblocks-comps":
+"openblocks-comps-workmeet@workspace:packages/openblocks-comps-workmeet":
   version: 0.0.0-use.local
-  resolution: "openblocks-comps@workspace:packages/openblocks-comps"
+  resolution: "openblocks-comps-workmeet@workspace:packages/openblocks-comps-workmeet"
   dependencies:
     "@fullcalendar/core": ^6.0.3
     "@fullcalendar/daygrid": ^6.0.3

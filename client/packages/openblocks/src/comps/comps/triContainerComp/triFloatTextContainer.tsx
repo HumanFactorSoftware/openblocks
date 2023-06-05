@@ -1,4 +1,8 @@
-import { ContainerStyleType } from "comps/controls/styleControlConstants";
+import {
+  ContainerStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "comps/controls/styleControlConstants";
 import { EditorContext } from "comps/editorState";
 import { BackgroundColorContext } from "comps/utils/backgroundColorContext";
 import { HintPlaceHolder, TacoMarkDown } from "openblocks-design";
@@ -19,6 +23,9 @@ const getStyle = (style: ContainerStyleType) => {
     overflow: hidden;
     margin: ${style.margin};
     padding: ${style.padding};
+
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
   `;
 };
 

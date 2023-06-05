@@ -19,6 +19,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   ImageStyle,
   ImageStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { hiddenPropertyView } from "comps/utils/propertyUtils";
 import { trans } from "i18n";
@@ -55,6 +57,8 @@ const getStyle = (style: ImageStyleType) => {
       border-radius: ${style.radius};
       margin: ${style.margin};
       padding: ${style.padding};
+      max-width: ${widthCalculator(style.margin)};
+      max-height: ${heightCalculator(style.margin)};
     }
 
     .ant-image-mask {

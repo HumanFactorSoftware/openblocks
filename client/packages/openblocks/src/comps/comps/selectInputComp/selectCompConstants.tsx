@@ -33,9 +33,11 @@ import {
 } from "../formComp/formDataConstants";
 import {
   CascaderStyleType,
+  heightCalculator,
   MultiSelectStyleType,
   SelectStyleType,
   TreeSelectStyleType,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { stateComp, withDefault } from "../../generators";
 import {
@@ -60,18 +62,28 @@ export const getStyle = (
     | TreeSelectStyleType
 ) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
     &.ant-select .ant-select-selector,
     &.ant-select-multiple .ant-select-selection-item {
       border-radius: ${style.radius};
       border-width: ${style.borderWidth};
+      padding: ${style.padding};
+      height: auto;
+    }
+    .ant-select-selection-search {
+      padding: ${style.padding};
+    }
+    .ant-select-selector::after,
+    .ant-select-selection-placeholder,
+    .ant-select-selection-item {
+      line-height: 1.576 !important;
     }
 
     &.ant-select:not(.ant-select-disabled) {
       color: ${style.text};
-
+      .ant-select-selection-placeholder,
+      .ant-select-selection-item {
+        line-height: 1.57;
+      }
       .ant-select-selection-placeholder,
       &.ant-select-single.ant-select-open .ant-select-selection-item {
         color: ${style.text};

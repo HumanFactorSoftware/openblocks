@@ -2,9 +2,21 @@ import { trans } from "i18n";
 import { Section, sectionNames } from "openblocks-design";
 import { numberExposingStateControl } from "../../controls/codeStateControl";
 import { UICompBuilder } from "../../generators";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
-import { formDataChildren, FormDataPropertyView } from "../formComp/formDataConstants";
-import { SliderChildren, SliderPropertyView, SliderStyled, SliderWrapper } from "./sliderCompConstants";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
+import {
+  formDataChildren,
+  FormDataPropertyView,
+} from "../formComp/formDataConstants";
+import {
+  SliderChildren,
+  SliderPropertyView,
+  SliderStyled,
+  SliderWrapper,
+} from "./sliderCompConstants";
 import { hasIcon } from "comps/utils";
 
 const SliderBasicComp = (function () {

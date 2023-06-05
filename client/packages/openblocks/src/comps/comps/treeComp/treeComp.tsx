@@ -31,7 +31,7 @@ type TreeStyleType = StyleConfigType<typeof TreeStyle>;
 
 const Container = styled.div<TreeStyleType>`
   height: 100%;
-  padding: 4px;
+  padding: ${(props) => props.padding};
   background: ${(props) => props.background};
   border: ${(props) => props.borderWidth} solid ${(props) => props.border};
   border-radius: ${(props) => props.radius};
