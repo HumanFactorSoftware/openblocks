@@ -85,7 +85,7 @@ const CheckboxGroup = styled(Checkbox.Group)<{
   $style: CheckboxStyleType;
   $layout: ValueFromOption<typeof RadioLayoutOptions>;
 }>`
-  min-height: 32px;
+  min-height: 24px;
   ${(props) => props.$style && getStyle(props.$style)}
   ${(props) => {
     if (props.$layout === "horizontal") {

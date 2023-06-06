@@ -74,7 +74,7 @@ const SwitchWrapper = styled.div<{
   disabled: boolean;
   $style: SwitchStyleType;
 }>`
-  min-height: 32px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   // Can respond to drag & select events when disabled

@@ -18,10 +18,16 @@ import {
   TextInputValidationSection,
   useTextInputProps,
 } from "./textInputConstants";
-import { withMethodExposing, refMethods } from "../../generators/withMethodExposing";
+import {
+  withMethodExposing,
+  refMethods,
+} from "../../generators/withMethodExposing";
 import { styleControl } from "comps/controls/styleControl";
 import styled from "styled-components";
-import { InputLikeStyle, InputLikeStyleType } from "comps/controls/styleControlConstants";
+import {
+  InputLikeStyle,
+  InputLikeStyleType,
+} from "comps/controls/styleControlConstants";
 import { TextArea } from "components/TextArea";
 import {
   allowClearPropertyView,
@@ -43,7 +49,9 @@ const Wrapper = styled.div<{
   $style: InputLikeStyleType;
 }>`
   height: 100%;
-
+  textarea.ant-input {
+    min-height: 24px;
+  }
   .ant-input-clear-icon {
     opacity: 0.45;
     color: ${(props) => props.$style.text};
@@ -104,7 +112,9 @@ let TextAreaTmpComp = (function () {
           {hiddenPropertyView(children)}
         </Section>
 
-        <Section name={sectionNames.style}>{children.style.getPropertyView()}</Section>
+        <Section name={sectionNames.style}>
+          {children.style.getPropertyView()}
+        </Section>
       </>
     ))
     .build();

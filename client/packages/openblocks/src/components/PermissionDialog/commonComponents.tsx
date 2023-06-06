@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { AdminIcon, CustomSelect, GroupIcon, WhiteLoading } from "openblocks-design";
+import {
+  AdminIcon,
+  CustomSelect,
+  GroupIcon,
+  WhiteLoading,
+} from "openblocks-design";
 import React from "react";
 
 export const StyledRoleSelect = styled(CustomSelect)`
@@ -30,6 +35,11 @@ export const StyledRoleSelect = styled(CustomSelect)`
     color: #333333;
     text-align: right;
     line-height: 15px;
+  }
+  .ant-select-single:not(.ant-select-customize-input)
+    .ant-select-selector
+    .ant-select-selection-search-input {
+    height: 100%;
   }
 `;
 
