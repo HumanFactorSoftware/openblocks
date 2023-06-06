@@ -302,6 +302,10 @@ export const en = {
     gridColumns: "Grid Columns",
     gridColumnsDesc:
       "The default number of columns is typically used for most containers",
+    margin: "Margin",
+    marginDesc: "The default margin is typically used for most components",
+    padding: "Padding",
+    paddingDesc: "The default padding is typically used for most components",
   },
   style: {
     resetTooltip:

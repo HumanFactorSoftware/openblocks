@@ -4,11 +4,17 @@ import {
   ConfigItem,
   GridColumns,
   Radius,
+  Margin,
+  Padding,
 } from "../pages/setting/theme/styledComponents";
 import { isValidColor, toHex } from "components/colorSelect/colorUtils";
 import { ColorSelect } from "components/colorSelect";
 import { TacoInput } from "components/tacoInput";
-import { TableCellsIcon as GridIcon } from "openblocks-design";
+import {
+  TableCellsIcon as GridIcon,
+  ExpandIcon,
+  CompressIcon,
+} from "openblocks-design";
 
 export type configChangeParams = {
   colorKey: string;
@@ -16,6 +22,8 @@ export type configChangeParams = {
   radius?: string;
   chart?: string;
   gridColumns?: string;
+  margin?: string;
+  padding?: string;
 };
 
 type ColorConfigProps = {
@@ -26,6 +34,8 @@ type ColorConfigProps = {
   color?: string;
   radius?: string;
   gridColumns?: string;
+  margin?: string;
+  padding?: string;
   configChange: (params: configChangeParams) => void;
   showVarName?: boolean;
 };
@@ -38,12 +48,16 @@ export default function ColorPicker(props: ColorConfigProps) {
     color: defaultColor,
     radius: defaultRadius,
     gridColumns: defaultGridColumns,
+    margin: defaultMargin,
+    padding: defaultPadding,
     configChange,
     showVarName = true,
   } = props;
   const configChangeWithDebounce = _.debounce(configChange, 0);
   const [color, setColor] = useState(defaultColor);
   const [radius, setRadius] = useState(defaultRadius);
+  const [margin, setMargin] = useState(defaultMargin);
+  const [padding, setPadding] = useState(defaultPadding);
   const [gridColumns, setGridColumns] = useState(defaultGridColumns);
   const varName = `(${colorKey})`;
 
@@ -69,6 +83,36 @@ export default function ColorPicker(props: ColorConfigProps) {
     }
     setRadius(result);
     configChange({ colorKey, radius: result });
+  };
+
+  const marginInputBlur = (margin: string) => {
+    let result = "";
+    if (!margin || Number(margin) === 0) {
+      result = "0";
+    } else if (/^[0-9]+$/.test(margin)) {
+      result = Number(margin) + "px";
+    } else if (/^[0-9]+(px|%)$/.test(margin)) {
+      result = margin;
+    } else {
+      result = "3px";
+    }
+    setMargin(result);
+    configChange({ colorKey, margin: result });
+  };
+
+  const paddingInputBlur = (padding: string) => {
+    let result = "";
+    if (!padding || Number(padding) === 0) {
+      result = "0";
+    } else if (/^[0-9]+$/.test(padding)) {
+      result = Number(padding) + "px";
+    } else if (/^[0-9]+(px|%)$/.test(padding)) {
+      result = padding;
+    } else {
+      result = "3px";
+    }
+    setPadding(result);
+    configChange({ colorKey, padding: result });
   };
 
   const gridColumnsInputBlur = (gridColumns: string) => {
@@ -98,6 +142,14 @@ export default function ColorPicker(props: ColorConfigProps) {
   }, [defaultRadius]);
 
   useEffect(() => {
+    setMargin(defaultMargin);
+  }, [defaultMargin]);
+
+  useEffect(() => {
+    setPadding(defaultPadding);
+  }, [defaultPadding]);
+
+  useEffect(() => {
     setGridColumns(defaultGridColumns);
   }, [defaultGridColumns]);
 
@@ -109,24 +161,27 @@ export default function ColorPicker(props: ColorConfigProps) {
         </div>
         <div className="desc">{desc}</div>
       </div>
-      {colorKey !== "borderRadius" && colorKey !== "gridColumns" && (
-        <div className="config-input">
-          <ColorSelect
-            changeColor={_.debounce(setColor, 500, {
-              leading: true,
-              trailing: true,
-            })}
-            color={color!}
-            trigger="hover"
-          />
-          <TacoInput
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            onBlur={colorInputBlur}
-            onKeyUp={(e) => e.nativeEvent.key === "Enter" && colorInputBlur()}
-          />
-        </div>
-      )}
+      {colorKey !== "borderRadius" &&
+        colorKey !== "gridColumns" &&
+        colorKey !== "margin" &&
+        colorKey !== "padding" && (
+          <div className="config-input">
+            <ColorSelect
+              changeColor={_.debounce(setColor, 500, {
+                leading: true,
+                trailing: true,
+              })}
+              color={color!}
+              trigger="hover"
+            />
+            <TacoInput
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              onBlur={colorInputBlur}
+              onKeyUp={(e) => e.nativeEvent.key === "Enter" && colorInputBlur()}
+            />
+          </div>
+        )}
       {colorKey === "borderRadius" && (
         <div className="config-input">
           <Radius radius={defaultRadius || "0"}>
@@ -141,6 +196,42 @@ export default function ColorPicker(props: ColorConfigProps) {
             onKeyUp={(e) =>
               e.nativeEvent.key === "Enter" &&
               radiusInputBlur(e.currentTarget.value)
+            }
+          />
+        </div>
+      )}
+      {colorKey === "margin" && (
+        <div className="config-input">
+          <Margin margin={defaultMargin || "3px"}>
+            <div>
+              <ExpandIcon title="" />
+            </div>
+          </Margin>
+          <TacoInput
+            value={margin}
+            onChange={(e) => setMargin(e.target.value)}
+            onBlur={(e) => marginInputBlur(e.target.value)}
+            onKeyUp={(e) =>
+              e.nativeEvent.key === "Enter" &&
+              marginInputBlur(e.currentTarget.value)
+            }
+          />
+        </div>
+      )}
+      {colorKey === "padding" && (
+        <div className="config-input">
+          <Padding padding={defaultPadding || "3px"}>
+            <div>
+              <CompressIcon title="" />
+            </div>
+          </Padding>
+          <TacoInput
+            value={padding}
+            onChange={(e) => setPadding(e.target.value)}
+            onBlur={(e) => paddingInputBlur(e.target.value)}
+            onKeyUp={(e) =>
+              e.nativeEvent.key === "Enter" &&
+              paddingInputBlur(e.currentTarget.value)
             }
           />
         </div>

@@ -228,7 +228,9 @@ export const ThemeBtn = styled.div<{ theme: ThemeDetail }>`
   position: relative;
   cursor: pointer;
   color: ${(props) =>
-    isDarkColor(props.theme.primarySurface) ? props.theme.textLight : props.theme.textDark};
+    isDarkColor(props.theme.primarySurface)
+      ? props.theme.textLight
+      : props.theme.textDark};
   .name {
     font-size: 13px;
     font-weight: 600;
@@ -257,7 +259,8 @@ export const ThemeBtn = styled.div<{ theme: ThemeDetail }>`
       display: flex;
       align-items: center;
       padding: 0 6px;
-      border-bottom: 1px solid ${(props) => darkenColor(props.theme.primarySurface, 0.1)};
+      border-bottom: 1px solid
+        ${(props) => darkenColor(props.theme.primarySurface, 0.1)};
     }
     > div:nth-of-type(1) {
       height: 28px;
@@ -329,7 +332,9 @@ export const ThemeBtn = styled.div<{ theme: ThemeDetail }>`
         justify-content: center;
         background-color: ${(props) => props.theme.primary};
         color: ${(props) =>
-    isDarkColor(props.theme.primary) ? props.theme.textLight : props.theme.textDark};
+          isDarkColor(props.theme.primary)
+            ? props.theme.textLight
+            : props.theme.textDark};
       }
     }
   }
@@ -450,6 +455,28 @@ export const Radius = styled.div<{ radius: string }>`
       width: 24px;
       border: 2px solid #777;
       border-radius: ${(props) => props.radius};
+    }
+  }
+`;
+
+export const Margin = styled.div<{ margin: string }>`
+  > div {
+    margin: 3px;
+    overflow: hidden;
+      > svg {
+        fill: currentColor;
+      }
+    }
+  }
+`;
+
+export const Padding = styled.div<{ padding: string }>`
+  > div {
+    margin: 3px;
+    overflow: hidden;
+      > svg {
+        fill: currentColor;
+      }
     }
   }
 `;
