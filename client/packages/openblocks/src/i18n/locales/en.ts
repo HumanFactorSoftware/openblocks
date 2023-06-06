@@ -1,7 +1,7 @@
 import table from "./componentDocExtra/table.md?url";
 
 export const en = {
-  productName: "Openblocks",
+  productName: "Lowcoder",
   productDesc: "Build internal tools fast, with no limitations",
   notSupportedBrowser:
     "Your current browser may have compatibility issues. For a better user experience, it is recommended to use the latest version of the Chrome browser.",
