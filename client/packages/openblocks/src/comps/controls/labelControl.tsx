@@ -155,7 +155,6 @@ export const LabelControl = (function () {
   return new MultiCompBuilder(
     childrenMap,
     (props) => (args: LabelViewProps) => {
-      console.log("Args", args, props);
       return (
         <LabelViewWrapper $style={args.style}>
           <MainWrapper
