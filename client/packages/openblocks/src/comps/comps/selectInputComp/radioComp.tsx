@@ -69,7 +69,7 @@ const Radio = styled(AntdRadio.Group)<{
   $layout: ValueFromOption<typeof RadioLayoutOptions>;
 }>`
   width: 100%;
-  min-height: 32px;
+  min-height: 24px;
 
   ${(props) => props.$style && getStyle(props.$style)}
   ${(props) => {

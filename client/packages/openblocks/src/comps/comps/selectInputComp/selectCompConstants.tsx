@@ -75,14 +75,14 @@ export const getStyle = (
     .ant-select-selector::after,
     .ant-select-selection-placeholder,
     .ant-select-selection-item {
-      line-height: 1.576 !important;
+      line-height: 1.5715 !important;
     }
 
     &.ant-select:not(.ant-select-disabled) {
       color: ${style.text};
       .ant-select-selection-placeholder,
       .ant-select-selection-item {
-        line-height: 1.57;
+        line-height: 1.5715 !important;
       }
       .ant-select-selection-placeholder,
       &.ant-select-single.ant-select-open .ant-select-selection-item {

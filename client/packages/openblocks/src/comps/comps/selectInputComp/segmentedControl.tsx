@@ -69,7 +69,7 @@ const getStyle = (style: SegmentStyleType) => {
 
 const Segmented = styled(AntdSegmented)<{ $style: SegmentStyleType }>`
   width: 100%;
-  min-height: 32px; // keep the height unchanged when there are no options
+  min-height: 24px; // keep the height unchanged when there are no options
   ${(props) => props.$style && getStyle(props.$style)}
 `;
 
