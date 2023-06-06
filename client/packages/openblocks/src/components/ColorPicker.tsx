@@ -94,7 +94,7 @@ export default function ColorPicker(props: ColorConfigProps) {
     } else if (/^[0-9]+(px|%)$/.test(margin)) {
       result = margin;
     } else {
-      result = "0";
+      result = "3px";
     }
     setMargin(result);
     configChange({ colorKey, margin: result });
@@ -109,7 +109,7 @@ export default function ColorPicker(props: ColorConfigProps) {
     } else if (/^[0-9]+(px|%)$/.test(padding)) {
       result = padding;
     } else {
-      result = "0";
+      result = "3px";
     }
     setPadding(result);
     configChange({ colorKey, padding: result });
