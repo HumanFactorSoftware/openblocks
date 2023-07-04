@@ -14,15 +14,15 @@ export type PositionParams = Pick<
   | "maxRows"
 >;
 let gridColumns: number;
-setTimeout(() => {
-  const commonSettings = reduxStore.getState()?.ui?.commonSettings;
-  if (commonSettings) {
-    const themeList = commonSettings.settings?.themeList;
-    if (themeList?.length) {
-      gridColumns = themeList[0]?.theme?.gridColumns;
-    }
-  }
-}, 1000);
+// setTimeout(() => {
+//   const commonSettings = reduxStore.getState()?.ui?.commonSettings;
+//   if (commonSettings) {
+//     const themeList = commonSettings.settings?.themeList;
+//     if (themeList?.length) {
+//       gridColumns = themeList[0]?.theme?.gridColumns;
+//     }
+//   }
+// }, 1000);
 const getDefaultGridColumns = () => {
   return gridColumns;
 };
