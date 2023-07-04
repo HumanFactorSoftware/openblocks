@@ -149,14 +149,14 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
 
     // We need to regenerate the layout.
     if (newLayoutBase) {
-      const newLayout = synchronizeLayoutWithChildren(
-        newLayoutBase,
-        nextProps.children,
-        nextProps.cols as number
-      );
+      // const newLayout = synchronizeLayoutWithChildren(
+      //   newLayoutBase,
+      //   nextProps.children,
+      //   nextProps.cols as number
+      // );
       // log.debug("layout: getDrivedState. nextProps: ", nextProps.layout, " prevState: ", prevState.layout, " newLayoutBase: ", newLayoutBase, " newLayout: ", newLayout);
       return {
-        layout: newLayout,
+        layout: nextProps.layout,
         // We need to save these props to state for using
         // getDerivedStateFromProps instead of componentDidMount (in which we would get extra rerender)
         children: nextProps.children,

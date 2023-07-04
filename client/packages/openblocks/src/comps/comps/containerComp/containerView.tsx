@@ -345,14 +345,16 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   } = props;
   const [currentRowCount, setRowCount] = useState(rowCount || Infinity);
   const [currentRowHeight, setRowHeight] = useState(DEFAULT_ROW_HEIGHT);
-  const [defaultGrid, setDefaultGrid] = useState("24");
   const editorState = useContext(EditorContext);
   const { readOnly } = useContext(ExternalEditorContext);
-  const theme = useContext(ThemeContext)?.theme;
   // const defaultGrid =
   //   useContext(ThemeContext)?.theme?.gridColumns ||
   //   defaultTheme?.gridColumns ||
   //   "24";
+  const defaultGrid =
+    useContext(ThemeContext)?.theme?.gridColumns ||
+    defaultTheme?.gridColumns ||
+    "24";
   const isDroppable =
     useContext(IsDroppable) &&
     (_.isNil(props.isDroppable) || props.isDroppable) &&
@@ -393,10 +395,6 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       setContainerSelectNames(selectedNames);
     }
   }, [extraLayout, containerSelectNames]);
-
-  useEffect(() => {
-    setDefaultGrid(theme?.gridColumns || defaultTheme?.gridColumns || "24");
-  }, [ThemeContext, defaultTheme]);
 
   const canAddSelect = useMemo(
     () =>
@@ -456,7 +454,6 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       onPositionParamsChange,
       onRowCountChange,
       positionParams,
-      defaultGrid,
       props,
     ]
   );
@@ -487,7 +484,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
     });
     itemViewRef.current = newView;
     return Object.values(newView).map((r) => r.view);
-  }, [props.items, defaultGrid]);
+  }, [props.items]);
 
   const clickItem = useCallback(
     (e, name) =>
@@ -575,7 +572,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       rowHeight={currentRowHeight}
       overflow={props.overflow}
       extraHeight={props.extraHeight}
-      cols={props.positionParams.cols}
+      cols={parseInt(defaultGrid)}
       autoHeight={props.autoHeight}
       minHeight={props.minHeight}
       bgColor={props.bgColor}
