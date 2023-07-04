@@ -1139,7 +1139,9 @@ class GridLayout extends React.Component<GridLayoutProps, GridLayoutState> {
           <div style={contentStyle}>
             {showGridLines && this.gridLines()}
             {mounted &&
-              Object.values(layout).map((item) =>
+              this.state &&
+              this.state.propsLayout &&
+              Object.values(this.state.propsLayout).map((item) =>
                 this.processGridItem(item, childrenMap)
               )}
             {this.hintPlaceholder()}
