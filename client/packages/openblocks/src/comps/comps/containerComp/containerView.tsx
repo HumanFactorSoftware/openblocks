@@ -456,6 +456,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       onPositionParamsChange,
       onRowCountChange,
       positionParams,
+      defaultGrid,
       props,
     ]
   );
@@ -486,7 +487,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
     });
     itemViewRef.current = newView;
     return Object.values(newView).map((r) => r.view);
-  }, [props.items]);
+  }, [props.items, defaultGrid]);
 
   const clickItem = useCallback(
     (e, name) =>
