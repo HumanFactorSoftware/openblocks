@@ -10,6 +10,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   SwitchStyle,
   SwitchStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { migrateOldData } from "comps/generators/simpleGenerators";
 import { Section, sectionNames } from "openblocks-design";
@@ -53,7 +55,6 @@ const EventOptions = [
 
 const getStyle = (style: SwitchStyleType) => {
   return css`
-    margin: ${style.margin};
     padding: ${style.padding};
 
     .ant-switch-handle::before {
@@ -73,7 +74,7 @@ const SwitchWrapper = styled.div<{
   disabled: boolean;
   $style: SwitchStyleType;
 }>`
-  min-height: 32px;
+  min-height: 24px;
   display: flex;
   align-items: center;
   // Can respond to drag & select events when disabled

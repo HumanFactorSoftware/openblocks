@@ -8,6 +8,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   SegmentStyle,
   SegmentStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { UICompBuilder } from "../../generators";
@@ -38,9 +40,6 @@ import { RefControl } from "comps/controls/refControl";
 
 const getStyle = (style: SegmentStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
     &.ant-segmented:not(.ant-segmented-disabled) {
       background-color: ${style.background};
 
@@ -52,7 +51,9 @@ const getStyle = (style: SegmentStyleType) => {
         color: ${style.text};
         border-radius: ${style.radius};
       }
-
+      .ant-segmented-item {
+        padding: ${style.padding};
+      }
       .ant-segmented-item-selected,
       .ant-segmented-thumb {
         background-color: ${style.indicatorBackground};
@@ -68,7 +69,7 @@ const getStyle = (style: SegmentStyleType) => {
 
 const Segmented = styled(AntdSegmented)<{ $style: SegmentStyleType }>`
   width: 100%;
-  height: 32px; // keep the height unchanged when there are no options
+  min-height: 24px; // keep the height unchanged when there are no options
   ${(props) => props.$style && getStyle(props.$style)}
 `;
 

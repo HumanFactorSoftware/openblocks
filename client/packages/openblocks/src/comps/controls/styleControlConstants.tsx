@@ -1009,3 +1009,47 @@ export type CarouselStyleType = StyleConfigType<typeof CarouselStyle>;
 export type RichTextEditorStyleType = StyleConfigType<
   typeof RichTextEditorStyle
 >;
+
+export function widthCalculator(margin: string) {
+  const marginArr = margin?.trim().split(" ") || "";
+  if (marginArr.length === 1) {
+    return `calc(100% - ${
+      parseInt(margin.replace(/[^\d.]/g, "")) * 2 + margin.replace(/[0-9]/g, "")
+    })`;
+  } else if (marginArr.length === 2 || marginArr.length === 3) {
+    return `calc(100% - ${
+      parseInt(marginArr[1].replace(/[^\d.]/g, "")) * 2 +
+      marginArr[1].replace(/[0-9]/g, "")
+    })`;
+  } else {
+    return `calc(100% - ${
+      parseInt(marginArr[1]?.replace(/[^\d.]/g, "") || "0") +
+      marginArr[1]?.replace(/[0-9]/g, "" || "px")
+    } - ${
+      parseInt(marginArr[3]?.replace(/[^\d.]/g, "") || "0") +
+      marginArr[3]?.replace(/[0-9]/g, "" || "px")
+    })`;
+  }
+}
+
+export function heightCalculator(margin: string) {
+  const marginArr = margin?.trim().split(" ") || "";
+  if (marginArr.length === 1) {
+    return `calc(100% - ${
+      parseInt(margin.replace(/[^\d.]/g, "")) * 2 + margin.replace(/[0-9]/g, "")
+    })`;
+  } else if (marginArr.length === 2) {
+    return `calc(100% - ${
+      parseInt(marginArr[0].replace(/[^\d.]/g, "")) * 2 +
+      marginArr[0].replace(/[0-9]/g, "")
+    })`;
+  } else {
+    return `calc(100% - ${
+      parseInt(marginArr[0]?.replace(/[^\d.]/g, "") || "0") +
+        marginArr[0]?.replace(/[0-9]/g, "") || "px"
+    } - ${
+      parseInt(marginArr[2]?.replace(/[^\d.]/g, "") || "0") +
+        marginArr[2]?.replace(/[0-9]/g, "") || "px"
+    })`;
+  }
+}

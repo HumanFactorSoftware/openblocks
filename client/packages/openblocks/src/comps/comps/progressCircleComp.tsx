@@ -3,6 +3,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   ProgressStyle,
   ProgressStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import styled, { css } from "styled-components";
 import { Section, sectionNames } from "openblocks-design";
@@ -18,6 +20,9 @@ import { trans } from "i18n";
 
 const getStyle = (style: ProgressStyleType) => {
   return css`
+    width: ${widthCalculator(style.margin)};
+    height: ${heightCalculator(style.margin)};
+
     margin: ${style.margin};
     padding: ${style.padding};
 

@@ -101,9 +101,7 @@ export function calcGridItemPosition(
 
   const top = Math.round((rowHeight + margin[1]) * y + containerPadding[1]);
   const left = Math.round((colWidth + margin[0]) * x + containerPadding[0]);
-
   const { width, height } = calcGridItemSizePx(positionParams, w, h, top, left);
-
   return { width, height, top, left };
 }
 
@@ -123,7 +121,7 @@ export function calcGridItemSizePx(
 
   const isTouchSBound = top ? isTouchBound(maxRows, rowHeight, h, top) : false;
   const height = calcGridItemWHPx(h, rowHeight, margin[1], isTouchSBound);
-  return { width, height };
+  return { width: width - 6, height };
 }
 
 export function calcPosition(state: Record<string, any>) {

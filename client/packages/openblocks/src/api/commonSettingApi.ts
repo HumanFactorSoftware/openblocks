@@ -84,6 +84,8 @@ export function isThemeColorKey(key: string) {
     case "canvas":
     case "primarySurface":
     case "gridColumns":
+    case "margin":
+    case "padding":
       return true;
   }
   return false;

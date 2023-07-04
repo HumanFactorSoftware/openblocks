@@ -1,17 +1,17 @@
-# openblocks-sdk
+# openblocks-sdk-workmeet
 
 ## Usage
 
 yarn:
 
 ```bash
-yarn add openblocks-sdk
+yarn add openblocks-sdk-workmeet
 ```
 
 npm:
 
 ```bash
-npm install openblocks-sdk
+npm install openblocks-sdk-workmeet
 ```
 
 ## Integrate Openblocks' app/module into existing app page
@@ -23,13 +23,13 @@ npm install openblocks-sdk
 ### Import style
 
 ```ts
-import "openblocks-sdk/dist/style.css";
+import "openblocks-sdk-workmeet/dist/style.css";
 ```
 
 ### For react app:
 
 ```ts
-import { OpenblocksAppView } from "openblocks-sdk";
+import { OpenblocksAppView } from "openblocks-sdk-workmeet";
 
 <OpenblocksAppView appId="{YOUR_APPLICATION_ID}" />;
 ```
@@ -47,7 +47,7 @@ import { OpenblocksAppView } from "openblocks-sdk";
 
 ```tsx
 import { useRef } from "ref";
-import { OpenblocksAppView } from "openblocks-sdk";
+import { OpenblocksAppView } from "openblocks-sdk-workmeet";
 
 function MyExistingAppPage() {
   const appRef = useRef();
@@ -65,7 +65,7 @@ function MyExistingAppPage() {
 ### For vanilla js:
 
 ```js
-import { bootstrapAppAt } from "openblocks-sdk";
+import { bootstrapAppAt } from "openblocks-sdk-workmeet";
 
 const node = document.querySelector("#my-app");
 

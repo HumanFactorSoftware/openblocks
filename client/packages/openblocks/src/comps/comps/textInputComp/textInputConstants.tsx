@@ -8,7 +8,11 @@ import {
 } from "comps/controls/codeControl";
 import { stringExposingStateControl } from "comps/controls/codeStateControl";
 import { LabelControl } from "comps/controls/labelControl";
-import { InputLikeStyleType } from "comps/controls/styleControlConstants";
+import {
+  InputLikeStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "comps/controls/styleControlConstants";
 import { Section, sectionNames, ValueFromOption } from "openblocks-design";
 import _ from "lodash";
 import { css } from "styled-components";
@@ -245,7 +249,9 @@ export const TextInputValidationSection = (children: TextInputComp) => (
 export function getStyle(style: InputLikeStyleType) {
   return css`
     border-radius: ${style.radius};
-    margin: ${style.margin};
+    // width: ${widthCalculator(style.margin)};
+    // height: ${heightCalculator(style.margin)};
+    // margin: ${style.margin};
     padding: ${style.padding};
     border-width: ${style.borderWidth};
     // still use antd style when disabled

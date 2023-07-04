@@ -5,7 +5,11 @@ import { arrayStringExposingStateControl } from "../../controls/codeStateControl
 import { LabelControl } from "../../controls/labelControl";
 import { ChangeEventHandlerControl } from "../../controls/eventHandlerControl";
 import { UICompBuilder } from "../../generators";
-import { CommonNameConfig, NameConfig, withExposingConfigs } from "../../generators/withExposing";
+import {
+  CommonNameConfig,
+  NameConfig,
+  withExposingConfigs,
+} from "../../generators/withExposing";
 import styled, { css } from "styled-components";
 import {
   selectDivRefMethods,
@@ -15,7 +19,12 @@ import {
 } from "./selectInputConstants";
 import { formDataChildren } from "../formComp/formDataConstants";
 import { styleControl } from "comps/controls/styleControl";
-import { CheckboxStyle, CheckboxStyleType } from "comps/controls/styleControlConstants";
+import {
+  CheckboxStyle,
+  CheckboxStyleType,
+  heightCalculator,
+  widthCalculator,
+} from "comps/controls/styleControlConstants";
 import { RadioLayoutOptions, RadioPropertyView } from "./radioCompConstants";
 import { dropdownControl } from "../../controls/dropdownControl";
 import { ValueFromOption } from "openblocks-design";
@@ -25,17 +34,10 @@ import { RefControl } from "comps/controls/refControl";
 
 export const getStyle = (style: CheckboxStyleType) => {
   return css`
-    margin: ${style.margin};
-    padding: ${style.padding};
-
     &,
     .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled) {
       color: ${style.staticText};
       max-width: calc(100% - 8px);
-
-      margin: ${style.margin};
-      padding: ${style.padding};
-
       span:not(.ant-checkbox) {
         ${EllipsisTextCss};
       }
@@ -70,6 +72,7 @@ export const getStyle = (style: CheckboxStyleType) => {
     }
 
     .ant-checkbox-wrapper {
+      padding: ${style.padding};
       .ant-checkbox-inner,
       .ant-checkbox-checked::after {
         border-radius: ${style.radius};
@@ -78,11 +81,11 @@ export const getStyle = (style: CheckboxStyleType) => {
   `;
 };
 
-const CheckboxGroup = styled(Checkbox.Group) <{
+const CheckboxGroup = styled(Checkbox.Group)<{
   $style: CheckboxStyleType;
   $layout: ValueFromOption<typeof RadioLayoutOptions>;
 }>`
-  min-height: 32px;
+  min-height: 24px;
   ${(props) => props.$style && getStyle(props.$style)}
   ${(props) => {
     if (props.$layout === "horizontal") {
@@ -105,7 +108,7 @@ const CheckboxGroup = styled(Checkbox.Group) <{
   }}
 `;
 
-const CheckboxBasicComp = (function() {
+const CheckboxBasicComp = (function () {
   const childrenMap = {
     value: arrayStringExposingStateControl("value", ["1"]),
     label: LabelControl,

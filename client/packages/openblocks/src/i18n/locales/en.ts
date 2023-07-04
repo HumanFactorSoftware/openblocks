@@ -1,7 +1,7 @@
 import table from "./componentDocExtra/table.md?url";
 
 export const en = {
-  productName: "Openblocks",
+  productName: "Lowcoder",
   productDesc: "Build internal tools fast, with no limitations",
   notSupportedBrowser:
     "Your current browser may have compatibility issues. For a better user experience, it is recommended to use the latest version of the Chrome browser.",
@@ -302,6 +302,10 @@ export const en = {
     gridColumns: "Grid Columns",
     gridColumnsDesc:
       "The default number of columns is typically used for most containers",
+    margin: "Margin",
+    marginDesc: "The default margin is typically used for most components",
+    padding: "Padding",
+    paddingDesc: "The default padding is typically used for most components",
   },
   style: {
     resetTooltip:

@@ -23,6 +23,8 @@ import { styleControl } from "comps/controls/styleControl";
 import {
   RatingStyle,
   RatingStyleType,
+  heightCalculator,
+  widthCalculator,
 } from "comps/controls/styleControlConstants";
 import { migrateOldData } from "comps/generators/simpleGenerators";
 import {
@@ -119,7 +121,6 @@ export const RatingComp = withExposingConfigs(RatingBasicComp, [
 
 const getStyle = (style: RatingStyleType) => {
   return css`
-    margin: ${style.margin};
     padding: ${style.padding};
 
     .ant-rate {

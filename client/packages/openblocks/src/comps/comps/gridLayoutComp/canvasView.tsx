@@ -40,7 +40,7 @@ export const CanvasContainer = styled.div<{ maxWidth: number }>`
   contain: paint;
 `;
 
-const DEFAULT_CONTAINER_PADDING = [20, 20] as [number, number];
+const DEFAULT_CONTAINER_PADDING = [0, 0] as [number, number];
 const DEFAULT_MOBILE_PADDING = [4, 4] as [number, number];
 const DEFAULT_EXTRA_HEIGHT = "25vh";
 
