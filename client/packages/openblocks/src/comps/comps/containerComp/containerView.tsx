@@ -396,6 +396,7 @@ export function InnerGrid(props: ViewPropsWithSelect) {
 
   useEffect(() => {
     setDefaultGrid(theme?.gridColumns || defaultTheme?.gridColumns || "24");
+    this.forceUpdate();
   }, [ThemeContext, defaultTheme]);
 
   const canAddSelect = useMemo(
