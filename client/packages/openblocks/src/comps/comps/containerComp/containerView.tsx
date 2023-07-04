@@ -345,12 +345,14 @@ export function InnerGrid(props: ViewPropsWithSelect) {
   } = props;
   const [currentRowCount, setRowCount] = useState(rowCount || Infinity);
   const [currentRowHeight, setRowHeight] = useState(DEFAULT_ROW_HEIGHT);
+  const [defaultGrid, setDefaultGrid] = useState("24");
   const editorState = useContext(EditorContext);
   const { readOnly } = useContext(ExternalEditorContext);
-  const defaultGrid =
-    useContext(ThemeContext)?.theme?.gridColumns ||
-    defaultTheme?.gridColumns ||
-    "24";
+  const theme = useContext(ThemeContext)?.theme;
+  // const defaultGrid =
+  //   useContext(ThemeContext)?.theme?.gridColumns ||
+  //   defaultTheme?.gridColumns ||
+  //   "24";
   const isDroppable =
     useContext(IsDroppable) &&
     (_.isNil(props.isDroppable) || props.isDroppable) &&
@@ -391,6 +393,10 @@ export function InnerGrid(props: ViewPropsWithSelect) {
       setContainerSelectNames(selectedNames);
     }
   }, [extraLayout, containerSelectNames]);
+
+  useEffect(() => {
+    setDefaultGrid(theme?.gridColumns || defaultTheme?.gridColumns || "24");
+  }, [ThemeContext, defaultTheme]);
 
   const canAddSelect = useMemo(
     () =>
