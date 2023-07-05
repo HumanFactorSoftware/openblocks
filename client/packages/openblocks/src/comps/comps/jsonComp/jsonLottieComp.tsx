@@ -87,8 +87,6 @@ let JsonLottieTmpComp = (function () {
     return (
       <div
         style={{
-          height: "100%",
-          overflowY: "scroll",
           backgroundColor: `${props.backgroundColor.background}`,
         }}
       >
@@ -101,7 +99,12 @@ let JsonLottieTmpComp = (function () {
           loop={props.loop === "single" ? false : true}
           speed={Number(props.speed)}
           src={props.value}
-          style={{ height: "100%", width: "100%" }}
+          style={{
+            height: "100%",
+            width: "100%",
+            maxWidth: "100%",
+            maxHeight: "100%",
+          }}
         />
       </div>
     );
