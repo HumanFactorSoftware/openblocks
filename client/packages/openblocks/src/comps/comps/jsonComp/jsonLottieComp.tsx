@@ -87,6 +87,8 @@ let JsonLottieTmpComp = (function () {
     return (
       <div
         style={{
+          height: "100%",
+          display: "flex",
           backgroundColor: `${props.backgroundColor.background}`,
         }}
       >
